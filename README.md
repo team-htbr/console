@@ -14,8 +14,8 @@ Currently it is only possible to send messages to specific devices. Follow the s
 
 1. Connect your Android device with Android Studio or use an emulator
 2. Run app on device
-3. Toggle **Android monitoring** at the bottom of Android Studio and press the **SHOW TOKEN** button
-4. Copy string after **Token:** 
+3. Toggle **Android monitoring** at the bottom of Android Studio and press the **SHOW TOKEN** button in the app
+4. Copy string after **Token:**, it will pop up in the Android monitoring tab
 5. Paste string in constant **phoneKey** (`src/js/scripts.js`)
 
 ## Test POST requests easily
