@@ -20,4 +20,4 @@ Currently it is only possible to send messages to specific devices. Follow the s
 
 ## Test POST requests easily
 
-(Request Maker)[http://requestmaker.com/]
+[Request Maker](http://requestmaker.com/)
