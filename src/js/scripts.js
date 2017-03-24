@@ -6,7 +6,7 @@
     // HOW TO GET phoneKey
     // 1. Connect device with Android Studio
     // 2. Run app on device
-    // 3. Toggle 'Android moinitoring at the bottom of Android Studio and press the 'SHOW TOKEN' button
+    // 3. Toggle 'Android monitoring at the bottom of Android Studio and press the 'SHOW TOKEN' button
     // 4. Copy string after 'Token: ' 
     // 5. Paste token in constant 'phoneKey'
     const phoneKey = '';
