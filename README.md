@@ -2,7 +2,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4d88a943f5234e1997c6bcbeda035cb3)](https://www.codacy.com/app/rubenthys22/console?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=team-htbr/console&amp;utm_campaign=Badge_Grade)
 
-A web based application that makes it possible to control the notifications send to users of the bloeddonatie Android application.
+A web based application that makes it possible to control the notifications sent to users of the bloeddonatie Android application.
 
 ## Run locally
 
