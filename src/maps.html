@@ -11,21 +11,43 @@
   <body>
     <h3>My Google Maps Demo</h3>
     <div id="map"></div>
+
+	<form action="">
+		LAT: <input type="text" name="flat" id="flat"><br>
+		LNG: <input type="text" name="flng" id="flng"><br>
+	</form>
     <script>
-      function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-      }
+
+		var map;
+		var marker;
+
+		function initMap() {
+			var gent = {lat: 51.046238, lng: 3.714628};
+
+			map = new google.maps.Map(document.getElementById('map'), {
+			  zoom: 14,
+			  center: gent
+			});
+
+			marker = new google.maps.Marker({map: map});
+
+			map.addListener('click', function(event) {
+				changeMarker(event.latLng);
+			});
+	  	}
+
+	  	// Adds a marker to the map and push to the array.
+	  	function changeMarker(location) {
+			marker.setPosition(location);
+			console.log(marker.getPosition());
+			document.getElementById('flat').value = marker.getPosition().lat();
+			document.getElementById('flng').value = marker.getPosition().lng();
+	  	}
+
+
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio	&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio&callback=initMap">
     </script>
   </body>
 </html>
