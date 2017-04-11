@@ -32,11 +32,11 @@
 		});
 
 		// Generate a reference to path in database
-		var firebaseRefLocations = firebase.database().ref('locations');
-		var firebaseRefLocations_geo = firebase.database().ref('locations_geo');
+		// var firebaseRefLocations = firebase.database().ref('locations');
+		var firebaseRefLocationsGeo = firebase.database().ref('locations_geo');
 
 		// Create a new GeoFire instance at the Firebase location
-		var geoFire = new GeoFire(firebaseRefLocations_geo);
+		var geoFire = new GeoFire(firebaseRefLocationsGeo);
 
 		function initMap() {
 			var gent = {lat: 51.046238, lng: 3.714628};
