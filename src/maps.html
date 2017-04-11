@@ -20,6 +20,7 @@
 
 		var map;
 		var marker;
+		var infoWindow;
 
 		function initMap() {
 			var gent = {lat: 51.046238, lng: 3.714628};
@@ -37,8 +38,16 @@
 				title: 'is is a title'
 			});
 
+			infoWindow = new google.maps.InfoWindow({
+				content: 'This is content for the infoWindow'
+			});
+
 			map.addListener('click', function(event) {
 				changeMarker(event.latLng);
+			});
+
+			marker.addListener('click', function() {
+				infoWindow.open(map, marker);
 			});
 		}
 
