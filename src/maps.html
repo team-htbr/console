@@ -25,29 +25,32 @@
 			var gent = {lat: 51.046238, lng: 3.714628};
 
 			map = new google.maps.Map(document.getElementById('map'), {
-			  zoom: 14,
-			  center: gent
+				zoom: 14,
+				center: gent,
+				title: 'This is a title'
 			});
 
-			marker = new google.maps.Marker({map: map});
+			console.log(map);
+
+			marker = new google.maps.Marker({
+				map: map,
+				title: 'is is a title'
+			});
 
 			map.addListener('click', function(event) {
 				changeMarker(event.latLng);
 			});
-	  	}
+		}
 
-	  	// Adds a marker to the map and push to the array.
-	  	function changeMarker(location) {
+		// Adds a marker to the map and push to the array.
+		function changeMarker(location) {
 			marker.setPosition(location);
 			console.log(marker.getPosition());
 			document.getElementById('flat').value = marker.getPosition().lat();
 			document.getElementById('flng').value = marker.getPosition().lng();
-	  	}
-
+		}
 
     </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio&callback=initMap">
-    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio&callback=initMap"></script>
   </body>
 </html>
