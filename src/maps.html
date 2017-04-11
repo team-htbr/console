@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+	<script src="../bower_components/geofire/dist/geofire.min.js"></script>
+	<script src="../bower_components/firebase/firebase.js"></script>
+	<!--<script src="js/markers.js"></script>-->
     <style>
        #map {
         height: 400px;
@@ -21,6 +24,19 @@
 		var map;
 		var marker;
 		var infoWindow;
+
+		 // Initialize the Firebase SDK
+		firebase.initializeApp({
+			apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
+			databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
+		});
+
+		// Generate a reference to path in database
+		var firebaseRefLocations = firebase.database().ref('locations');
+		var firebaseRefLocations_geo = firebase.database().ref('locations_geo');
+
+		// Create a new GeoFire instance at the Firebase location
+		var geoFire = new GeoFire(firebaseRefLocations_geo);
 
 		function initMap() {
 			var gent = {lat: 51.046238, lng: 3.714628};
@@ -55,8 +71,14 @@
 		function changeMarker(location) {
 			marker.setPosition(location);
 			console.log(marker.getPosition());
-			document.getElementById('flat').value = marker.getPosition().lat();
-			document.getElementById('flng').value = marker.getPosition().lng();
+			var lat = marker.getPosition().lat();
+			var lng = marker.getPosition().lng();
+			document.getElementById('flat').value = lat;
+			document.getElementById('flng').value = lng;
+			var locationId = lat.toFixed(5).toString().replace('.', '');
+			var location =  [lat, lng];
+			console.log(location);
+			geoFire.set('location' + locationId, location);
 		}
 
     </script>
