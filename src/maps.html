@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+	  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="../bower_components/geofire/dist/geofire.min.js"></script>
 	<script src="../bower_components/firebase/firebase.js"></script>
 	<!--<script src="js/markers.js"></script>-->
@@ -12,13 +15,16 @@
     </style>
   </head>
   <body>
-    <h3>My Google Maps Demo</h3>
     <div id="map"></div>
 
 	<form action="">
 		LAT: <input type="text" name="flat" id="flat"><br>
 		LNG: <input type="text" name="flng" id="flng"><br>
 	</form>
+
+	<div id="dialog-confirm" title="Marker toevoegen?">
+		<p><span  style="float:left; margin:12px 12px 12px 0;"></span>Ben je zeker dat je deze locatie wilt toevoegen?</p>
+	</div>
     <script>
 
 		var map;
@@ -59,7 +65,20 @@
 			});
 
 			map.addListener('click', function(event) {
-				changeMarker(event.latLng);
+				$( "#dialog-confirm" ).dialog({
+					resizable: false,
+					height: "auto",
+					width: 400,
+					modal: true,
+					buttons: {
+						"OK": function() {
+							changeMarker(event.latLng);
+						},
+						Cancel: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});
 			});
 
 			marker.addListener('click', function() {
@@ -80,6 +99,8 @@
 			console.log(location);
 			geoFire.set('location' + locationId, location);
 		}
+
+
 
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio&callback=initMap"></script>
