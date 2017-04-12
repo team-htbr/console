@@ -18,6 +18,22 @@
     <div id="map"></div>
 
 	<form action="">
+		<fieldset>
+			<legend>Voeg een adres toe</legend>
+			<dl>
+				<dt><label for="title">Titel</label></dt>
+				<dd><input type="text" name="title" value=""></dd>
+				<dt><label for="streetname">Straatnaam</label></dt>
+				<dd><input type="text" name="streetname" value=""></dd>
+				<dt><label for="streetNumber">Straat nummer</label></dt>
+				<dd><input type="text" name="streetNumber" value=""></dd>
+				<dt><label for="City">Gemeente</label></dt>
+				<dd><input type="text" name="City" value=""></dd>
+			</dl>
+		</fieldset>
+	</form>
+
+	<form action="">
 		LAT: <input type="text" name="flat" id="flat"><br>
 		LNG: <input type="text" name="flng" id="flng"><br>
 	</form>
@@ -94,7 +110,7 @@
 			var lng = marker.getPosition().lng();
 			document.getElementById('flat').value = lat;
 			document.getElementById('flng').value = lng;
-			var locationId = lat.toFixed(5).toString().replace('.', '');
+			var locationId = lat.toFixed(7).toString().replace('.', '');
 			var location =  [lat, lng];
 			console.log(location);
 			geoFire.set('location' + locationId, location);
