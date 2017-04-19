@@ -1,147 +1,147 @@
 <!DOCTYPE html>
 <html>
-  <head>
-	  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="../bower_components/geofire/dist/geofire.min.js"></script>
-	<script src="../bower_components/firebase/firebase.js"></script>
-	<!--<script src="js/markers.js"></script>-->
-    <style>
-       #map {
-        height: 400px;
-        width: 100%;
-       }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
+	<head>
+		<script src="../bower_components/geofire/dist/geofire.min.js"></script>
+		<script src="../bower_components/firebase/firebase.js"></script>
+		<!--<script src="js/markers.js"></script>-->
+		<style>
+			#map {
+			height: 400px;
+			width: 100%;
+			}
+		</style>
+	</head>
+		<body>
+		<div id="map"></div>
 
-	<form action="">
-		<fieldset>
-			<legend>Voeg een adres toe</legend>
-			<dl>
-				<dt><label for="title">Titel</label></dt>
-				<dd><input type="text" name="title" value=""></dd>
-				<dt><label for="streetname">Straatnaam</label></dt>
-				<dd><input type="text" name="streetname" value=""></dd>
-				<dt><label for="streetNumber">Straat nummer</label></dt>
-				<dd><input type="text" name="streetNumber" value=""></dd>
-				<dt><label for="City">Gemeente</label></dt>
-				<dd><input type="text" name="City" value=""></dd>
-			</dl>
-		</fieldset>
-	</form>
+		<form action="">
+			<fieldset>
+				<legend>Voeg een adres toe</legend>
+				<dl>
+					<dt><label for="title">Titel</label></dt>
+					<dd><input type="text" name="title" value="" id="markerTitle"></dd>
+					<dt><label for="streetname">Straatnaam</label></dt>
+					<dd><input type="text" name="streetname" id="markerStreet" value=""></dd>
+					<dt><label for="streetNumber">Straat nummer</label></dt>
+					<dd><input type="text" name="streetNumber" id="markerStreetNumber" value=""></dd>
+					<dt><label for="City">Gemeente</label></dt>
+					<dd><input type="text" name="City" id="markerCity" value=""></dd>
+					<button type="button" id="markerBtn"> Add marker</button>
+				</dl>
+			</fieldset>
+		</form>
 
-	<form action="">
-		LAT: <input type="text" name="flat" id="flat"><br>
-		LNG: <input type="text" name="flng" id="flng"><br>
-	</form>
+		<button type="button" id="markerBtn"> Add marker</button>
 
-	<div id="dialog-confirm" title="Marker toevoegen?">
-		<p><span  style="float:left; margin:12px 12px 12px 0;"></span>Ben je zeker dat je deze locatie wilt toevoegen?</p>
-	</div>
-    <script>
+		<form action="">
+			LAT: <input type="text" name="flat" id="flat"><br>
+			LNG: <input type="text" name="flng" id="flng"><br>
+		</form>
 
-		var map;
-		var marker;
-		var infoWindow;
-		var address =  '40 bijlokehof, Gent, BE';
-		var geocoder;
+		<div id="dialog-confirm" title="Marker toevoegen?">
+			<p><span  style="float:left; margin:12px 12px 12px 0;"></span>Ben je zeker dat je deze locatie wilt toevoegen?</p>
+		</div>
 
-		// Initialize the Firebase SDK
-		firebase.initializeApp({
-			apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
-			databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
-		});
+		<script>
 
-		// Generate a reference to path in database
-		// var firebaseRefLocations = firebase.database().ref('locations');
-		var firebaseRefLocationsGeo = firebase.database().ref('locations_geo_test');
+			let map;
+			let marker;
+			let infoWindow;
+			let addressTest =  '40 bijlokehof, Gent, BE';
+			let geocoder;
 
-		// Create a new GeoFire instance at the Firebase location
-		var geoFire = new GeoFire(firebaseRefLocationsGeo);
-
-		function initMap() {
-			var gent = {lat: 51.046238, lng: 3.714628};
-			geocoder = new google.maps.Geocoder();
-
-			map = new google.maps.Map(document.getElementById('map'), {
-				zoom: 14,
-				center: gent,
-				title: 'This is a title'
+			// Initialize the Firebase SDK
+			firebase.initializeApp({
+				apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
+				databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
 			});
 
-			console.log(map);
+			// Generate a reference to path in database
+			// var firebaseRefLocations = firebase.database().ref('locations');
+			let firebaseRef = firebase.database();
 
-			marker = new google.maps.Marker({
-				map: map,
-				title: 'is is a title'
-			});
+			// Create a new GeoFire instance at the Firebase location
 
-			infoWindow = new google.maps.InfoWindow({
-				content: 'This is content for the infoWindow'
-			});
 
-			map.addListener('click', function(event) {
-				$( "#dialog-confirm" ).dialog({
-					resizable: false,
-					height: "auto",
-					width: 400,
-					modal: true,
-					buttons: {
-						"OK": function() {
-							changeMarker(event.latLng);
-						},
-						Cancel: function() {
-							$( this ).dialog( "close" );
-						}
+			function initMap() {
+				var gent = {lat: 51.046238, lng: 3.714628};
+				geocoder = new google.maps.Geocoder();
+
+				map = new google.maps.Map(document.getElementById('map'), {
+					zoom: 14,
+					center: gent,
+					title: 'This is a title'
+				});
+
+				console.log(map);
+
+				marker = new google.maps.Marker({
+					map: map,
+					title: 'is is a title'
+				});
+
+				infoWindow = new google.maps.InfoWindow({
+					content: 'This is content for the infoWindow'
+				});
+
+				map.addListener('click', function(event) {
+					console.log(event.latLng);
+					changeMarker(event.latLng);
+				});
+
+				marker.addListener('click', function() {
+					infoWindow.open(map, marker);
+				});
+
+				document.getElementById('markerBtn').onclick = function () {
+					let title = document.getElementById('markerTitle').value;
+					let street = document.getElementById('markerStreet').value;
+					let streetNumber = document.getElementById('markerStreetNumber').value;
+					let city = document.getElementById('markerCity').value;
+					let geocodeAddress = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
+					console.log(geocodeAddress);
+					test(geocoder, map, geocodeAddress);
+				}
+
+			}
+
+			// Adds a marker to the map and push to the array.
+			function changeMarker(locationObject) {
+				marker.setPosition(locationObject);
+				let lat = marker.getPosition().lat();
+				let lng = marker.getPosition().lng();
+				document.getElementById('flat').value = lat;
+				document.getElementById('flng').value = lng;
+				let locationId = lat.toFixed(7).toString().replace('.', '');
+				let location =  [lat, lng];
+
+				let itemId = firebaseRef.ref('loacations_test').push().getKey();
+				firebaseRef.ref('locations_test').child(itemId).set({
+					title: 'test title',
+					address: 'test address'
+				});
+				let firebaseRefLocationsGeo = firebase.database().ref('locations_test/' + itemId);
+				let geoFire = new GeoFire(firebaseRefLocationsGeo);
+				geoFire.set('location', location)
+			}
+
+			function test(geocoder, resultsMap, address) {
+				geocoder.geocode({'address': address}, function(results, status) {
+					if (status === 'OK') {
+						resultsMap.setCenter(results[0].geometry.location);
+						marker = new google.maps.Marker({
+							map: resultsMap,
+							position: results[0].geometry.location
+						});
+						console.log(results[0].geometry.location.lat());
+						console.log(results[0].geometry.location.lng());
+					} else {
+						alert('Geocode was not successful for the following reason: ' + status);
 					}
 				});
-			});
+			}
 
-			marker.addListener('click', function() {
-				infoWindow.open(map, marker);
-			});
-
-			test(geocoder, map);
-		}
-
-		// Adds a marker to the map and push to the array.
-		function changeMarker(location) {
-			marker.setPosition(location);
-			console.log(marker.getPosition());
-			var lat = marker.getPosition().lat();
-			var lng = marker.getPosition().lng();
-			document.getElementById('flat').value = lat;
-			document.getElementById('flng').value = lng;
-			var locationId = lat.toFixed(7).toString().replace('.', '');
-			var location =  [lat, lng];
-			console.log(location);
-			geoFire.set('location' + locationId, location);
-		}
-
-		function test(geocoder, resultsMap) {
-			geocoder.geocode({'address': address}, function(results, status) {
-				if (status === 'OK') {
-					resultsMap.setCenter(results[0].geometry.location);
-					marker = new google.maps.Marker({
-						map: resultsMap,
-						position: results[0].geometry.location
-					});
-					console.log(results[0].geometry.location.lat());
-					console.log(results[0].geometry.location.lng());
-				} else {
-					alert('Geocode was not successful for the following reason: ' + status);
-				}
-			});
-		}
-
-
-
-
-
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio&callback=initMap"></script>
-  </body>
+		</script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio&callback=initMap"></script>
+	</body>
 </html>
