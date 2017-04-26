@@ -3,7 +3,6 @@
 	<head>
 		<script src="../bower_components/geofire/dist/geofire.min.js"></script>
 		<script src="../bower_components/firebase/firebase.js"></script>
-		<!--<script src="js/markers.js"></script>-->
 		<style>
 			#map {
 			height: 400px;
@@ -13,7 +12,6 @@
 	</head>
 		<body>
 		<div id="map"></div>
-
 		<form action="">
 			<fieldset>
 				<legend>Voeg een adres toe</legend>
@@ -51,6 +49,7 @@
 				});
 				// Initialise geocoder object
 				let geocoder = new google.maps.Geocoder();
+				let infoWindow = new google.maps.InfoWindow();
 
 				document.getElementById('locationBtn').onclick = function () {
 					// Location object
@@ -62,6 +61,12 @@
 
 					addLocation(geocoder, map, name, street, streetNumber, city, isMobile);
 				}
+
+				google.maps.event.addListener(map, 'click', function() {
+					infoWindow.close();
+				});
+
+				renderMarkers(map, infoWindow);
 			};
 
 			let addLocation = function(geocoder, resultsMap, name, street, streetNumber, city, isMobile) {
@@ -90,7 +95,7 @@
 
 						// add location to geofire
 						let location =  [lat, lng];
-						let firebaseRefLocationsGeo = firebase.database().ref('locations_geo_test/' + itemId);
+						let firebaseRefLocationsGeo = firebaseRef.ref('locations_geo_test/' + itemId);
 						let geoFire = new GeoFire(firebaseRefLocationsGeo);
 						geoFire.set('location', location);
 					} else {
@@ -103,27 +108,48 @@
 
 			};
 
-			function renderMarkers() {
-				// Get new location data
-				let title = document.getElementById('markerTitle').value;
-				let street = document.getElementById('markerStreet').value;
-				let streetNumber = document.getElementById('markerStreetNumber').value;
-				let city = document.getElementById('markerCity').value;
-				let isMobile = false;
-
-				marker = new google.maps.Marker({
-					position: latLng,
-					map: map
+			function renderMarkers(resultsMap, infoWindow) {
+				
+				let locations = firebaseRef.ref('locations_test');
+				
+				locations.on('child_added', function(location) {
+					renderMarker(resultsMap, infoWindow, location);
 				});
 
-				infoWindow = new google.maps.InfoWindow({
-					content: 'This is content for the infoWindow'
+				locations.on('child_removed', function(location) {
+					renderMarker(resultsMap, infoWindow, location);
 				});
 
-				marker.addListener('click', function() {
-					infoWindow.open(map, marker);
+				locations.on('child_changed', function(location) {
+					renderMarker(resultsMap, infoWindow, location);
+				});
+
+				locations.on('child_moved', function(location) {
+					renderMarker(resultsMap, infoWindow, location);
 				});
 			};
+
+			let renderMarker = function(resultsMap, infoWindow, location) {
+				let name = '<h3>' + location.val().name + '</h3>';
+				let address = '<p>' + location.val().street + ' ' + location.val().streetNumber + ', ' + location.val().city + '</p>';
+				let content = name + address;
+				let coordinates = [location.val().lat, location.val().lng];
+				console.log(coordinates);
+
+				let marker = new google.maps.Marker({
+					position: { lat:  location.val().lat, lng: location.val().lng },
+					map: resultsMap
+				});
+
+				google.maps.event.addListener(marker, 'click', function() {
+					infoWindow.setContent(content);
+					infoWindow.open(resultsMap, marker);
+				});
+			}
+
+			let removeMarker = function(resultsMap, location) {
+
+			}
 
 			// Adds a marker to the map and push to the array.
 			function changeMarker(locationObject) {
