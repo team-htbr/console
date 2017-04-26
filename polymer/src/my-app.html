@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
@@ -20,6 +20,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-menu/paper-submenu.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -32,15 +34,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
 
-      app-drawer-layout:not([narrow]) [drawer-toggle] {
-        display: none;
-      }
-
       app-header {
         color: #fff;
         background-color: var(--app-primary-color);
       }
-
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
@@ -72,19 +69,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
-      <app-drawer id="drawer" slot="drawer">
+      <app-drawer id="drawer">
         <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="notifications" href="/notifications">Notificaties</a>
-          <a name="locations" href="/locations">Locaties</a>
+        <paper-menu selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <paper-submenu>
+            <paper-item class="menu-trigger">Notificatiebeheer</paper-item>
+            <paper-menu class="menu-content">
+              <paper-item><a name="notifications" href="/notifications">Op bloedgroep</a></paper-item>
+              <paper-item><a name="notifications" href="/notifications">Op locatie</a></paper-item>
+            </paper-menu>
+          </paper-submenu>
+          <paper-item><a name="locations" href="/locations">Locatiebeheer</a></paper-item>
+        </paper-menu>
+        <!-- <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="notifications" href="/notifications">Notificatiebeheer</a>
+          <a name="locations" href="/locations">Locatiebeheer</a>
           <a name="view3" href="/view3">View Three</a>
-        </iron-selector>
+        </iron-selector> -->
       </app-drawer>
 
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
-        <app-header slot="header" condenses reveals effects="waterfall">
+        <app-header condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Bloeddonatieconsole</div>
@@ -106,58 +113,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    class MyApp extends Polymer.Element {
+    Polymer({
+      is: 'my-app',
 
-      static get is() { return 'my-app'; }
+      properties: {
+        page: {
+          type: String,
+          reflectToAttribute: true,
+          observer: '_pageChanged',
+        },
+      },
 
-      static get properties() {
-        return {
-          page: {
-            type: String,
-            reflectToAttribute: true,
-            observer: '_pageChanged',
-          },
-        };
-      }
+      observers: [
+        '_routePageChanged(routeData.page)',
+      ],
 
-      static get observers() {
-        return [
-          '_routePageChanged(routeData.page)',
-        ];
-      }
-
-      _routePageChanged(page) {
-        // Polymer 2.0 will call with `undefined` on initialization.
-        // Ignore until we are properly called with a string.
-        if (page === undefined) {
-          return;
-        }
-
-        // If no page was found in the route data, page will be an empty string.
-        // Deault to 'notifications' in that case.
+      _routePageChanged: function(page) {
         this.page = page || 'notifications';
 
-        // Close a non-persistent drawer when the page & route are changed.
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
         }
-      }
+      },
 
-      _pageChanged(page) {
+      _pageChanged: function(page) {
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
-        Polymer.importHref(
-            resolvedPageUrl,
-            null,
-            this._showPage404.bind(this),
-            true);
-      }
+        this.importHref(resolvedPageUrl, null, this._showPage404, true);
+      },
 
-      _showPage404() {
+      _showPage404: function() {
         this.page = 'view404';
-      }
-    }
-
-    window.customElements.define(MyApp.is, MyApp);
+      },
+    });
   </script>
 </dom-module>
