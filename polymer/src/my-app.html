@@ -22,16 +22,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../bower_components/paper-menu/paper-submenu.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
   <template>
     <style>
       :host {
-        --app-primary-color: #4285f4;
+        --app-primary-color: #ed1c24;
         --app-secondary-color: black;
-
         display: block;
+      }
+
+      app-toolbar {
+        background-color: var(--app-primary-color);
+        color: #fff;
+        text-align: center;
       }
 
       app-header {
@@ -64,8 +70,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .menu-item a {
-        margin-top: 20px;
+        margin-top: 16px;
         padding: 0 0;
+      }
+
+      .big {
+        --iron-icon-height: 32px;
+        --iron-icon-width: 32px;
+        padding-right: 16px;
+        padding-bottom: 1px;
       }
 
     </style>
@@ -80,16 +93,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer">
-        <app-toolbar>Menu</app-toolbar>
+        <app-toolbar><div main-title>Bloeddonatieconsole</div></app-toolbar>
         <paper-menu selected="[[page]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
           <paper-submenu>
-            <paper-item class="menu-trigger">Notificatiebeheer</paper-item>
+            <paper-item class="menu-trigger"><iron-icon class="big" src="../images/notification grey.png"></iron-icon>Notificatiebeheer</paper-item>
             <paper-menu class="menu-content">
               <paper-item class="submenu-item"><a name="notifications" href="/notifications">Op bloedgroep</a></paper-item>
               <paper-item class="submenu-item"><a name="notifications" href="/notifications">Op locatie</a></paper-item>
             </paper-menu>
           </paper-submenu>
-          <paper-item class="menu-item"><a name="locations" href="/locations">Locatiebeheer</a></paper-item>
+          <paper-item class="menu-item"><a name="locations" href="/locations"><iron-icon class="big" src="../images/location grey.png"></iron-icon>Locatiebeheer</a></paper-item>
         </paper-menu>
       </app-drawer>
 
@@ -99,7 +112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>Bloeddonatieconsole</div>
+            
           </app-toolbar>
         </app-header>
 
