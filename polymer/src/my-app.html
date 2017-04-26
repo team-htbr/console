@@ -48,9 +48,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .drawer-list a {
         display: block;
-        padding: 0 16px;
         text-decoration: none;
         color: var(--app-secondary-color);
+        padding: 0 16px;
         line-height: 40px;
       }
 
@@ -58,6 +58,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: black;
         font-weight: bold;
       }
+      
+      .main-menu {
+        padding-top: 40px;
+      }
+
+      .menu-item a {
+        margin-top: 20px;
+        padding: 0 0;
+      }
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -71,21 +81,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Drawer content -->
       <app-drawer id="drawer">
         <app-toolbar>Menu</app-toolbar>
-        <paper-menu selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+        <paper-menu selected="[[page]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
           <paper-submenu>
             <paper-item class="menu-trigger">Notificatiebeheer</paper-item>
             <paper-menu class="menu-content">
-              <paper-item><a name="notifications" href="/notifications">Op bloedgroep</a></paper-item>
-              <paper-item><a name="notifications" href="/notifications">Op locatie</a></paper-item>
+              <paper-item class="submenu-item"><a name="notifications" href="/notifications">Op bloedgroep</a></paper-item>
+              <paper-item class="submenu-item"><a name="notifications" href="/notifications">Op locatie</a></paper-item>
             </paper-menu>
           </paper-submenu>
-          <paper-item><a name="locations" href="/locations">Locatiebeheer</a></paper-item>
+          <paper-item class="menu-item"><a name="locations" href="/locations">Locatiebeheer</a></paper-item>
         </paper-menu>
-        <!-- <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="notifications" href="/notifications">Notificatiebeheer</a>
-          <a name="locations" href="/locations">Locatiebeheer</a>
-          <a name="view3" href="/view3">View Three</a>
-        </iron-selector> -->
       </app-drawer>
 
       <!-- Main content -->
