@@ -30,48 +30,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         --app-primary-color: #ed1c24;
-        --app-secondary-color: black;
+        --app-secondary-color: #666666;
         display: block;
+        --paper-menu-selected-item: {
+          color: var(--app-primary-color);
+        };
       }
 
-      app-toolbar {
-        background-color: var(--app-primary-color);
-        color: #fff;
-        text-align: center;
+      .menu-toolbar {
+        color: var(--app-primary-color);
+        background-color: #f5f5f5;
+        padding: 0 20px;
+        box-shadow: 0 3px 4px 0 rgba(0,0,0,0.08), 0 3px 3px -2px rgba(0,0,0,0.08), 0 1px 8px 0 rgba(0,0,0,0.08);
       }
 
-      app-header {
-        color: #fff;
+      .app-toolbar {
         background-color: var(--app-primary-color);
+        color: #fff;
+        box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.2);
       }
+
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
 
-      .drawer-list {
-        margin: 0 20px;
+      #drawer {
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
       }
 
       .drawer-list a {
         display: block;
         text-decoration: none;
         color: var(--app-secondary-color);
-        padding: 0 16px;
         line-height: 40px;
       }
 
-      .drawer-list a.iron-selected {
-        color: black;
-        font-weight: bold;
+      .drawer-list a:hover {
+        background-color: #eeeeee;
+        cursor: pointer;
       }
       
       .main-menu {
-        padding-top: 40px;
+        padding-top: 35px;
       }
 
       .menu-item a {
-        margin-top: 16px;
-        padding: 0 0;
+        padding: 6px 20px;
+      }
+
+      .submenu-item a {
+        padding: 0 40px;
       }
 
       .big {
@@ -93,16 +101,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer">
-        <app-toolbar><div main-title>Bloeddonatieconsole</div></app-toolbar>
+        <app-toolbar class="menu-toolbar">Menu</app-toolbar>
         <paper-menu selected="[[page]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
           <paper-submenu>
-            <paper-item class="menu-trigger"><iron-icon class="big" src="../images/notification grey.png"></iron-icon>Notificatiebeheer</paper-item>
+            <paper-item class="menu-trigger menu-item">
+              <a><iron-icon class="big" src="../images/notification grey.png"></iron-icon>Notificatiebeheer</a>
+            </paper-item>
             <paper-menu class="menu-content">
               <paper-item class="submenu-item"><a name="notifications" href="/notifications">Op bloedgroep</a></paper-item>
               <paper-item class="submenu-item"><a name="notifications" href="/notifications">Op locatie</a></paper-item>
             </paper-menu>
           </paper-submenu>
-          <paper-item class="menu-item"><a name="locations" href="/locations"><iron-icon class="big" src="../images/location grey.png"></iron-icon>Locatiebeheer</a></paper-item>
+          <paper-item class="menu-item">
+            <a name="locations" href="/locations"><iron-icon class="big" src="../images/location grey.png"></iron-icon>Locatiebeheer</a>
+          </paper-item>
         </paper-menu>
       </app-drawer>
 
@@ -110,9 +122,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-header-layout has-scrolling-region>
 
         <app-header condenses reveals effects="waterfall">
-          <app-toolbar>
+          <app-toolbar class="app-toolbar">
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            
+            <div main-title><iron-icon class="big" src="../images/icon_normal.png"></iron-icon>Bloeddonatieconsole</div>
           </app-toolbar>
         </app-header>
 
