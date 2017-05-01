@@ -51,10 +51,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.2);
       }
 
-      app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
-      }
-
       #drawer {
         box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
       }
@@ -88,6 +84,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --iron-icon-width: 32px;
         padding-right: 16px;
         padding-bottom: 1px;
+      }
+
+      paper-item:iron-selected {
+        color: var(--app-primary-color);
       }
 
     </style>
