@@ -106,11 +106,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-menu selected="[[page]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
           <paper-submenu>
             <paper-item class="menu-trigger menu-item">
-              <a><iron-icon class="big" src="../images/notification grey.png"></iron-icon>Notificatiebeheer</a>
+              <a name="notifications" href="/notifications">
+              <iron-icon class="big" src="../images/notification grey.png"></iron-icon>Notificatiebeheer</a>
             </paper-item>
             <paper-menu class="menu-content">
-              <paper-item class="submenu-item"><a name="notifications" href="/notifications">Op bloedgroep</a></paper-item>
-              <paper-item class="submenu-item"><a name="notifications" href="/notifications">Op locatie</a></paper-item>
+              <paper-item class="submenu-item"><a name="notifications-blood" href="/notifications-blood">Op bloedgroep</a></paper-item>
+              <paper-item class="submenu-item"><a name="notifications-location" href="/notifications-location">Op locatie</a></paper-item>
             </paper-menu>
           </paper-submenu>
           <paper-item class="menu-item">
@@ -130,11 +131,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </app-header>
 
         <iron-pages
-            selected="[[page]]"
+            selected="[[routeData.page]]"
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-notifications name="notifications"></my-notifications>
+          <!-- <my-notifications name="notifications"></my-notifications-blood> -->
+          <my-notifications-blood name="notifications-blood"></my-notifications-blood>
+          <my-notifications-location name="notifications-location"></my-notifications-location>
           <my-locations name="locations"></my-locations>
           <my-view3 name="view3"></my-view3>
           <my-view404 name="view404"></my-view404>
@@ -160,7 +163,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'notifications';
+        this.page = page || 'my-locations';
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
