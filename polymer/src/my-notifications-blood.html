@@ -38,10 +38,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 0;
       }
 
+      .no-padding {
+        padding: 0;
+      }
+
       paper-material {
         background-color: #fff;
         margin-top: 12px;
-        border-radius: 3px;
+        border-radius: 4px;
         padding: 16px 16px;
       }
 
@@ -49,6 +53,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 50%;
         /*background-color: #000;*/
         margin: 0 auto;
+      }
+
+      .paper-mat-title {
+        background-color: var(--light-background);
+        padding: 16px 0;
+        border-radius: 4px 4px 0 0;
+        box-shadow: 0 3px 4px 0 rgba(0,0,0,0.08), 0 3px 3px -2px rgba(0,0,0,0.08), 0 1px 8px 0 rgba(0,0,0,0.08);
+      }
+
+      .paper-mat-title p {
+        width: 65%;
+        margin: 0 auto;
+        overflow: hidden;
       }
 
       paper-button {
@@ -95,10 +112,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
     </paper-material>
 
-    <paper-material id="notification-details">
+    <paper-material id="notification-details" class="no-padding">
+      <div class="paper-mat-title"><p>Verstuur een notificatie.</p></div>
       <form is="iron-form" method="get" action="/" id="basic">
         <paper-input name="title" label="Titel" required></paper-input>
-        <paper-textarea label="Bericht" required></paper-textarea>
+        <paper-textarea char-counter label="Bericht" required></paper-textarea>
         <br>
         <paper-button id="submitBtn" raised onclick="_submit(event)" class="no-margin">Versturen</paper-button>
         <div class="output"></div>
