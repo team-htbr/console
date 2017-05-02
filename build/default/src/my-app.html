@@ -1,0 +1,175 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-menu/paper-submenu.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="my-icons.html">
+
+</head><body><dom-module id="my-app">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #ed1c24;
+        --app-secondary-color: #666666;
+        display: block;
+        color: var(--app-secondary-color);
+        --paper-menu-selected-item: {
+          color: var(--app-primary-color);
+        };
+      }
+
+      .menu-toolbar {
+        color: var(--app-primary-color);
+        background-color: #f5f5f5;
+        padding: 0 20px;
+        box-shadow: 0 3px 4px 0 rgba(0,0,0,0.08), 0 3px 3px -2px rgba(0,0,0,0.08), 0 1px 8px 0 rgba(0,0,0,0.08);
+      }
+
+      .app-toolbar {
+        background-color: var(--app-primary-color);
+        color: #fff;
+        box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.2);
+      }
+
+      #drawer {
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+      }
+
+      .drawer-list a {
+        display: block;
+        text-decoration: none;
+        color: var(--app-secondary-color);
+        line-height: 40px;
+      }
+
+      .drawer-list a:hover {
+        background-color: #eeeeee;
+        cursor: pointer;
+      }
+      
+      .main-menu {
+        padding-top: 35px;
+      }
+
+      .menu-item a {
+        padding: 6px 20px;
+      }
+
+      .submenu-item a {
+        padding: 0 40px;
+      }
+
+      .big {
+        --iron-icon-height: 32px;
+        --iron-icon-width: 32px;
+        padding-right: 16px;
+        padding-bottom: 1px;
+      }
+
+      paper-item:iron-selected {
+        color: var(--app-primary-color);
+      }
+
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+    <app-drawer-layout fullbleed="">
+      <!-- Drawer content -->
+      <app-drawer id="drawer">
+        <app-toolbar class="menu-toolbar">Menu</app-toolbar>
+        <paper-menu selected="[[page]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
+          <paper-submenu>
+            <paper-item class="menu-trigger menu-item">
+              <a name="notifications" href="/notifications">
+              <iron-icon class="big" src="../images/notification grey.png"></iron-icon>Notificatiebeheer</a>
+            </paper-item>
+            <paper-menu class="menu-content">
+              <paper-item class="submenu-item"><a name="notifications-blood" href="/notifications-blood">Op bloedgroep</a></paper-item>
+              <paper-item class="submenu-item"><a name="notifications-location" href="/notifications-location">Op locatie</a></paper-item>
+            </paper-menu>
+          </paper-submenu>
+          <paper-item class="menu-item">
+            <a name="locations" href="/locations"><iron-icon class="big" src="../images/location grey.png"></iron-icon>Locatiebeheer</a>
+          </paper-item>
+        </paper-menu>
+      </app-drawer>
+
+      <!-- Main content -->
+      <app-header-layout has-scrolling-region="">
+
+        <app-header condenses="" reveals="" effects="waterfall">
+          <app-toolbar class="app-toolbar">
+            <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
+            <div main-title=""><iron-icon class="big" src="../images/icon_normal.png"></iron-icon>Bloeddonatieconsole</div>
+          </app-toolbar>
+        </app-header>
+
+        <iron-pages selected="[[routeData.page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+          <!-- <my-notifications name="notifications"></my-notifications-blood> -->
+          <my-notifications-blood name="notifications-blood"></my-notifications-blood>
+          <my-notifications-location name="notifications-location"></my-notifications-location>
+          <my-locations name="locations"></my-locations>
+          <my-view3 name="view3"></my-view3>
+          <my-view404 name="view404"></my-view404>
+        </iron-pages>
+      </app-header-layout>
+    </app-drawer-layout>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-app',
+
+      properties: {
+        page: {
+          type: String,
+          reflectToAttribute: true,
+          observer: '_pageChanged',
+        },
+      },
+
+      observers: [
+        '_routePageChanged(routeData.page)',
+      ],
+
+      _routePageChanged: function(page) {
+        this.page = page || 'my-locations';
+
+        if (!this.$.drawer.persistent) {
+          this.$.drawer.close();
+        }
+      },
+
+      _pageChanged: function(page) {
+        // Load page import on demand. Show 404 page if fails
+        var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+        this.importHref(resolvedPageUrl, null, this._showPage404, true);
+      },
+
+      _showPage404: function() {
+        this.page = 'view404';
+      },
+    });
+  </script>
+</dom-module>
+</body></html>

@@ -1,0 +1,149 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+
+</head><body><dom-module id="my-notifications-blood">
+  <template>
+    <style include="app-grid-style">
+      
+      :host {
+        display: block;
+        --app-primary-color: #ed1c24;
+        --app-secondary-color: #666666;
+        --light-background: #f5f5f5;
+        padding: 20px;
+        --app-grid-columns: 5;
+        --app-grid-gutter: 16px;
+        --paper-input-container-focus-color: var(--app-primary-color);
+        --paper-input-container-invalid-color: var(--app-primary-color);
+      }
+
+      .no-margin {
+        margin: 0;
+      }
+
+      .no-padding {
+        padding: 0;
+      }
+
+      paper-material {
+        background-color: #fff;
+        margin-top: 12px;
+        border-radius: 1px;
+        padding: 16px 16px;
+      }
+
+      .app-grid {
+        width: 50%;
+        /*background-color: #000;*/
+        margin: 0 auto;
+      }
+
+      .paper-mat-title {
+        background-color: var(--light-background);
+        padding: 16px 0;
+        border-radius: 1px 1px 0 0;
+        box-shadow: 0 -1px 0 rgba(0,0,0,0.12) inset;
+      }
+
+      .paper-mat-title p {
+        width: 65%;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+
+      paper-button {
+        background-color: var(--light-background);
+      }
+
+      paper-button[active] {
+        background-color: var(--app-primary-color);
+        color: #fff;
+      }
+
+      paper-button:active {
+        background-color: var(--app-primary-color);
+      }
+
+      #notification-details {
+        padding-bottom: 30px;
+      }
+
+      form {
+        width: 65%;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+
+      #submitBtn {
+        float: right;
+        margin-right: 3px;
+        margin-bottom: 3px;
+        color: #ffffff;
+        background-color: var(--app-primary-color);
+      }
+
+    </style>
+
+    <paper-material id="blood-type-buttons" class="no-margin">
+      <div class="app-grid">
+        <paper-button class="item" toggles="" raised="">A +</paper-button>
+        <paper-button class="item" toggles="" raised="">B +</paper-button>
+        <paper-button class="item" toggles="" raised="">AB +</paper-button>
+        <paper-button class="item" toggles="" raised="">O +</paper-button>
+        <paper-button class="item" toggles="" raised="">A -</paper-button>
+        <paper-button class="item" toggles="" raised="">B -</paper-button>
+        <paper-button class="item" toggles="" raised="">AB -</paper-button>
+        <paper-button class="item" toggles="" raised="">O -</paper-button>
+      </div>
+    </paper-material>
+
+    <paper-material id="notification-details" class="no-padding">
+      <div class="paper-mat-title"><p>Verstuur een notificatie.</p></div>
+      <form is="iron-form" method="get" action="/" id="basic">
+        <paper-input name="title" label="Titel" required=""></paper-input>
+        <paper-textarea char-counter="" label="Bericht" required=""></paper-textarea>
+        <br>
+        <paper-button id="submitBtn" raised="" onclick="_submit(event)" class="no-margin">Versturen</paper-button>
+        <div class="output"></div>
+      </form>
+    </paper-material>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-notifications-blood',
+    });
+
+
+  /*  function _submit(event) {
+      Polymer.dom(event).localTarget.parentElement.submit();
+    }
+    function _reset(event) {
+      var form = Polymer.dom(event).localTarget.parentElement
+      form.reset();
+      form.querySelector('.output').innerHTML = '';
+    }
+    basic.addEventListener('iron-form-submit', function(event) {
+      this.querySelector('.output').innerHTML = JSON.stringify(event.detail);
+    });*/
+
+
+  </script>
+</dom-module>
+</body></html>

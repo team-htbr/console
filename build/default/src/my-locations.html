@@ -1,0 +1,158 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+
+<script src="../bower_components/geofire/dist/geofire.min.js"></script>
+<script src="../bower_components/firebase/firebase.js"></script>
+
+</head><body><dom-module id="my-locations">
+  <template>
+    <style include="shared-styles">
+      :host {
+        --app-primary-color: #ed1c24;
+        --app-secondary-color: #666666;
+        --light-background: #f5f5f5;
+        display: block;
+        padding: 20px;
+        --paper-input-container-focus-color: var(--app-primary-color);
+        --paper-input-container-invalid-color: var(--app-primary-color);
+        --paper-radio-button-checked-color: var(--app-primary-color);
+        --paper-radio-button-unchecked-color: var(--app-secondary-color);
+      }
+
+      paper-material {
+        background-color: #fff;
+        margin-top: 12px;
+        border-radius: 1px;
+      }
+
+      #map {
+        height: 500px;
+      }
+
+      .paper-mat-title {
+        background-color: var(--light-background);
+        border-radius: 1px 1px 0 0;
+        padding: 16px 0;
+        box-shadow: 0 -1px 0 rgba(0,0,0,0.12) inset;
+      }
+
+      .paper-mat-title p {
+        width: 65%;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+
+      #add-location {
+        padding-bottom: 30px;
+      }
+
+      form {
+        width: 65%;
+        margin: 0 auto;
+        overflow: hidden;
+        padding-top: 16px;
+      }
+
+      paper-button {
+        background-color: var(--light-background);
+      }
+
+      paper-button:active {
+        background-color: var(--app-primary-color);
+      }
+
+      #locationBtn {
+        float: right;
+        margin-right: 3px;
+        margin-bottom: 3px;
+        color: #ffffff;
+        background-color: var(--app-primary-color);
+      }
+
+      paper-radio-button:first-child { 
+        padding-left: 0;
+      }
+
+    </style>
+
+    <paper-material id="map">MAP</paper-material>
+
+    <paper-material id="add-location">
+      <div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
+      <form is="iron-form" method="get" action="/" id="basic">
+        <paper-input name="location-name" label="Naam" required=""></paper-input>
+        <paper-input name="location-street" label="Straat" required=""></paper-input>
+        <paper-input name="location-number" type="number" label="Nummer" required=""></paper-input>
+        <paper-input name="location-city" label="Gemeente" required=""></paper-input>
+        <br>
+        <paper-radio-group selected="mobile">
+          <paper-radio-button name="mobile">Mobiel</paper-radio-button>
+          <paper-radio-button name="fixed">Vast</paper-radio-button>
+        </paper-radio-group>
+        <paper-button id="locationBtn" raised="" onclick="_submit(event)" class="no-margin">Voeg toe</paper-button>
+        <div class="output"></div>
+      </form>
+    </paper-material>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-locations',
+    });
+
+    // Initialize the Firebase SDK
+    firebase.initializeApp({
+      apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
+      databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
+    });
+
+    // Generate a reference to database
+    let firebaseRef = firebase.database();
+
+    function initMap() {
+
+      // Initialise map and center it to x location
+      let map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 14,
+        center: { lat: 51.04060 , lng: 3.70976 }
+      });
+      // Initialise geocoder object
+      let geocoder = new google.maps.Geocoder();
+      let infoWindow = new google.maps.InfoWindow();
+
+      document.getElementById('locationBtn').onclick = function () {
+        // Location object
+        let name = document.getElementById('locationName').value;
+        let street = document.getElementById('locationStreet').value;
+        let streetNumber = document.getElementById('locationStreetNumber').value;
+        let city = document.getElementById('locationCity').value;
+        let isMobile = false;
+
+        addLocation(geocoder, map, name, street, streetNumber, city, isMobile);
+      }
+
+      google.maps.event.addListener(map, 'click', function() {
+        infoWindow.close();
+      });
+
+      renderMarkers(map, infoWindow);
+    };
+
+  </script>
+  <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio&amp;callback=initMap"></script>
+</dom-module>
+</body></html>
