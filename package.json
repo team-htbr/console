@@ -1,13 +1,13 @@
 {
-  "name": "polymer-starter-kit-custom-build",
-  "version": "0.0.0",
-  "description": "A starting point for Polymer 1.0 custom build apps",
+  "name": "bloeddonatieconsole",
+  "version": "0.0.1",
+  "description": "A console to manage the bloedonatie app",
   "license": "BSD-3-Clause",
   "scripts": {
     "lint": "eslint . --ext js,html --ignore-path .gitignore",
     "test": "npm run lint && polymer test",
     "build": "gulp build",
-    "dev": "gulp watch"
+    "dev": "polymer serve & gulp watch"
   },
   "devDependencies": {
     "babel": "^6.23.0",
