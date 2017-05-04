@@ -28,11 +28,11 @@
 					bloodButtonsActive.push(bloodButtons[i]);
 				}
 			}
-		  
+
 			for (let i = 0; i < bloodButtonsActive.length; i++) {
 				let to = bloodButtonsActive[i];
 				console.log(to);
-				
+
 				/*$.ajax({
 					headers: { 'Authorization': serverKey },
 					type: 'POST',

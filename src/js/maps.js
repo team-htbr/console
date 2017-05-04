@@ -1,5 +1,19 @@
+/**
+ * Script location functionality
+ */
+
+'use strict';
+
+Polymer({
+	is: 'my-locations',
+});
+
+/**
+ * Load the Google Maps api async
+ */
 document.addEventListener('DOMContentLoaded', function () {
     if (document.querySelectorAll('#map').length > 0) {
+		console.log('yes');
         let jsFile = document.createElement('script');
         jsFile.type = 'text/javascript';
         jsFile.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio&callback=initMap';
@@ -7,27 +21,35 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Initialize the Firebase SDK
-firebase.initializeApp({
+/**
+ * Initialise global properties
+ */
+
+var firebaseRef = firebase.initializeApp({
     apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
     databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
-});
+}).database();
 
-// Generate a reference to database
-let firebaseRef = firebase.database();
+var geocoder;
+var infoWindow;
+var map;
 
-// Initialise map and all its features
+/**
+ * Initialise map and all its features
+ */
 function initMap() {
 
     // Initialise map and center it to x location
-    let map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         zoom: 14,
         center: { lat: 51.04060 , lng: 3.70976 }
     });
-    // Initialise geocoder object
-    let geocoder = new google.maps.Geocoder();
+
+	geocoder = new google.maps.Geocoder();
+	infoWindow = new google.maps.InfoWindow();
+
     // Initialise only one infoWindow at a time
-    let infoWindow = new google.maps.InfoWindow();
+
 
     document.getElementById('locationBtn').onclick = function () {
         // Location object
@@ -37,26 +59,26 @@ function initMap() {
         let city = document.getElementById('locationCity').value;
         let isMobile = false;
 
-        addLocation(geocoder, map, name, street, streetNumber, city, isMobile);
+        addLocation(geocoder, name, street, streetNumber, city, isMobile);
     }
 
     google.maps.event.addListener(map, 'click', function() {
         infoWindow.close();
     });
 
-    renderMarkers(map, infoWindow);
+    renderMarkers();
 
     testLocationClass();
 };
 
 // Add a location to the database
-let addLocation = function(geocoder, resultsMap, name, street, streetNumber, city, isMobile) {
+let addLocation = function(name, street, streetNumber, city, isMobile) {
 
     let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
     geocoder.geocode({'address': address}, function(results, status) {
         if (status === 'OK') {
-            resultsMap.setCenter(results[0].geometry.location);
+            map.setCenter(results[0].geometry.location);
 
             let lat = results[0].geometry.location.lat();
             let lng = results[0].geometry.location.lng();
@@ -90,12 +112,12 @@ function deleteLocation() {
 
 };
 
-function renderMarkers(resultsMap, infoWindow) {
+function renderMarkers() {
 
     let locations = firebaseRef.ref('locations_test');
 
     locations.on('child_added', function(location) {
-        renderMarker(resultsMap, infoWindow, location);
+        renderMarker(location);
     });
 
     locations.on('child_removed', function(location) {
@@ -111,11 +133,11 @@ function renderMarkers(resultsMap, infoWindow) {
     });
 };
 
-let renderMarker = function(resultsMap, infoWindow, location) {
+let renderMarker = function(location) {
 
     let marker = new google.maps.Marker({
         position: { lat:  location.val().lat, lng: location.val().lng },
-        map: resultsMap
+        map: map
     });
 
     let name = '<h3>' + location.val().name + '</h3>';
