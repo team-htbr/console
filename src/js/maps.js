@@ -168,7 +168,8 @@ class Place {
 	}
 
 	getInfoWindowContent() {
-		return '<h3>' + this.name + '</h3>' + '<p>' + this.street + ' ' + this.streetNumber + ', ' + this.city + '</p>';
+		return '<h3>' + this.name + '</h3>'
+			+ '<p>' + this.street + ' ' + this.streetNumber + ', ' + this.city + '</p>';
 	}
 
 	setMarker(marker) {

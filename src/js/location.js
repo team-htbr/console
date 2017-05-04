@@ -10,7 +10,6 @@
 //     contructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
 
 //         // Private properties
-//         // If a property name is prefixed with an underscore then it should be treated as non-public
 //         this._id = id;
 //         this._name = name;
 //         this._street = street;
