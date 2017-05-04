@@ -172,6 +172,10 @@ class Place {
 			+ '<p>' + this.street + ' ' + this.streetNumber + ', ' + this.city + '</p>';
 	}
 
+	getMarker() {
+		return this.marker;
+	}
+
 	setMarker(marker) {
 		this.marker = marker;
 	}
