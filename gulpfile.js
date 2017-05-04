@@ -32,9 +32,11 @@ const browserify = require('gulp-browserify');
 const uglify = require('gulp-uglify');
 const browserSync = require('browser-sync').create();
 
-const SRC = './src';
-const DIST = './dist';
-const BUILD = './build';
+
+const SRC = './src/';
+const BUILD = './build/'
+const IMAGES = './images/';
+const BOWER = './bower_components';
 
 /**
  * Waits for the given ReadableStream
@@ -69,7 +71,7 @@ function build() {
         // Okay, now let's do the same to your dependencies
         let dependenciesStream = polymerProject.dependencies()
           .pipe(polymerProject.splitHtml())
-          .pipe(gulpif(/\.js$/, uglify()))
+          // .pipe(gulpif(/\.js$/, uglify()))
           // .pipe(gulpif(/\.css$/, cssSlam()))
           // .pipe(gulpif(/\.html$/, htmlMinifier()))
           .pipe(polymerProject.rejoinHtml());
@@ -109,21 +111,71 @@ function build() {
   });
 }
 
+// function serve() {
+// 	return new Promise((resolve, reject) => {
+
+// 		console.log('Updating build')
+// 		.then(() => {
+// 			let sourceStream = polymerProject.sources()
+// 				.pipe(polymerProject.splitHtml())
+// 				.pipe(gulpif(/\.js$/, babel({
+// 					preset: ['es2015']
+// 				})))
+// 				.pipe(gulpif(/\.js$/, uglify()))
+// 				.pipe(gulpif(/\.html$/, htmlMinifier()))
+// 				.pipe(gulpif(/\.(png|gif|jpg|svg)$/, imagemin()))
+// 				.pipe(polymerProject.rejoinHtml());
+
+// 			let dependenciesStream = polymerProject.dependencies()
+// 				.pipe(polymerProject.splitHtml())
+// 				.pipe(polymerProject.rejoinHtml());
+
+// 			let buildStream = mergeStream(sourcesStream, dependenciesStream)
+// 				.once('data', () => {
+// 					console.log('Analyzing build dependencies...');
+// 				});
+
+// 			return waitFor(buildStream);
+// 		}).
+// 		then(() => {
+// 			console.log('Update complete');
+// 			resolve();
+// 		});
+// 	});
+// }
+
 gulp.task('build', build);
 
+// gulp.task('serve', serve);
+
 gulp.task('scripts', () => {
-  return gulp.src([SRC+'/js/*.js', '!./node_modules/**', '!./dist/**'])
-    .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter(stylish))
-    .pipe(babel({
-      presets: ['es2015']
-    }))
-    .pipe(browserify({
-      insertGlobals : true
-    }))
-    .pipe(uglify().on('error', gutil.log)) //todo: notify(...) and continue
-    .pipe(gulp.dest(BUILD+'/src/js'));
+	console.log('scripts');
+	return gulp.src([SRC+'js/**/*.js', '!./node_modules/**', '!./dist/**'])
+	// .pipe(jshint('.jshintrc'))
+	// .pipe(jshint.reporter(stylish))
+		.pipe(babel({
+		presets: ['es2015']
+		}))
+		// .pipe(browserify({
+		//   insertGlobals : true
+		// }))
+		// .pipe(uglify().on('error', gutil.log)) //todo: notify(...) and continue
+		.pipe(gulp.dest(BUILD+'src/js'));
 });
+
+gulp.task('html', () => {
+	console.log('html');
+	return gulp.src(SRC+'*.html')
+		.pipe(gulp.dest(BUILD));
+});
+
+gulp.task('images', () => {
+	console.log('images');
+	return gulp.src(IMAGES)
+		.pipe(imagemin())
+		.pipe(gulp.dest(BUILD+'images'));
+});
+
 
 gulp.task('browser-sync', () => {
   browserSync.init({
@@ -143,9 +195,9 @@ gulp.task('browser-sync', () => {
   });
 });
 
-gulp.task('watch', gulp.series('browser-sync'), () => {
-  gulp.watch(SRC+'/js/**/*.js', gulp.series('scripts'));
-  gulp.watch(SRC+'*.html');
+gulp.task('watch', gulp.series('build', 'browser-sync'), () => {
+  gulp.watch(SRC+'js/**/*.js', gulp.series('scripts'));
+  gulp.watch(SRC+'*.html', gulp.series('html'));
+  gulp.watch(IMAGES+'**/*', gulp.series('images'));
 });
 
-// gulp.task('default', ['scripts']);
