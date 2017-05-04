@@ -7,6 +7,7 @@
 	let mapAPI;
 	let geocoder;
 	let infoWindow;
+	let poly;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -16,8 +17,10 @@
 		is: 'my-locations',
 		ready: function() {
 
-			map = this.$.map;
-			mapAPI = Polymer.dom(this.root).querySelector('google-maps-api');
+			poly = this;
+
+			map = poly.$.map;
+			mapAPI = Polymer.dom(poly.root).querySelector('google-maps-api');
 
 			mapAPI.addEventListener('api-load', function(e) {
 				geocoder = new mapAPI.api.Geocoder();
@@ -26,6 +29,10 @@
 					infoWindow.close();
 				});
 			});
+
+			poly.latitude = 51.04060;
+			poly.longitude = 3.70976;
+			poly.zoom = 14;
 
 		},
 		submit: function() {
@@ -50,10 +57,11 @@
 		geocoder.geocode({'address': address}, function(results, status) {
 			if (status === 'OK') {
 
-				// TODO: center map to coordinates
-
 				let lat = results[0].geometry.location.lat();
 				let lng = results[0].geometry.location.lng();
+
+				poly.latitude = lat;
+				poly.longitude = lng;
 
 				// add location to database
 				let itemId = firebaseRef.ref('loacations_test').push().getKey();
