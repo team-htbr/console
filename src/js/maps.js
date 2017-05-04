@@ -160,7 +160,7 @@ class Place {
 		this.name = name;
 		this.street = street;
 		this.streetNumber = streetNumber;
-		this.city = city
+		this.city = city;
 		this.lat = lat;
 		this.lng = lng;
 		this.isMobile = isMobile;

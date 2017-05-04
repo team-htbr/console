@@ -25,18 +25,17 @@ const buildDirectory = 'build';
 /**
  * New things
  */
-const gutil = require('gulp-util');
+// const gutil = require('gulp-util');
 const babel = require('gulp-babel');
-const jshint = require('gulp-jshint');
-const browserify = require('gulp-browserify');
+// const jshint = require('gulp-jshint');
+// const browserify = require('gulp-browserify');
 const uglify = require('gulp-uglify');
 const browserSync = require('browser-sync').create();
 
 
-const SRC = './src/';
-const BUILD = './build/'
+// const SRC = './src/';
+const BUILD = './build/';
 const IMAGES = './images/';
-const BOWER = './bower_components';
 
 /**
  * Waits for the given ReadableStream
