@@ -38,20 +38,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 0;
       }
 
-      .no-padding {
-        padding: 0;
-      }
-
       paper-material {
         background-color: #fff;
         margin-top: 12px;
         border-radius: 1px;
-        padding: 16px 16px;
+        padding-bottom: 30px;
       }
 
       .app-grid {
         width: 50%;
         /*background-color: #000;*/
+        padding: 50px 0;
         margin: 0 auto;
       }
 
@@ -81,10 +78,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: var(--app-primary-color);
       }
 
-      #notification-details {
-        padding-bottom: 30px;
-      }
-
       form {
         width: 65%;
         margin: 0 auto;
@@ -93,6 +86,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       #submitBtn {
         float: right;
+        margin-top: 16px;
         margin-right: 3px;
         margin-bottom: 3px;
         color: #ffffff;
@@ -101,47 +95,79 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <paper-material id="blood-type-buttons" class="no-margin">
-      <div class="app-grid">
-        <paper-button class="item" toggles raised>A +</paper-button>
-        <paper-button class="item" toggles raised>B +</paper-button>
-        <paper-button class="item" toggles raised>AB +</paper-button>
-        <paper-button class="item" toggles raised>O +</paper-button>
-        <paper-button class="item" toggles raised>A -</paper-button>
-        <paper-button class="item" toggles raised>B -</paper-button>
-        <paper-button class="item" toggles raised>AB -</paper-button>
-        <paper-button class="item" toggles raised>O -</paper-button>
-      </div>
-    </paper-material>
-
-    <paper-material id="notification-details" class="no-padding">
-      <div class="paper-mat-title"><p>Verstuur een notificatie.</p></div>
-      <form is="iron-form" method="get" action="/" id="basic">
-        <paper-input name="title" label="Titel" required></paper-input>
-        <paper-textarea char-counter label="Bericht" required></paper-textarea>
+    <paper-material>
+      <div class="paper-mat-title"><p>Verstuur een notificatie op basis van bloedgroep.</p></div>
+      <div id="buttonsContainer" class="app-grid">
+        <paper-button class="item" toggles raised value="APos">A +</paper-button>
+        <paper-button class="item" toggles raised value="BPos">B +</paper-button>
+        <paper-button class="item" toggles raised value="ABPos">AB +</paper-button>
+        <paper-button class="item" toggles raised value="OPos">O +</paper-button>
+        <paper-button class="item" toggles raised value="ANeg">A -</paper-button>
+        <paper-button class="item" toggles raised value="BNeg">B -</paper-button>
+        <paper-button class="item" toggles raised value="ABNeg">AB -</paper-button>
+        <paper-button class="item" toggles raised value="ONeg">O -</paper-button>
+      </div>      
+      <form is="iron-form" method="get" action="/" id="notForm">
+        <paper-input id="title" name="title" label="Titel" required></paper-input>
+        <paper-textarea id="body" char-counter label="Bericht" required></paper-textarea>
         <br>
-        <paper-button id="submitBtn" raised onclick="_submit(event)" class="no-margin">Versturen</paper-button>
+        <paper-button id="submitBtn" raised on-click="sendNotification" class="no-margin">Versturen</paper-button>
         <div class="output"></div>
       </form>
     </paper-material>
 
   </template>
 
-  <script>
+  <script src="js/tester.js">
+  /*let random = 'hallo';
+
     Polymer({
       is: 'my-notifications-blood',
-    });
+      send: function(e) {
+        console.log(this.$.buttonsContainer);
+        console.log(random);
+      }
+    });*/
 
+    /*let bloodButtonsContainer = this.$.buttonsContainer;
+    console.log('container =' + bloodButtonsContainer);*/
+      /*let bloodButtons = [];
+      bloodButtons = bloodButtonsContainer.querySelector('.item');
+      console.log(bloodButtons);*/
 
-  /*  function _submit(event) {
+    /*const serverKey = 'key=AAAAJrMVIEw:APA91bEmBIZ3u8kEiKSAh6QOsnpvux9tYPobyRKILZwDT3B4q3eaOOa4Y_zD6kWbAQRojgySBT3j_5Vu9XCn7drTlSClYOGyXrnqtTc3qVG3lAQJzSLpspsw-eccBEvqP8pUsWaPog7d';
+
+    function _submit(event) {
       Polymer.dom(event).localTarget.parentElement.submit();
     }
-    function _reset(event) {
-      var form = Polymer.dom(event).localTarget.parentElement
-      form.reset();
-      form.querySelector('.output').innerHTML = '';
-    }
-    basic.addEventListener('iron-form-submit', function(event) {
+
+    var sendNotification = function(notification) {
+      $.ajax({
+        headers: { 'Authorization': serverKey },
+        type: 'POST',
+        url : 'https://fcm.googleapis.com/fcm/send',
+        contentType : 'application/json',
+        data : JSON.stringify(notification),
+        dataType : 'json',
+        succes : function(data) {
+            console.log(data);
+        }
+      })
+    };
+
+    form.addEventListener('iron-form-submit', function(event) {
+      let bloodButtonsContainer = Polymer.dom(this.root).querySelector('.app-grid');
+      let bloodButtons = [];
+      bloodButtons = bloodButtonsContainer.querySelector('.item');
+      console.log(bloodButtons);
+      let notification = 
+      { 'notification': 
+        { 'title': 'Rode Kruis',
+          'body': 'Notification for devices subscribed to a topic'
+        },
+        'to' : '/topics/blood-AB'
+      };
+      sendNotification(notification);
       this.querySelector('.output').innerHTML = JSON.stringify(event.detail);
     });*/
 

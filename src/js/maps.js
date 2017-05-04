@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', function () {
     if (document.querySelectorAll('#map').length > 0) {
         let jsFile = document.createElement('script');
@@ -93,9 +91,9 @@ function deleteLocation() {
 };
 
 function renderMarkers(resultsMap, infoWindow) {
-    
+
     let locations = firebaseRef.ref('locations_test');
-    
+
     locations.on('child_added', function(location) {
         renderMarker(resultsMap, infoWindow, location);
     });
@@ -105,11 +103,11 @@ function renderMarkers(resultsMap, infoWindow) {
     });
 
     locations.on('child_changed', function(location) {
-        
+
     });
 
     locations.on('child_moved', function(location) {
-        
+
     });
 };
 
@@ -130,24 +128,22 @@ let renderMarker = function(resultsMap, infoWindow, location) {
     });
 }
 
-class Test {
-    contructor(x, y) {
-        this._x = x;
-        this._y = y;
-    }
-
-    sum() {
-        return this._x + this._y;
-    }
-}
 
 let testLocationClass = function() {
+
     let locations = firebaseRef.ref('locations_test');
 
     locations.on('child_added', function(l) {
-        let locationObject = new Location(l.val().id, l.val().name, l.val().street, l.val().streetNumber, l.val().city, l.val().lat, l.val().lng, l.val().isMobile);
-        let test1 = new Test(1, 2);
-        console.log(test1.sum());
+		let id = l.val().id;
+		let name = l.val().name;
+		let street = l.val().street;
+		let streetNumber = l.val().streetNumber;
+		let city = l.val().city;
+		let lat = l.val().lat;
+		let lng = l.val().lng;
+		let isMobile = l.val().isMobile;
+		let test1 = new Place(id, name, street, streetNumber, city, lat, lng, isMobile);
+		console.log(test1);
     });
 }
 
@@ -155,77 +151,34 @@ let removeMarker = function(resultsMap, location) {
 
 };
 
-// Location class storing everything needed to update markers and geoFire
-class Location {
 
-    contructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
+// Class for keeping track of places
+class Place {
 
-        // Properties
-        this.id = id;
-        this._name = name;
-        this._street = street;
-        this._streetNumber = streetNumber;
-        this._city = city;
-        this._lat = lat;
-        this._lng = lng;
-        this._isMobile = isMobile;
-        this._marker;
-        this._geoFire;
+	constructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
+		this.id = id;
+		this.name = name;
+		this.street = street;
+		this.streetNumber = streetNumber;
+		this.city = city;
+		this.lat = lat;
+		this.lng = lng;
+		this.isMobile = isMobile;
+		this.marker;
+	}
 
-        // Setters
-        this.setName = function(name) {
-            this._name = name;
-        }
+	getInfoWindowContent() {
+		return '<h3>' + this.name + '</h3>'
+			+ '<p>' + this.street + ' ' + this.streetNumber + ', ' + this.city + '</p>';
+	}
 
-        this.setAddress = function(street, streetNumber, city) {
-            this._street = street;
-            this._streetNumber = streetNumber;
-            this._city = city;
-        }
+	setMarker(marker) {
+		this.marker = marker;
+	}
 
-        this.setCoordinates = function(lat, lng) {
-            this._lat = lat;
-            this._lng = lng;
-        }
+};
 
-        this.setMarker = function(marker) {
-            this._marker;
-        }
 
-        this.setGeoFire = function(geoFire) {
-            this._geoFire = geoFire;
-        }
-
-    }
-
-    // Getters
-    getId() {
-        return this.id;
-    }
-
-    getInfo() {
-        return '<h3>' + this._name + '</h3>' + '<p>' + this._street + ' ' + this._streetNumber + ', ' + this._city + '</p>';
-    }
-
-    getLAT() {
-        return this._lat;
-    }
-
-    getLNG() {
-        return this._lng;
-    }
-
-    getMarker() {
-        return this._marker;
-    }
-
-    getGeoFire() {
-        return this._geoFire;
-    }
-
-    // Setters
-    
-}
 
 
 
