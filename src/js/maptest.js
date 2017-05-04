@@ -44,7 +44,6 @@
 			let isMobile = Polymer.dom(this.root).querySelector('.iron-selected').value;
 
 			// TODO: check for valid input
-
 			addLocation(name, street, streetNumber, city, isMobile);
 
 		}
@@ -60,6 +59,7 @@
 				let lat = results[0].geometry.location.lat();
 				let lng = results[0].geometry.location.lng();
 
+				// center map
 				poly.latitude = lat;
 				poly.longitude = lng;
 
@@ -76,7 +76,7 @@
 					lng: lng
 				});
 
-				// add location to geofire
+				// create geofire object with coordinates
 				let location =  [lat, lng];
 				let firebaseRefLocationsGeo = firebaseRef.ref('locations_geo_test/' + itemId);
 				let geoFire = new GeoFire(firebaseRefLocationsGeo);
@@ -88,5 +88,35 @@
 		});
 	}
 
+	// Class for keeping track of places
+	// Renaming class to Location results in errors
+	class Place {
+
+		constructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
+			this.id = id;
+			this.name = name;
+			this.street = street;
+			this.streetNumber = streetNumber;
+			this.city = city;
+			this.lat = lat;
+			this.lng = lng;
+			this.isMobile = isMobile;
+			this.marker;
+		}
+
+		getInfoWindowContent() {
+			return '<h3>' + this.name + '</h3>'
+				+ '<p>' + this.street + ' ' + this.streetNumber + ', ' + this.city + '</p>';
+		}
+
+		getMarker() {
+			return this.marker;
+		}
+
+		setMarker(marker) {
+			this.marker = marker;
+		}
+
+	};
 
 })();
