@@ -8,7 +8,7 @@
 	let geocoder;
 	let infoWindow;
 	let poly;
-	let places;
+	let locations;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -19,6 +19,7 @@
 		ready: function() {
 
 			poly = this;
+			locations = [];
 			map = poly.$.map;
 			mapAPI = Polymer.dom(poly.root).querySelector('google-maps-api');
 
@@ -33,6 +34,8 @@
 			poly.latitude = 51.04060;
 			poly.longitude = 3.70976;
 			poly.zoom = 14;
+
+			listenForChanges();
 		},
 		submit: function() {
 
@@ -51,6 +54,7 @@
 
 		let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
+		// check if address is valid and get its coordinates if so
 		geocoder.geocode({'address': address}, function(results, status) {
 			if (status === 'OK') {
 
@@ -74,10 +78,9 @@
 					lng: lng
 				});
 
-				// create geofire object with coordinates
+				// add geofire object to database
 				let coordinates =  [lat, lng];
-				let firebaseRefLocationsGeo = firebaseRef.ref('locations_geo_test/');
-				let geoFire = new GeoFire(firebaseRefLocationsGeo);
+				let geoFire = new GeoFire(firebaseRef.ref('locations_geo_test/'));
 				geoFire.set(itemId, coordinates);
 
 			} else {
@@ -90,15 +93,41 @@
 
 	};
 
-	function initLocation(location) {
+	function listenForChanges() {
 
-		let fetchedLocation = new Place(location)
+		let locationsDb = firebaseRef.ref('locations_test');
 
+		locationsDb.on('child_added', function(fetchedLocation) {
+			initLocation(fetchedLocation.val());
+		});
+
+		locationsDb.on('child_removed', function(fetchedLocation) {
+
+		});
+
+		locationsDb.on('child_changed', function(fetchedLocation) {
+
+		});
+
+		locationsDb.on('child_moved', function(fetchedLocation) {
+
+		});
+
+		console.log(locations);
 	}
+
+	function initLocation(fetchedLocation) {
+
+		let newLocation = new Place(fetchedLocation.id, fetchedLocation.name, fetchedLocation.street,
+			fetchedLocation.city, fetchedLocation.lat, fetchedLocation.lng, fetchedLocation.isMobile);
+
+		locations[fetchedLocation.id] = newLocation;
+	}
+
 
 	// Class for keeping track of places
 	// Renaming class to Location results in errors
-	class LocationC {
+	class Place {
 
 		constructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
 			this.id = id;
