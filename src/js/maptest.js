@@ -8,6 +8,7 @@
 	let geocoder;
 	let infoWindow;
 	let poly;
+	let places;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -18,7 +19,6 @@
 		ready: function() {
 
 			poly = this;
-
 			map = poly.$.map;
 			mapAPI = Polymer.dom(poly.root).querySelector('google-maps-api');
 
@@ -33,7 +33,6 @@
 			poly.latitude = 51.04060;
 			poly.longitude = 3.70976;
 			poly.zoom = 14;
-
 		},
 		submit: function() {
 
@@ -45,7 +44,6 @@
 
 			// TODO: check for valid input
 			addLocation(name, street, streetNumber, city, isMobile);
-
 		}
 	});
 
@@ -77,10 +75,10 @@
 				});
 
 				// create geofire object with coordinates
-				let location =  [lat, lng];
-				let firebaseRefLocationsGeo = firebaseRef.ref('locations_geo_test/' + itemId);
+				let coordinates =  [lat, lng];
+				let firebaseRefLocationsGeo = firebaseRef.ref('locations_geo_test/');
 				let geoFire = new GeoFire(firebaseRefLocationsGeo);
-				geoFire.set('location', location);
+				geoFire.set(itemId, coordinates);
 
 			} else {
 				alert('Geocode was not successful for the following reason: ' + status);
@@ -88,9 +86,19 @@
 		});
 	}
 
+	function deleteLocation(location) {
+
+	};
+
+	function initLocation(location) {
+
+		let fetchedLocation = new Place(location)
+
+	}
+
 	// Class for keeping track of places
 	// Renaming class to Location results in errors
-	class Place {
+	class LocationC {
 
 		constructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
 			this.id = id;
