@@ -7,7 +7,7 @@
 
 	let bloodButtonsActive = [];
 	let notification;
-
+	
 	Polymer({
 		is: 'my-notifications-blood',
 		sendNotification: function(e) {
@@ -15,12 +15,13 @@
 			let bloodButtons = this.$.buttonsContainer.children;
 			let title = this.$.title.value;
 			let body = this.$.body.value;
+			/*let paperMat = this.$.paperMatNotification;*/
 			for (let i = 0; i < bloodButtons.length; i++) {
 				if (bloodButtons[i].hasAttribute('active')) {
 					bloodButtonsActive.push(bloodButtons[i]);
 				}
 			}
-		  
+
 			for (let i = 0; i < bloodButtonsActive.length; i++) {
 				let to = bloodButtonsActive[i].getAttribute('value');
 				notification =
@@ -38,10 +39,12 @@
 					type: 'POST',
 					url : 'https://fcm.googleapis.com/fcm/send',
 					contentType : 'application/json',
-					data : JSON.stringify(msg),
-					dataType : 'json',
-					succes : function(data) {
-						console.log(data);
+					data : JSON.stringify(notification),
+					success : function(data) {
+						console.log("Success!");
+					},
+					error : function() {
+						console.log("Error");
 					}
 				})
 			}
