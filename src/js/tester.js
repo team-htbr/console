@@ -4,14 +4,6 @@
 	'use strict';
 
 	const serverKey = 'key=AAAAJrMVIEw:APA91bEmBIZ3u8kEiKSAh6QOsnpvux9tYPobyRKILZwDT3B4q3eaOOa4Y_zD6kWbAQRojgySBT3j_5Vu9XCn7drTlSClYOGyXrnqtTc3qVG3lAQJzSLpspsw-eccBEvqP8pUsWaPog7d';
-	const msgTopic =
-		{ 'notification':
-			{
-				'title': 'Rode Kruis',
-				'body': 'Notification for devices subscribed to a topic'
-			},
-			'to' : '/topics/blood-AB'
-		};
 
 	let bloodButtonsActive = [];
 	let notification;
@@ -30,10 +22,18 @@
 			}
 		  
 			for (let i = 0; i < bloodButtonsActive.length; i++) {
-				let to = bloodButtonsActive[i];
-				console.log(to);
+				let to = bloodButtonsActive[i].getAttribute('value');
+				notification =
+					{
+						'notification':
+							{
+								'title': title,
+								'body': body
+							},
+						'to': '/topics/'+to
+					}
 				
-				/*$.ajax({
+				$.ajax({
 					headers: { 'Authorization': serverKey },
 					type: 'POST',
 					url : 'https://fcm.googleapis.com/fcm/send',
@@ -43,7 +43,7 @@
 					succes : function(data) {
 						console.log(data);
 					}
-				})*/
+				})
 			}
 
 		}
