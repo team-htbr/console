@@ -35,7 +35,11 @@
 			poly.longitude = 3.70976;
 			poly.zoom = 14;
 
+			console.log(poly.$.map);
+
 			listenForChanges();
+
+			console.log(poly.$.map);
 		},
 		submit: function() {
 
@@ -98,7 +102,8 @@
 		let locationsDb = firebaseRef.ref('locations_test');
 
 		locationsDb.on('child_added', function(fetchedLocation) {
-			initLocation(fetchedLocation.val());
+			let newLocation = initLocation(fetchedLocation.val());
+			renderMarker(newLocation.getMarker());
 		});
 
 		locationsDb.on('child_removed', function(fetchedLocation) {
@@ -112,22 +117,36 @@
 		locationsDb.on('child_moved', function(fetchedLocation) {
 
 		});
-
-		console.log(locations);
 	}
 
 	function initLocation(fetchedLocation) {
 
-		let newLocation = new Place(fetchedLocation.id, fetchedLocation.name, fetchedLocation.street,
-			fetchedLocation.city, fetchedLocation.lat, fetchedLocation.lng, fetchedLocation.isMobile);
+		let newLocation = new Location(fetchedLocation.id, fetchedLocation.name, fetchedLocation.street,
+		 fetchedLocation.streetNumber, fetchedLocation.city, fetchedLocation.lat, fetchedLocation.lng, fetchedLocation.isMobile);
 
+		newLocation.setMarker(createMarker(newLocation));
 		locations[fetchedLocation.id] = newLocation;
+
+		return newLocation;
+	}
+
+	function renderMarker(marker) {
+		poly.$.map.appendChild(marker);
+	}
+
+	function createMarker(location) {
+		let marker = document.createElement('google-map-marker');
+		marker.setAttribute('latitude', location.lat);
+		marker.setAttribute('longitude', location.lng);
+		// marker.appendChild(location.getInfoWindowContent());
+
+		return marker;
 	}
 
 
 	// Class for keeping track of places
 	// Renaming class to Location results in errors
-	class Place {
+	class Location {
 
 		constructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
 			this.id = id;
