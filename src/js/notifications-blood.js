@@ -15,7 +15,9 @@
 			let bloodButtons = this.$.buttonsContainer.children;
 			let title = this.$.title.value;
 			let body = this.$.body.value;
-			/*let paperMat = this.$.paperMatNotification;*/
+			let paperMat = this.$.paperMatNotification;
+			/*let successBar = this.$.createElement("paper-material");
+			let successBarText;*/
 			for (let i = 0; i < bloodButtons.length; i++) {
 				if (bloodButtons[i].hasAttribute('active')) {
 					bloodButtonsActive.push(bloodButtons[i]);
