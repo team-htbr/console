@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
 <dom-module id="my-notifications">
   <template>
@@ -30,15 +31,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
       }
 
+      a {
+        text-decoration: none;
+      }
+
+      a:hover h3 {
+        color: #ed1c24;
+      }
+
+      iron-icon {
+        margin-top: 70px;
+        height: 64px;
+        width: 64px;
+      }
+
+      h3 {
+        margin-top: 45px;
+      }
+
     </style>
 
     <a name="notifications-blood" href="/notifications-blood">
       <div class="card square-box item">
+        <iron-icon src="../images/icon_blood.png"></iron-icon>
         <h3>Notificaties <br> op basis van bloedgroep</h3>
       </div>
     </a>
     <a name="notifications-location" href="/notifications-location">
       <div class="card square-box item">
+        <iron-icon src="../images/icon_location.png"></iron-icon>
         <h3>Notificaties <br> op basis van locatie</h3>
       </div>
     </a>
