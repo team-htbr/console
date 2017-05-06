@@ -33,9 +33,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --app-secondary-color: #666666;
         display: block;
         color: var(--app-secondary-color);
-        --paper-menu-selected-item: {
+        /*--paper-menu-selected-item: {
           color: var(--app-primary-color);
-        };
+        };*/
       }
 
       .menu-toolbar {
@@ -162,7 +162,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'notifications-blood';
+        this.page = page || 'notifications';
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
@@ -181,3 +181,5 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
   </script>
 </dom-module>
+
+<!-- https://github.com/Polymer/docs/issues/2080 -->
