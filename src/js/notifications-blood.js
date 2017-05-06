@@ -12,6 +12,7 @@
 		is: 'my-notifications-blood',
 		sendNotification: function(e) {
 
+			let form = this.$.notificationForm;
 			let bloodButtonsActive = [];
 			let bloodButtons = this.$.buttonsContainer.children;
 			let title = this.$.title.value;
@@ -50,6 +51,12 @@
 							console.log("Success!");
 							toastSuccess.fitInto = container;
 							toastSuccess.open();
+							setTimeout(function() {
+								form.reset();
+								bloodButtonsActive[i].removeAttribute("active");
+								bloodButtonsActive[i].setAttribute("area-pressed", false);
+								bloodButtonsActive[i].setAttribute("elevation", 1);
+							}, 1400);
 						},
 						error : function() {
 							console.log("Error");
