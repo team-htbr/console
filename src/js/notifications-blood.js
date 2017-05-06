@@ -11,13 +11,16 @@
 	Polymer({
 		is: 'my-notifications-blood',
 		sendNotification: function(e) {
+
 			let bloodButtonsActive = [];
 			let bloodButtons = this.$.buttonsContainer.children;
 			let title = this.$.title.value;
 			let body = this.$.body.value;
-			let paperMat = this.$.paperMatNotification;
-			/*let successBar = this.$.createElement("paper-material");
-			let successBarText;*/
+			let container = this.$.container;
+			let toastSuccess = this.$.toastSuccess;
+			let toastFail = this.$.toastFail;
+			let toastIncomplete = this.$.toastIncomplete;
+
 			for (let i = 0; i < bloodButtons.length; i++) {
 				if (bloodButtons[i].hasAttribute('active')) {
 					bloodButtonsActive.push(bloodButtons[i]);
@@ -35,20 +38,30 @@
 							},
 						'to': '/topics/'+to
 					}
+				if ((title !== "") && (body !== "")) {
+					$.ajax({
+						headers: { 'Authorization': serverKey },
+						type: 'POST',
+						url : 'https://fcm.googleapis.com/fcm/send',
+						contentType : 'application/json',
+						data : JSON.stringify(notification),
+						success : function(data) {
+							console.log("Success!");
+							toastSuccess.fitInto = container;
+							toastSuccess.open();
+						},
+						error : function() {
+							console.log("Error");
+							toastFail.fitInto = container;
+							toastFail.open();
+						}
+					})
+				}
+				else {
+					toastIncomplete.fitInto = container;
+					toastIncomplete.open();
+				}
 				
-				$.ajax({
-					headers: { 'Authorization': serverKey },
-					type: 'POST',
-					url : 'https://fcm.googleapis.com/fcm/send',
-					contentType : 'application/json',
-					data : JSON.stringify(notification),
-					success : function(data) {
-						console.log("Success!");
-					},
-					error : function() {
-						console.log("Error");
-					}
-				})
 			}
 
 		}
