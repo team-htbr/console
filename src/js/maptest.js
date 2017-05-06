@@ -124,7 +124,6 @@
 		let newLocation = new Location(fetchedLocation.id, fetchedLocation.name, fetchedLocation.street,
 		 fetchedLocation.streetNumber, fetchedLocation.city, fetchedLocation.lat, fetchedLocation.lng, fetchedLocation.isMobile);
 
-		newLocation.setMarker(createMarker(newLocation));
 		locations[fetchedLocation.id] = newLocation;
 
 		return newLocation;
@@ -133,16 +132,6 @@
 	function renderMarker(marker) {
 		poly.$.map.appendChild(marker);
 	}
-
-	function createMarker(location) {
-		let marker = document.createElement('google-map-marker');
-		marker.setAttribute('latitude', location.lat);
-		marker.setAttribute('longitude', location.lng);
-		// marker.appendChild(location.getInfoWindowContent());
-
-		return marker;
-	}
-
 
 	// Class for keeping track of places
 	// Renaming class to Location results in errors
@@ -157,7 +146,7 @@
 			this.lat = lat;
 			this.lng = lng;
 			this.isMobile = isMobile;
-			this.marker;
+			this.marker = document.createElement('google-map-marker');
 		}
 
 		getInfoWindowContent() {
@@ -166,11 +155,11 @@
 		}
 
 		getMarker() {
-			return this.marker;
-		}
+			this.marker.setAttribute('latitude', this.lat);
+			this.marker.setAttribute('longitude', this.lng);
+			// marker.appendChild(location.getInfoWindowContent());
 
-		setMarker(marker) {
-			this.marker = marker;
+			return this.marker;
 		}
 
 	};
