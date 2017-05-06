@@ -27,18 +27,19 @@
 				}
 			}
 
-			for (let i = 0; i < bloodButtonsActive.length; i++) {
-				let to = bloodButtonsActive[i].getAttribute('value');
-				notification =
-					{
-						'notification':
-							{
-								'title': title,
-								'body': body
-							},
-						'to': '/topics/'+to
-					}
-				if ((title !== "") && (body !== "")) {
+			if ((bloodButtonsActive.length !== 0) && (title.length !== 0) && (body.length !== 0)) {
+				for (let i = 0; i < bloodButtonsActive.length; i++) {
+					let to = bloodButtonsActive[i].getAttribute('value');
+					notification =
+						{
+							'notification':
+								{
+									'title': title,
+									'body': body
+								},
+							'to': '/topics/'+to
+						};
+					
 					$.ajax({
 						headers: { 'Authorization': serverKey },
 						type: 'POST',
@@ -57,12 +58,12 @@
 						}
 					})
 				}
-				else {
-					toastIncomplete.fitInto = container;
-					toastIncomplete.open();
-				}
-				
 			}
+
+			else {
+				toastIncomplete.fitInto = container;
+				toastIncomplete.open();
+			}	
 
 		}
 
