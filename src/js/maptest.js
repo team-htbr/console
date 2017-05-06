@@ -35,11 +35,7 @@
 			poly.longitude = 3.70976;
 			poly.zoom = 14;
 
-			console.log(poly.$.map);
-
 			listenForChanges();
-
-			console.log(poly.$.map);
 		},
 		submit: function() {
 
@@ -93,8 +89,9 @@
 		});
 	}
 
-	function deleteLocation(location) {
-
+	function removeLocation(location) {
+		// TODO: delete index of location as well
+		delete locations[location.id];
 	};
 
 	function listenForChanges() {
@@ -107,7 +104,9 @@
 		});
 
 		locationsDb.on('child_removed', function(fetchedLocation) {
-
+			let removedMarker = locations[fetchedLocation.val().id];
+			removeMarker(removedMarker.getMarker());
+			removeLocation(removedMarker);
 		});
 
 		locationsDb.on('child_changed', function(fetchedLocation) {
@@ -131,6 +130,10 @@
 
 	function renderMarker(marker) {
 		poly.$.map.appendChild(marker);
+	}
+
+	function removeMarker(marker) {
+		poly.$.map.removeChild(marker);
 	}
 
 	// Class for keeping track of places
