@@ -11,27 +11,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="my-view3">
+<dom-module id="my-notifications">
   <template>
     <style include="shared-styles">
       :host {
-        display: block;
-
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
         padding: 10px;
       }
+
+      .square-box {
+        width: 250px;
+        height: 250px;
+        padding: 16px;
+        text-align: center;
+      }
+
     </style>
 
-    <div class="card">
-      <div class="circle">3</div>
-      <h1>View Three</h1>
-      <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
-    </div>
+    <a name="notifications-blood" href="/notifications-blood">
+      <div class="card square-box item">
+        <h3>Notificaties <br> op basis van bloedgroep</h3>
+      </div>
+    </a>
+    <a name="notifications-location" href="/notifications-location">
+      <div class="card square-box item">
+        <h3>Notificaties <br> op basis van locatie</h3>
+      </div>
+    </a>
+    
   </template>
 
   <script>
     Polymer({
-      is: 'my-view3',
+      is: 'my-notifications',
     });
   </script>
 </dom-module>
