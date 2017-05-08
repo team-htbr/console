@@ -47,6 +47,9 @@
 
 			// TODO: check for valid input
 			addLocation(name, street, streetNumber, city, isMobile);
+		},
+		markerClicked: function(e, detail, sender) {
+			console.log('marker clicked');
 		}
 	});
 
@@ -100,20 +103,24 @@
 
 		locationsDb.on('child_added', function(fetchedLocation) {
 			console.log('added');
+
 			let newLocation = initLocation(fetchedLocation.val());
+
 			renderMarker(newLocation.getMarker());
-			console.log(locations);
 		});
 
 		locationsDb.on('child_removed', function(fetchedLocation) {
 			console.log('removed');
+
 			let removedMarker = locations[fetchedLocation.val().id];
+
 			removeMarker(removedMarker.getMarker());
 			removeLocation(removedMarker);
 		});
 
 		locationsDb.on('child_changed', function(fetchedLocation) {
 			console.log('changed');
+
 			let oldLocation = locations[fetchedLocation.val().id]
 			let updatedLocation = initLocation(fetchedLocation.val());
 
@@ -168,9 +175,12 @@
 		}
 
 		getMarker() {
+			this.marker.setAttribute('click-events', true);
+			this.marker.setAttribute('google-map-marker-click', 'markerClicked');
 			this.marker.setAttribute('latitude', this.lat);
 			this.marker.setAttribute('longitude', this.lng);
-			// marker.appendChild(location.getInfoWindowContent());
+			this.marker.setAttribute('title', this.name);
+			this.marker.innerHTML = this.getInfoWindowContent();
 
 			return this.marker;
 		}

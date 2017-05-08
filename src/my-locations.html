@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/google-map/google-map.html">
 <link rel="import" href="../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../bower_components/google-apis/google-maps-api.html">
+<link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 
 
 <dom-module id="my-locations">
@@ -42,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .paper-map {
-        height: 400px;
+        height: 450px;
       }
 
       .paper-mat-title {
@@ -92,9 +93,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
 	<google-maps-api id="mapsAPI" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio"></google-maps-api>
-
     <paper-material class="paper-map">
-		<google-map id="map" latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio"></google-map>
+		<google-map id="map" latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio" click-events="true"
+		single-info-window="true" disable-default-ui></google-map>
 	</paper-material>
 
     <paper-material id="add-location">
