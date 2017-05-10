@@ -48,7 +48,7 @@
 			// TODO: check for valid input
 			addLocation(name, street, streetNumber, city, isMobile);
 		},
-		markerClicked: function(e, detail, sender) {
+		clicked: function(e, detail, sender) {
 			console.log('marker clicked');
 		}
 	});
@@ -175,8 +175,8 @@
 		}
 
 		getMarker() {
-			this.marker.setAttribute('click-events', true);
-			this.marker.setAttribute('google-map-marker-click', 'markerClicked');
+			// this.marker.setAttribute('click-events', true);
+			// this.marker.setAttribute('google-map-marker-click');
 			this.marker.setAttribute('latitude', this.lat);
 			this.marker.setAttribute('longitude', this.lng);
 			this.marker.setAttribute('title', this.name);

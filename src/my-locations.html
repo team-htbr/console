@@ -95,7 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<google-maps-api id="mapsAPI" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio"></google-maps-api>
     <paper-material class="paper-map">
 		<google-map id="map" latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio" click-events="true"
-		single-info-window="true" disable-default-ui></google-map>
+		single-info-window="true" google-map-click="{{markerClicked}}" disable-default-ui></google-map>
 	</paper-material>
 
     <paper-material id="add-location">
@@ -106,9 +106,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-input name="location-number" type="number" label="Nummer" id="streetNumber" required></paper-input>
         <paper-input name="location-city" label="Gemeente" id="city" required></paper-input>
         <br>
-        <paper-radio-group selected="mobile">
-          <paper-radio-button name="mobile" value="true">Mobiel</paper-radio-button>
+        <paper-radio-group selected="fixed">
           <paper-radio-button name="fixed" value="false">Vast</paper-radio-button>
+		  <paper-radio-button name="mobile" value="true">Mobiel</paper-radio-button>
         </paper-radio-group>
         <paper-button id="locationBtn" raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
         <div class="output"></div>
