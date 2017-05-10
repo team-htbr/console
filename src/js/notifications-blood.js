@@ -38,7 +38,7 @@
 									'title': title,
 									'body': body
 								},
-							'to': '/topics/'+to
+							'to': '/topics/' + to
 						};
 						console.log(notification);
 					
