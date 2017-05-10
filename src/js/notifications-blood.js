@@ -40,7 +40,6 @@
 								},
 							'to': '/topics/' + to
 						};
-						console.log(notification);
 					
 					$.ajax({
 						headers: { 'Authorization': serverKey },
