@@ -108,17 +108,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-material id="paperMatNotification">
       <div class="paper-mat-title"><p>Verstuur een notificatie op basis van bloedgroep.</p></div>
       <div id="buttonsContainer" class="app-grid">
-        <paper-button class="item" toggles raised value="APos">A +</paper-button>
-        <paper-button class="item" toggles raised value="BPos">B +</paper-button>
-        <paper-button class="item" toggles raised value="ABPos">AB +</paper-button>
-        <paper-button class="item" toggles raised value="OPos">O +</paper-button>
-        <paper-button class="item" toggles raised value="ANeg">A -</paper-button>
-        <paper-button class="item" toggles raised value="BNeg">B -</paper-button>
-        <paper-button class="item" toggles raised value="ABNeg">AB -</paper-button>
-        <paper-button class="item" toggles raised value="ONeg">O -</paper-button>
+        <paper-button class="item" toggles raised value="blood-Ap">A +</paper-button>
+        <paper-button class="item" toggles raised value="blood-Bp">B +</paper-button>
+        <paper-button class="item" toggles raised value="blood-ABp">AB +</paper-button>
+        <paper-button class="item" toggles raised value="blood-Op">O +</paper-button>
+        <paper-button class="item" toggles raised value="blood-An">A -</paper-button>
+        <paper-button class="item" toggles raised value="blood-Bn">B -</paper-button>
+        <paper-button class="item" toggles raised value="blood-ABn">AB -</paper-button>
+        <paper-button class="item" toggles raised value="blood-On">O -</paper-button>
       </div>      
       <form is="iron-form" method="get" action="/" id="notificationForm">
-        <paper-input id="title" name="title" label="Titel" required></paper-input>
+        <paper-input id="title" name="title" label="Titel" value="Bloeddonatie" required></paper-input>
         <paper-textarea id="body" char-counter label="Bericht" required></paper-textarea>
         <br>
         <paper-button id="submitBtn" raised on-click="sendNotification" class="no-margin">Versturen</paper-button>
