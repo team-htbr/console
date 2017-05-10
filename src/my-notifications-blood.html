@@ -17,6 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <dom-module id="my-notifications-blood">
   <template>
@@ -32,6 +33,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --app-grid-gutter: 16px;
         --paper-input-container-focus-color: var(--app-primary-color);
         --paper-input-container-invalid-color: var(--app-primary-color);
+        overflow: auto;
+      }
+
+      #container {
+        height: 100%;
       }
 
       .no-margin {
@@ -93,9 +99,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: var(--app-primary-color);
       }
 
+      #container {
+        margin-top: 16px;
+      }
+
     </style>
 
-    <paper-material>
+    <paper-material id="paperMatNotification">
       <div class="paper-mat-title"><p>Verstuur een notificatie op basis van bloedgroep.</p></div>
       <div id="buttonsContainer" class="app-grid">
         <paper-button class="item" toggles raised value="APos">A +</paper-button>
@@ -107,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button class="item" toggles raised value="ABNeg">AB -</paper-button>
         <paper-button class="item" toggles raised value="ONeg">O -</paper-button>
       </div>      
-      <form is="iron-form" method="get" action="/" id="notForm">
+      <form is="iron-form" method="get" action="/" id="notificationForm">
         <paper-input id="title" name="title" label="Titel" required></paper-input>
         <paper-textarea id="body" char-counter label="Bericht" required></paper-textarea>
         <br>
@@ -115,62 +125,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="output"></div>
       </form>
     </paper-material>
+    
+    <div id=container>
+      <paper-toast id="toastSuccess" class="fit-bottom" text="Notificatie is verstuurd."></paper-toast>
+      <paper-toast id="toastFail" class="fit-bottom" text="Notificatie kon niet vertuurd worden."></paper-toast>
+      <paper-toast id="toastIncomplete" class="fit-bottom"
+        text="Kies de gewenste bloedgroep(en) en vul titel en bericht van de notificatie in.">
+      </paper-toast>
+    </div>
 
   </template>
 
-  <script src="js/tester.js">
-  /*let random = 'hallo';
-
-    Polymer({
-      is: 'my-notifications-blood',
-      send: function(e) {
-        console.log(this.$.buttonsContainer);
-        console.log(random);
-      }
-    });*/
-
-    /*let bloodButtonsContainer = this.$.buttonsContainer;
-    console.log('container =' + bloodButtonsContainer);*/
-      /*let bloodButtons = [];
-      bloodButtons = bloodButtonsContainer.querySelector('.item');
-      console.log(bloodButtons);*/
-
-    /*const serverKey = 'key=AAAAJrMVIEw:APA91bEmBIZ3u8kEiKSAh6QOsnpvux9tYPobyRKILZwDT3B4q3eaOOa4Y_zD6kWbAQRojgySBT3j_5Vu9XCn7drTlSClYOGyXrnqtTc3qVG3lAQJzSLpspsw-eccBEvqP8pUsWaPog7d';
-
-    function _submit(event) {
-      Polymer.dom(event).localTarget.parentElement.submit();
-    }
-
-    var sendNotification = function(notification) {
-      $.ajax({
-        headers: { 'Authorization': serverKey },
-        type: 'POST',
-        url : 'https://fcm.googleapis.com/fcm/send',
-        contentType : 'application/json',
-        data : JSON.stringify(notification),
-        dataType : 'json',
-        succes : function(data) {
-            console.log(data);
-        }
-      })
-    };
-
-    form.addEventListener('iron-form-submit', function(event) {
-      let bloodButtonsContainer = Polymer.dom(this.root).querySelector('.app-grid');
-      let bloodButtons = [];
-      bloodButtons = bloodButtonsContainer.querySelector('.item');
-      console.log(bloodButtons);
-      let notification = 
-      { 'notification': 
-        { 'title': 'Rode Kruis',
-          'body': 'Notification for devices subscribed to a topic'
-        },
-        'to' : '/topics/blood-AB'
-      };
-      sendNotification(notification);
-      this.querySelector('.output').innerHTML = JSON.stringify(event.detail);
-    });*/
-
-
-  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+  <script src="js/notifications-blood.js"></script>
 </dom-module>
