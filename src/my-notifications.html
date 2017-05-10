@@ -1,28 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bloeddonatie console</title>
-</head>
-<body>
-    <!--<form action="" method="POST">
-        <fieldset>
-            <dl>
-                <dt><label for="title">Message title</label></dt>
-                <dd><input type="text" name="title" id="title"></dd>
-                <dd>
-                    <label for="btnSubmit"><input type="submit" id="btnSubmit" name="btnSubmit" value="Send" /></label>
-				    <input type="hidden" name="moduleAction" id="moduleAction" value="send" />
-                </dd>
-            </dl>
-        </fieldset>
-    </form>-->
-    <button type="button" id="btnSpecific">Send notification to specific device</button>
-    <button type="button" id="btnTopic">Send notification to app subscribed to AB blood type (Topic)</button>
-</body>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
 
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="js/scripts.js"></script>
-</html>
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
+<dom-module id="my-notifications">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        padding: 10px;
+      }
+
+      .square-box {
+        width: 250px;
+        height: 250px;
+        padding: 16px;
+        text-align: center;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      a:hover p {
+        color: #ed1c24;
+      }
+
+      iron-icon {
+        margin-top: 70px;
+        height: 64px;
+        width: 64px;
+      }
+
+      p {
+        margin-top: 45px;
+      }
+
+    </style>
+
+    <a name="notifications-blood" href="/notifications-blood">
+      <div class="card square-box item">
+        <iron-icon src="../images/icon_blood.png"></iron-icon>
+        <p>Notificaties <br> op basis van bloedgroep</p>
+      </div>
+    </a>
+    <a name="notifications-location" href="/notifications-location">
+      <div class="card square-box item">
+        <iron-icon src="../images/icon_location.png"></iron-icon>
+        <p>Notificaties <br> op basis van locatie</p>
+      </div>
+    </a>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-notifications',
+    });
+  </script>
+</dom-module>

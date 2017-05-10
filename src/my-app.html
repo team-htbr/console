@@ -33,9 +33,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --app-secondary-color: #666666;
         display: block;
         color: var(--app-secondary-color);
-        --paper-menu-selected-item: {
+        /*--paper-menu-selected-item: {
           color: var(--app-primary-color);
-        };
+        };*/
       }
 
       .menu-toolbar {
@@ -135,11 +135,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <!-- <my-notifications name="notifications"></my-notifications-blood> -->
           <my-notifications-blood name="notifications-blood"></my-notifications-blood>
           <my-notifications-location name="notifications-location"></my-notifications-location>
           <my-locations name="locations"></my-locations>
-          <my-view3 name="view3"></my-view3>
+          <my-notifications name="notifications"></my-notifications>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
@@ -163,7 +162,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'my-locations';
+        this.page = page || 'notifications';
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
@@ -182,3 +181,5 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
   </script>
 </dom-module>
+
+<!-- https://github.com/Polymer/docs/issues/2080 -->

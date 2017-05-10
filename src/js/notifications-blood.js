@@ -38,7 +38,7 @@
 									'title': title,
 									'body': body
 								},
-							'to': '/topics/'+to
+							'to': '/topics/' + to
 						};
 					
 					$.ajax({
@@ -47,6 +47,7 @@
 						url : 'https://fcm.googleapis.com/fcm/send',
 						contentType : 'application/json',
 						data : JSON.stringify(notification),
+						dataType : 'json',
 						success : function(data) {
 							console.log("Success!");
 							toastSuccess.fitInto = container;
