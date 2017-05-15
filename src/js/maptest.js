@@ -14,6 +14,8 @@
 	let toastFail;
 	let toastIncomplete;
 	let dateContainer;
+	let startDatePicker;
+	let endDatePicker;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -28,6 +30,8 @@
 			toastFail = this.$.toastFail;
 			toastIncomplete = this.$.toastIncomplete;
 			dateContainer = this.$.dateContainer;
+			startDatePicker = this.$.startDatePicker;
+			endDatePicker = this.$.endDatePicker;
 
 			//console.log(Polymer.dom(this.root).querySelector('.iron-selected').value);
 			/*if (Polymer.dom(this.root).querySelector('.iron-selected').value == true) {
@@ -60,16 +64,18 @@
 			let streetNumber = this.$.streetNumber.value;
 			let city = this.$.city.value;
 			let isMobile = Polymer.dom(this.root).querySelector('.iron-selected').value;
+			let startDate = startDatePicker.value;
+			let endDate = endDatePicker.value;
+			console.log(startDate);
 
-			// TODO: check for valid input
-			addLocation(name, street, streetNumber, city, isMobile);
+			addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
 		},
 		clicked: function(e, detail, sender) {
 			console.log('marker clicked');
 		}
 	});
 
-	let addLocation = function(name, street, streetNumber, city, isMobile) {
+	let addLocation = function(name, street, streetNumber, city, isMobile, startDate, endDate) {
 
 		let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 

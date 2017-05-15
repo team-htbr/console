@@ -109,7 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         justify-content: space-between;
         align-items: flex-start;
         margin-bottom: 16px;
-        display: none;
+        /*display: none;*/
       }
 
     </style>
@@ -133,8 +133,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		      <paper-radio-button name="mobile" value="true">Mobiel</paper-radio-button>
         </paper-radio-group>
         <div class="dateContainer">
-          <vaadin-date-picker class="item" label="Begindatum"></vaadin-date-picker>
-          <vaadin-date-picker class="item" label="Einddatum"></vaadin-date-picker>
+          <vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
+          <vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
         </div>
         <paper-button id="locationBtn" raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
         <div class="output"></div>
