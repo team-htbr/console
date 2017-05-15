@@ -9,10 +9,11 @@
 	let infoWindow;
 	let poly;
 	let locations;
-	let container;
+	let toastContainer;
 	let toastSuccess;
 	let toastFail;
 	let toastIncomplete;
+	let dateContainer;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -22,10 +23,16 @@
 		is: 'my-locations',
 		ready: function() {
 
-			container = this.$.toastContainer;
+			toastContainer = this.$.toastContainer;
 			toastSuccess = this.$.toastSuccess;
 			toastFail = this.$.toastFail;
 			toastIncomplete = this.$.toastIncomplete;
+			dateContainer = this.$.dateContainer;
+
+			//console.log(Polymer.dom(this.root).querySelector('.iron-selected').value);
+			/*if (Polymer.dom(this.root).querySelector('.iron-selected').value == true) {
+				dateContainer.style.display = "inline";
+			}*/
 
 			poly = this;
 			locations = [];
