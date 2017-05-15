@@ -19,6 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../bower_components/google-apis/google-maps-api.html">
 <link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 
 <dom-module id="my-locations">
@@ -36,6 +37,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --paper-radio-button-unchecked-color: var(--app-secondary-color);
       }
 
+      .no-margin {
+        margin: 0;
+      }
+
       paper-material {
         background-color: #fff;
         margin-top: 12px;
@@ -43,7 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .paper-map {
-        height: 450px;
+        height: 420px;
       }
 
       .paper-mat-title {
@@ -59,7 +64,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         overflow: hidden;
       }
 
-      #add-location {
+      .add-location {
         padding-bottom: 30px;
       }
 
@@ -90,15 +95,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-left: 0;
       }
 
+      #container {
+        margin-top: 16px;
+        height: 30px;
+      }
+
     </style>
 
-	<google-maps-api id="mapsAPI" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio"></google-maps-api>
-    <paper-material class="paper-map">
-		<google-map id="map" latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio" click-events="true"
-		single-info-window="true" google-map-click="{{markerClicked}}" disable-default-ui></google-map>
-	</paper-material>
+	 <google-maps-api id="mapsAPI" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio"></google-maps-api>
+    <paper-material class="paper-map no-margin">
+  		<google-map id="map" latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio" click-events="true"
+  		single-info-window="true" google-map-click="{{markerClicked}}" disable-default-ui></google-map>
+  	</paper-material>
 
-    <paper-material id="add-location">
+    <paper-material class="add-location">
       <div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
       <form is="iron-form" method="get" action="/" id="basic">
         <paper-input name="location-name" label="Naam" id="name" required></paper-input>
@@ -108,12 +118,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <br>
         <paper-radio-group selected="fixed">
           <paper-radio-button name="fixed" value="false">Vast</paper-radio-button>
-		  <paper-radio-button name="mobile" value="true">Mobiel</paper-radio-button>
+		      <paper-radio-button name="mobile" value="true">Mobiel</paper-radio-button>
         </paper-radio-group>
         <paper-button id="locationBtn" raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
         <div class="output"></div>
       </form>
     </paper-material>
+
+    <div id=container>
+      <paper-toast id="toastSuccess" class="fit-bottom" text="Locatie is toegevoegd."></paper-toast>
+      <paper-toast id="toastFail" class="fit-bottom" text="Locatie kon niet toegevoegd worden."></paper-toast>
+      <paper-toast id="toastIncomplete" class="fit-bottom"
+        text="Gelieve alle velden in te vullen.">
+      </paper-toast>
+    </div>
 
   </template>
   <!--<script>
@@ -123,5 +141,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </script>-->
   <script src="../bower_components/geofire/dist/geofire.min.js"></script>
   <script src="../bower_components/firebase/firebase.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   <script src="js/maptest.js"></script>
 </dom-module>

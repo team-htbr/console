@@ -9,6 +9,10 @@
 	let infoWindow;
 	let poly;
 	let locations;
+	let container;
+	let toastSuccess;
+	let toastFail;
+	let toastIncomplete;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -17,6 +21,11 @@
 	Polymer({
 		is: 'my-locations',
 		ready: function() {
+
+			container = this.$.container;
+			toastSuccess = this.$.toastSuccess;
+			toastFail = this.$.toastFail;
+			toastIncomplete = this.$.toastIncomplete;
 
 			poly = this;
 			locations = [];
@@ -57,39 +66,48 @@
 
 		let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
-		// check if address is valid and get its coordinates if so
-		geocoder.geocode({'address': address}, function(results, status) {
-			if (status === 'OK') {
+		if(name && address && isMobile) {
+			// check if address is valid and get its coordinates if so
+			geocoder.geocode({'address': address}, function(results, status) {
+				if (status === 'OK') {
 
-				let lat = results[0].geometry.location.lat();
-				let lng = results[0].geometry.location.lng();
+					let lat = results[0].geometry.location.lat();
+					let lng = results[0].geometry.location.lng();
 
-				// center map
-				poly.latitude = lat;
-				poly.longitude = lng;
+					// center map
+					poly.latitude = lat;
+					poly.longitude = lng;
 
-				// add location to database
-				let itemId = firebaseRef.ref('loacations_test').push().getKey();
-				firebaseRef.ref('locations_test').child(itemId).set({
-					id: itemId,
-					name: name,
-					street: street,
-					streetNumber: streetNumber,
-					city: city,
-					isMobile: isMobile,
-					lat: lat,
-					lng: lng
-				});
+					// add location to database
+					let itemId = firebaseRef.ref('loacations_test').push().getKey();
+					firebaseRef.ref('locations_test').child(itemId).set({
+						id: itemId,
+						name: name,
+						street: street,
+						streetNumber: streetNumber,
+						city: city,
+						isMobile: isMobile,
+						lat: lat,
+						lng: lng
+					});
 
-				// add geofire object to database
-				let coordinates =  [lat, lng];
-				let geoFire = new GeoFire(firebaseRef.ref('locations_geo_test/'));
-				geoFire.set(itemId, coordinates);
+					// add geofire object to database
+					let coordinates =  [lat, lng];
+					let geoFire = new GeoFire(firebaseRef.ref('locations_geo_test/'));
+					geoFire.set(itemId, coordinates);
+					toastSuccess.fitInto = container;
+					toastSuccess.open();
 
-			} else {
-				alert('Geocode was not successful for the following reason: ' + status);
-			}
-		});
+				} else {
+					toastFail.fitInto = container;
+					toastFail.open();
+				}
+			});
+		} else {
+			toastIncomplete.fitInto = container;
+			toastIncomplete.open();
+		}
+		
 	}
 
 	function removeLocation(location) {
