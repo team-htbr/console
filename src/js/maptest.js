@@ -22,7 +22,7 @@
 		is: 'my-locations',
 		ready: function() {
 
-			container = this.$.container;
+			container = this.$.toastContainer;
 			toastSuccess = this.$.toastSuccess;
 			toastFail = this.$.toastFail;
 			toastIncomplete = this.$.toastIncomplete;
