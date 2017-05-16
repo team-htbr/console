@@ -66,8 +66,20 @@
 			if(item != null) {
 				console.log(item.id);
 				console.log(poly.items.find(x => x.id == item.id));
+				console.log(map);
 			}
-        }
+        },
+		_removeLocation: function(e) {
+			let item = e.model.item;
+			// this.items.splice(index, 1);
+
+			// this.$.grid.clearCache();
+			if(item != null) {
+				console.log(item.id);
+				firebaseRef.ref('locations_test').child(item.id).remove();
+				firebaseRef.ref('locations_geo_test').child(item.id).remove();
+			}
+		}
 	});
 
 	function addLocation(name, street, streetNumber, city, isMobile) {
@@ -125,6 +137,7 @@
 
 			renderMarker(newLocation.getMarker());
 			poly.push('items', newLocation);
+			poly.$.grid.clearCache();
 		});
 
 		locationsDb.on('child_removed', function(fetchedLocation) {
@@ -133,6 +146,7 @@
 			let removedLocation = locations[fetchedLocation.val().id];
 
 			poly.splice('items', indexOf(poly.items, removedLocation.id), 1);
+			poly.$.grid.clearCache();
 			removeMarker(removedLocation.getMarker());
 			removeLocation(removedLocation);
 		});
@@ -145,6 +159,7 @@
 
 			poly.splice('items', indexOf(poly.items, oldLocation.id), 1);
 			poly.push('items', updatedLocation);
+			poly.$.grid.clearCache();
 
 			removeMarker(oldLocation.getMarker());
 			renderMarker(updatedLocation.getMarker());
@@ -209,6 +224,7 @@
 			this.marker.setAttribute('latitude', this.lat);
 			this.marker.setAttribute('longitude', this.lng);
 			this.marker.setAttribute('title', this.name);
+			this.marker.setAttribute('id', this.id);
 			this.marker.innerHTML = this.getInfoWindowContent();
 
 			return this.marker;
