@@ -13,6 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-error.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
@@ -125,10 +126,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		<paper-material class="add-location">
 			<div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
 			<form is="iron-form" method="get" action="/" id="basic">
-				<paper-input name="location-name" label="Naam" id="name" required></paper-input>
-				<paper-input name="location-street" label="Straat" id="street" required></paper-input>
-				<paper-input name="location-number" type="number" label="Nummer" id="streetNumber" required></paper-input>
-				<paper-input name="location-city" label="Gemeente" id="city" required></paper-input>
+				<paper-input auto-validate error-message="Gelieve naam van de locatie in te geven." name="location-name" label="Naam" id="name" required></paper-input>
+				<paper-input auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
+				<paper-input auto-validate error-message="Gelieve huisnummer van de locatie in te geven." name="location-number" label="Nummer" id="streetNumber" required></paper-input>
+				<paper-input auto-validate error-message="Gelieve stad/dorp van de locatie in te geven." name="location-city" label="Gemeente" id="city" required></paper-input>
 				<br>
 				<paper-radio-group class="item" selected="fixed">
 					<paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
@@ -145,10 +146,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 		<div id="toastContainer">
 			<paper-toast id="toastSuccess" class="fit-bottom" text="Locatie is toegevoegd."></paper-toast>
-			<paper-toast id="toastFail" class="fit-bottom" text="Adres bestaat niet."></paper-toast>
+			<!-- <paper-toast id="toastFail" class="fit-bottom" text="Adres bestaat niet."></paper-toast>
 			<paper-toast id="toastIncomplete" class="fit-bottom"
 				text="Gelieve alle velden in te vullen.">
-			</paper-toast>
+			</paper-toast> -->
 		</div>
 
 	</template>
