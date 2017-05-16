@@ -17,7 +17,7 @@
 			let bloodButtons = this.$.buttonsContainer.children;
 			let title = this.$.title.value;
 			let body = this.$.body.value;
-			let container = this.$.container;
+			let container = this.$.toastContainer;
 			let toastSuccess = this.$.toastSuccess;
 			let toastFail = this.$.toastFail;
 			let toastIncomplete = this.$.toastIncomplete;

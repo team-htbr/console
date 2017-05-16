@@ -20,7 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/google-apis/google-maps-api.html">
 <link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
-
+<link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 
 <dom-module id="my-locations">
 	<template>
@@ -34,7 +34,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				--paper-input-container-focus-color: var(--app-primary-color);
 				--paper-input-container-invalid-color: var(--app-primary-color);
 				--paper-radio-button-checked-color: var(--app-primary-color);
-				--paper-radio-button-unchecked-color: var(--app-secondary-color);
+				--paper-radio-button-unchecked-color: var(--app-secondary-color)
+				--primary-color: var(--app-primary-color);
+				--light-primary-color: var(--light-background);
 			}
 
 			.no-margin {
@@ -95,9 +97,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				padding-left: 0;
 			}
 
-			#container {
+			#toastContainer {
 				margin-top: 16px;
 				height: 30px;
+			}
+
+			vaadin-date-picker {
+				width: 48%;
+			}
+
+			.dateContainer {
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				margin-bottom: 16px;
+				display: none;
 			}
 
 		</style>
@@ -116,18 +130,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				<paper-input name="location-number" type="number" label="Nummer" id="streetNumber" required></paper-input>
 				<paper-input name="location-city" label="Gemeente" id="city" required></paper-input>
 				<br>
-				<paper-radio-group selected="fixed">
-					<paper-radio-button name="fixed" value="false">Vast</paper-radio-button>
-					<paper-radio-button name="mobile" value="true">Mobiel</paper-radio-button>
+				<paper-radio-group class="item" selected="fixed">
+					<paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
+					<paper-radio-button name="mobile" on-tap="_on_tap_mobile" value="true">Mobiel</paper-radio-button>
 				</paper-radio-group>
+				<div class="dateContainer">
+					<vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
+					<vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
+				</div>
 				<paper-button id="locationBtn" raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
 				<div class="output"></div>
 			</form>
 		</paper-material>
 
-		<div id=container>
+		<div id="toastContainer">
 			<paper-toast id="toastSuccess" class="fit-bottom" text="Locatie is toegevoegd."></paper-toast>
-			<paper-toast id="toastFail" class="fit-bottom" text="Locatie kon niet toegevoegd worden."></paper-toast>
+			<paper-toast id="toastFail" class="fit-bottom" text="Adres bestaat niet."></paper-toast>
 			<paper-toast id="toastIncomplete" class="fit-bottom"
 				text="Gelieve alle velden in te vullen.">
 			</paper-toast>
@@ -143,4 +161,5 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<script src="../bower_components/firebase/firebase.js"></script>
 	<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script> -->
 	<script src="js/maptest.js"></script>
+
 </dom-module>

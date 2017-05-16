@@ -9,10 +9,13 @@
 	let infoWindow;
 	let poly;
 	let locations;
-	let container;
+	let toastContainer;
 	let toastSuccess;
 	let toastFail;
 	let toastIncomplete;
+	let dateContainer;
+	let startDatePicker;
+	let endDatePicker;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -22,10 +25,13 @@
 		is: 'my-locations',
 		ready: function() {
 
-			container = this.$.container;
+			toastContainer = this.$.toastContainer;
 			toastSuccess = this.$.toastSuccess;
 			toastFail = this.$.toastFail;
 			toastIncomplete = this.$.toastIncomplete;
+			dateContainer = this.$$('.dateContainer');
+			startDatePicker = this.$.startDatePicker;
+			endDatePicker = this.$.endDatePicker;
 
 			poly = this;
 			locations = [];
@@ -53,20 +59,29 @@
 			let streetNumber = this.$.streetNumber.value;
 			let city = this.$.city.value;
 			let isMobile = Polymer.dom(this.root).querySelector('.iron-selected').value;
+			let startDate = startDatePicker.value;
+			let endDate = endDatePicker.value;
 
-			// TODO: check for valid input
-			addLocation(name, street, streetNumber, city, isMobile);
+			addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
 		},
-		clicked: function(e, detail, sender) {
-			console.log('marker clicked');
+		_on_tap_mobile: function() {
+			dateContainer.style.display = "flex";
+		},
+		_on_tap_fixed: function() {
+			dateContainer.style.display = "none";
 		}
 	});
 
-	let addLocation = function(name, street, streetNumber, city, isMobile) {
+	let addLocation = function(name, street, streetNumber, city, isMobile, startDate, endDate) {
 
-		let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
+		if (name && street && streetNumber && city) {
+			if (isMobile == true && (!startDate || !endDate)) {
+				toastIncomplete.fitInto = toastContainer;
+				toastIncomplete.open();
+			}
 
-		if(name && address && isMobile) {
+			let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
+
 			// check if address is valid and get its coordinates if so
 			geocoder.geocode({'address': address}, function(results, status) {
 				if (status === 'OK') {
@@ -95,16 +110,16 @@
 					let coordinates =  [lat, lng];
 					let geoFire = new GeoFire(firebaseRef.ref('locations_geo_test/'));
 					geoFire.set(itemId, coordinates);
-					toastSuccess.fitInto = container;
+					toastSuccess.fitInto = toastContainer;
 					toastSuccess.open();
 
 				} else {
-					toastFail.fitInto = container;
+					toastFail.fitInto = toastContainer;
 					toastFail.open();
 				}
 			});
 		} else {
-			toastIncomplete.fitInto = container;
+			toastIncomplete.fitInto = toastContainer;
 			toastIncomplete.open();
 		}
 		
@@ -175,7 +190,7 @@
 	// Renaming class to Location results in errors
 	class Location {
 
-		constructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
+		constructor(id, name, street, streetNumber, city, lat, lng, isMobile, startDate, endDate) {
 			this.id = id;
 			this.name = name;
 			this.street = street;
@@ -184,6 +199,8 @@
 			this.lat = lat;
 			this.lng = lng;
 			this.isMobile = isMobile;
+			this.startDate = "not defined";
+			this.endDate = "not defined";
 			this.marker = document.createElement('google-map-marker');
 		}
 
