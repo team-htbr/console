@@ -29,14 +29,9 @@
 			toastSuccess = this.$.toastSuccess;
 			toastFail = this.$.toastFail;
 			toastIncomplete = this.$.toastIncomplete;
-			dateContainer = this.$.dateContainer;
+			dateContainer = this.$$('.dateContainer');
 			startDatePicker = this.$.startDatePicker;
 			endDatePicker = this.$.endDatePicker;
-
-			//console.log(Polymer.dom(this.root).querySelector('.iron-selected').value);
-			/*if (Polymer.dom(this.root).querySelector('.iron-selected').value == true) {
-				dateContainer.style.display = "inline";
-			}*/
 
 			poly = this;
 			locations = [];
@@ -70,8 +65,11 @@
 
 			addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
 		},
-		clicked: function(e, detail, sender) {
-			console.log('marker clicked');
+		_on_tap_mobile: function() {
+			dateContainer.style.display = "flex";
+		},
+		_on_tap_fixed: function() {
+			dateContainer.style.display = "none";
 		}
 	});
 

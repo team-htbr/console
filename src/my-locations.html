@@ -36,6 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --paper-radio-button-checked-color: var(--app-primary-color);
         --paper-radio-button-unchecked-color: var(--app-secondary-color);
         --primary-color: var(--app-primary-color);
+        --light-primary-color: var(--light-background);
       }
 
       .no-margin {
@@ -110,7 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         justify-content: space-between;
         align-items: flex-start;
         margin-bottom: 16px;
-        /*display: none;*/
+        display: none;
       }
 
     </style>
@@ -130,8 +131,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-input name="location-city" label="Gemeente" id="city" required></paper-input>
         <br>
         <paper-radio-group class="item" selected="fixed">
-          <paper-radio-button name="fixed" value="false">Vast</paper-radio-button>
-		      <paper-radio-button name="mobile" value="true">Mobiel</paper-radio-button>
+          <paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
+		      <paper-radio-button name="mobile" on-tap="_on_tap_mobile" value="true">Mobiel</paper-radio-button>
         </paper-radio-group>
         <div class="dateContainer">
           <vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
@@ -158,7 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </script>-->
   <script src="../bower_components/geofire/dist/geofire.min.js"></script>
   <script src="../bower_components/firebase/firebase.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script> -->
   <script src="js/maptest.js"></script>
 
 </dom-module>
