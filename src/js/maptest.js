@@ -9,6 +9,7 @@
 	let infoWindow;
 	let poly;
 	let locations;
+	let locationsList;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -20,6 +21,7 @@
 
 			poly = this;
 			locations = [];
+			locationsList = [];
 			map = poly.$.map;
 			mapAPI = Polymer.dom(poly.root).querySelector('google-maps-api');
 
@@ -34,8 +36,11 @@
 			poly.latitude = 51.04060;
 			poly.longitude = 3.70976;
 			poly.zoom = 14;
+			poly.items = [];
 
 			listenForChanges();
+
+			console.log(locations);
 		},
 		submit: function() {
 
@@ -50,10 +55,22 @@
 		},
 		clicked: function(e, detail, sender) {
 			console.log('marker clicked');
-		}
+		},
+		properties: {
+			activeItem: {
+				observer: '_activeItemChanged'
+			}
+        },
+        _activeItemChanged: function(item) {
+			this.$.grid.selectedItems = item ? [item] : [];
+			if(item != null) {
+				console.log(item.id);
+				console.log(poly.items.find(x => x.id == item.id));
+			}
+        }
 	});
 
-	let addLocation = function(name, street, streetNumber, city, isMobile) {
+	function addLocation(name, street, streetNumber, city, isMobile) {
 
 		let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
@@ -107,6 +124,7 @@
 			let newLocation = initLocation(fetchedLocation.val());
 
 			renderMarker(newLocation.getMarker());
+			poly.push('items', newLocation);
 		});
 
 		locationsDb.on('child_removed', function(fetchedLocation) {
@@ -114,6 +132,7 @@
 
 			let removedMarker = locations[fetchedLocation.val().id];
 
+			poly.splice('items', indexOf(poly.items, removedMarker.id), 1);
 			removeMarker(removedMarker.getMarker());
 			removeLocation(removedMarker);
 		});
@@ -123,6 +142,9 @@
 
 			let oldLocation = locations[fetchedLocation.val().id]
 			let updatedLocation = initLocation(fetchedLocation.val());
+
+			let index = locations.indexOf(updatedLocation);
+			console.log(index);
 
 			removeMarker(oldLocation.getMarker());
 			renderMarker(updatedLocation.getMarker());
@@ -151,6 +173,13 @@
 
 	function removeMarker(marker) {
 		poly.$.map.removeChild(marker);
+	}
+
+	function indexOf(array, id) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i].id === id) return i;
+		}
+		return -1;
 	}
 
 	// Class for keeping track of places
