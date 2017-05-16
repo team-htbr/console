@@ -61,7 +61,6 @@
 			let isMobile = Polymer.dom(this.root).querySelector('.iron-selected').value;
 			let startDate = startDatePicker.value;
 			let endDate = endDatePicker.value;
-			console.log(startDate);
 
 			addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
 		},
@@ -75,9 +74,14 @@
 
 	let addLocation = function(name, street, streetNumber, city, isMobile, startDate, endDate) {
 
-		let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
+		if (name && street && streetNumber && city) {
+			if (isMobile == true && (!startDate || !endDate)) {
+				toastIncomplete.fitInto = toastContainer;
+				toastIncomplete.open();
+			}
 
-		if(name && address && isMobile) {
+			let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
+
 			// check if address is valid and get its coordinates if so
 			geocoder.geocode({'address': address}, function(results, status) {
 				if (status === 'OK') {
@@ -106,16 +110,16 @@
 					let coordinates =  [lat, lng];
 					let geoFire = new GeoFire(firebaseRef.ref('locations_geo_test/'));
 					geoFire.set(itemId, coordinates);
-					toastSuccess.fitInto = container;
+					toastSuccess.fitInto = toastContainer;
 					toastSuccess.open();
 
 				} else {
-					toastFail.fitInto = container;
+					toastFail.fitInto = toastContainer;
 					toastFail.open();
 				}
 			});
 		} else {
-			toastIncomplete.fitInto = container;
+			toastIncomplete.fitInto = toastContainer;
 			toastIncomplete.open();
 		}
 		
@@ -186,7 +190,7 @@
 	// Renaming class to Location results in errors
 	class Location {
 
-		constructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
+		constructor(id, name, street, streetNumber, city, lat, lng, isMobile, startDate, endDate) {
 			this.id = id;
 			this.name = name;
 			this.street = street;
@@ -195,6 +199,8 @@
 			this.lat = lat;
 			this.lng = lng;
 			this.isMobile = isMobile;
+			this.startDate = "not defined";
+			this.endDate = "not defined";
 			this.marker = document.createElement('google-map-marker');
 		}
 

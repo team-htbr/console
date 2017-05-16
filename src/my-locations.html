@@ -23,143 +23,143 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 
 <dom-module id="my-locations">
-  <template>
-    <style include="shared-styles">
-      :host {
-        --app-primary-color: #ed1c24;
-        --app-secondary-color: #666666;
-        --light-background: #f5f5f5;
-        display: block;
-        padding: 20px;
-        --paper-input-container-focus-color: var(--app-primary-color);
-        --paper-input-container-invalid-color: var(--app-primary-color);
-        --paper-radio-button-checked-color: var(--app-primary-color);
-        --paper-radio-button-unchecked-color: var(--app-secondary-color);
-        --primary-color: var(--app-primary-color);
-        --light-primary-color: var(--light-background);
-      }
+	<template>
+		<style include="shared-styles">
+			:host {
+				--app-primary-color: #ed1c24;
+				--app-secondary-color: #666666;
+				--light-background: #f5f5f5;
+				display: block;
+				padding: 20px;
+				--paper-input-container-focus-color: var(--app-primary-color);
+				--paper-input-container-invalid-color: var(--app-primary-color);
+				--paper-radio-button-checked-color: var(--app-primary-color);
+				--paper-radio-button-unchecked-color: var(--app-secondary-color);
+				--primary-color: var(--app-primary-color);
+				--light-primary-color: var(--light-background);
+			}
 
-      .no-margin {
-        margin: 0;
-      }
+			.no-margin {
+				margin: 0;
+			}
 
-      paper-material {
-        background-color: #fff;
-        margin-top: 12px;
-        border-radius: 1px;
-      }
+			paper-material {
+				background-color: #fff;
+				margin-top: 12px;
+				border-radius: 1px;
+			}
 
-      .paper-map {
-        height: 420px;
-      }
+			.paper-map {
+				height: 420px;
+			}
 
-      .paper-mat-title {
-        background-color: var(--light-background);
-        border-radius: 1px 1px 0 0;
-        padding: 16px 0;
-        box-shadow: 0 -1px 0 rgba(0,0,0,0.12) inset;
-      }
+			.paper-mat-title {
+				background-color: var(--light-background);
+				border-radius: 1px 1px 0 0;
+				padding: 16px 0;
+				box-shadow: 0 -1px 0 rgba(0,0,0,0.12) inset;
+			}
 
-      .paper-mat-title p {
-        width: 65%;
-        margin: 0 auto;
-        overflow: hidden;
-      }
+			.paper-mat-title p {
+				width: 65%;
+				margin: 0 auto;
+				overflow: hidden;
+			}
 
-      .add-location {
-        padding-bottom: 30px;
-      }
+			.add-location {
+				padding-bottom: 30px;
+			}
 
-      form {
-        width: 65%;
-        margin: 0 auto;
-        overflow: hidden;
-        padding-top: 16px;
-      }
+			form {
+				width: 65%;
+				margin: 0 auto;
+				overflow: hidden;
+				padding-top: 16px;
+			}
 
-      paper-button {
-        background-color: var(--light-background);
-      }
+			paper-button {
+				background-color: var(--light-background);
+			}
 
-      paper-button:active {
-        background-color: var(--app-primary-color);
-      }
+			paper-button:active {
+				background-color: var(--app-primary-color);
+			}
 
-      #locationBtn {
-        float: right;
-        margin-right: 3px;
-        margin-bottom: 3px;
-        color: #ffffff;
-        background-color: var(--app-primary-color);
-      }
+			#locationBtn {
+				float: right;
+				margin-right: 3px;
+				margin-bottom: 3px;
+				color: #ffffff;
+				background-color: var(--app-primary-color);
+			}
 
-      paper-radio-button:first-child {
-        padding-left: 0;
-      }
+			paper-radio-button:first-child {
+				padding-left: 0;
+			}
 
-      #toastContainer {
-        margin-top: 16px;
-        height: 30px;
-      }
+			#toastContainer {
+				margin-top: 16px;
+				height: 30px;
+			}
 
-      vaadin-date-picker {
-        width: 48%;
-      }
+			vaadin-date-picker {
+				width: 48%;
+			}
 
-      .dateContainer {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 16px;
-        display: none;
-      }
+			.dateContainer {
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				margin-bottom: 16px;
+				display: none;
+			}
 
-    </style>
+		</style>
 
 	 <google-maps-api id="mapsAPI" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio"></google-maps-api>
-    <paper-material class="paper-map no-margin">
-  		<google-map id="map" latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio" click-events="true"
-  		single-info-window="true" google-map-click="{{markerClicked}}" disable-default-ui></google-map>
-  	</paper-material>
+		<paper-material class="paper-map no-margin">
+			<google-map id="map" latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio" click-events="true"
+			single-info-window="true" google-map-click="{{markerClicked}}" disable-default-ui></google-map>
+		</paper-material>
 
-    <paper-material class="add-location">
-      <div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
-      <form is="iron-form" method="get" action="/" id="basic">
-        <paper-input name="location-name" label="Naam" id="name" required></paper-input>
-        <paper-input name="location-street" label="Straat" id="street" required></paper-input>
-        <paper-input name="location-number" type="number" label="Nummer" id="streetNumber" required></paper-input>
-        <paper-input name="location-city" label="Gemeente" id="city" required></paper-input>
-        <br>
-        <paper-radio-group class="item" selected="fixed">
-          <paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
-		      <paper-radio-button name="mobile" on-tap="_on_tap_mobile" value="true">Mobiel</paper-radio-button>
-        </paper-radio-group>
-        <div class="dateContainer">
-          <vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
-          <vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
-        </div>
-        <paper-button id="locationBtn" raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
-        <div class="output"></div>
-      </form>
-    </paper-material>
+		<paper-material class="add-location">
+			<div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
+			<form is="iron-form" method="get" action="/" id="basic">
+				<paper-input name="location-name" label="Naam" id="name" required></paper-input>
+				<paper-input name="location-street" label="Straat" id="street" required></paper-input>
+				<paper-input name="location-number" type="number" label="Nummer" id="streetNumber" required></paper-input>
+				<paper-input name="location-city" label="Gemeente" id="city" required></paper-input>
+				<br>
+				<paper-radio-group class="item" selected="fixed">
+					<paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
+					<paper-radio-button name="mobile" on-tap="_on_tap_mobile" value="true">Mobiel</paper-radio-button>
+				</paper-radio-group>
+				<div class="dateContainer">
+					<vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
+					<vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
+				</div>
+				<paper-button id="locationBtn" raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
+				<div class="output"></div>
+			</form>
+		</paper-material>
 
-    <div id="toastContainer">
-      <paper-toast id="toastSuccess" class="fit-bottom" text="Locatie is toegevoegd."></paper-toast>
-      <paper-toast id="toastFail" class="fit-bottom" text="Locatie kon niet toegevoegd worden."></paper-toast>
-      <paper-toast id="toastIncomplete" class="fit-bottom"
-        text="Gelieve alle velden in te vullen.">
-      </paper-toast>
-    </div>
+		<div id="toastContainer">
+			<paper-toast id="toastSuccess" class="fit-bottom" text="Locatie is toegevoegd."></paper-toast>
+			<paper-toast id="toastFail" class="fit-bottom" text="Adres bestaat niet."></paper-toast>
+			<paper-toast id="toastIncomplete" class="fit-bottom"
+				text="Gelieve alle velden in te vullen.">
+			</paper-toast>
+		</div>
 
-  </template>
-  <!--<script>
-	  Polymer({
+	</template>
+	<!--<script>
+		Polymer({
 		is: 'my-locations',
-	  });
-  </script>-->
-  <script src="../bower_components/geofire/dist/geofire.min.js"></script>
-  <script src="../bower_components/firebase/firebase.js"></script>
-  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script> -->
-  <script src="js/maptest.js"></script>
+		});
+	</script>-->
+	<script src="../bower_components/geofire/dist/geofire.min.js"></script>
+	<script src="../bower_components/firebase/firebase.js"></script>
+	<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script> -->
+	<script src="js/maptest.js"></script>
 
 </dom-module>
