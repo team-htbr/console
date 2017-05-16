@@ -130,11 +130,11 @@
 		locationsDb.on('child_removed', function(fetchedLocation) {
 			console.log('removed');
 
-			let removedMarker = locations[fetchedLocation.val().id];
+			let removedLocation = locations[fetchedLocation.val().id];
 
-			poly.splice('items', indexOf(poly.items, removedMarker.id), 1);
-			removeMarker(removedMarker.getMarker());
-			removeLocation(removedMarker);
+			poly.splice('items', indexOf(poly.items, removedLocation.id), 1);
+			removeMarker(removedLocation.getMarker());
+			removeLocation(removedLocation);
 		});
 
 		locationsDb.on('child_changed', function(fetchedLocation) {
@@ -143,8 +143,8 @@
 			let oldLocation = locations[fetchedLocation.val().id]
 			let updatedLocation = initLocation(fetchedLocation.val());
 
-			let index = locations.indexOf(updatedLocation);
-			console.log(index);
+			poly.splice('items', indexOf(poly.items, oldLocation.id), 1);
+			poly.push('items', updatedLocation);
 
 			removeMarker(oldLocation.getMarker());
 			renderMarker(updatedLocation.getMarker());
