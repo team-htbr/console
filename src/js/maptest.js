@@ -27,8 +27,8 @@
 
 			toastContainer = this.$.toastContainer;
 			toastSuccess = this.$.toastSuccess;
-			toastFail = this.$.toastFail;
-			toastIncomplete = this.$.toastIncomplete;
+			/*toastFail = this.$.toastFail;
+			toastIncomplete = this.$.toastIncomplete;*/
 			dateContainer = this.$$('.dateContainer');
 			startDatePicker = this.$.startDatePicker;
 			endDatePicker = this.$.endDatePicker;
@@ -75,10 +75,10 @@
 	let addLocation = function(name, street, streetNumber, city, isMobile, startDate, endDate) {
 
 		if (name && street && streetNumber && city) {
-			if (isMobile == true && (!startDate || !endDate)) {
+			/*if (isMobile == true && (!startDate || !endDate)) {
 				toastIncomplete.fitInto = toastContainer;
 				toastIncomplete.open();
-			}
+			}*/
 
 			let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
@@ -113,15 +113,15 @@
 					toastSuccess.fitInto = toastContainer;
 					toastSuccess.open();
 
-				} else {
+				} /*else {
 					toastFail.fitInto = toastContainer;
 					toastFail.open();
-				}
+				}*/
 			});
-		} else {
+		} /*else {
 			toastIncomplete.fitInto = toastContainer;
 			toastIncomplete.open();
-		}
+		}*/
 		
 	}
 

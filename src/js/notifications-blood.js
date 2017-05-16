@@ -61,17 +61,17 @@
 						},
 						error : function() {
 							console.log("Error");
-							toastFail.fitInto = container;
-							toastFail.open();
+							/*toastFail.fitInto = container;
+							toastFail.open();*/
 						}
 					})
 				}
 			}
 
-			else {
+			/*else {
 				toastIncomplete.fitInto = container;
 				toastIncomplete.open();
-			}	
+			}*/	
 
 		}
 

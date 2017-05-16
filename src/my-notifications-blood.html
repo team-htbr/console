@@ -118,8 +118,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button class="item" toggles raised value="blood-On">O -</paper-button>
       </div>      
       <form is="iron-form" method="get" action="/" id="notificationForm">
-        <paper-input id="title" name="title" label="Titel" value="Bloeddonatie" required></paper-input>
-        <paper-textarea id="body" char-counter label="Bericht" required></paper-textarea>
+        <paper-input auto-validate error-message="Gelieve titel van de notificatie in te geven." id="title" name="title" label="Titel" value="Bloeddonatie" required></paper-input>
+        <paper-textarea auto-validate error-message="Gelieve bericht van de notificatie in te geven." id="body" char-counter label="Bericht" required></paper-textarea>
         <br>
         <paper-button id="submitBtn" raised on-click="sendNotification" class="no-margin">Versturen</paper-button>
         <div class="output"></div>
