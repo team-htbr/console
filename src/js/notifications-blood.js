@@ -27,8 +27,6 @@
 			let body = this.$.body.value;
 			let toastContainer = this.$.toastContainer;
 			let toastSuccess = this.$.toastSuccess;
-			/*let toastFail = this.$.toastFail;
-			let toastIncomplete = this.$.toastIncomplete;*/
 
 			for (let i = 0; i < bloodButtons.length; i++) {
 				if (bloodButtons[i].hasAttribute('active')) {
@@ -57,7 +55,6 @@
 						data : JSON.stringify(notification),
 						dataType : 'json',
 						success : function(data) {
-							console.log("Success!");
 							toastSuccess.fitInto = toastContainer;
 							toastSuccess.open();
 							setTimeout(function() {
@@ -68,26 +65,18 @@
 							}, 1400);
 						},
 						error : function() {
-							console.log("Error");
-							/*toastFail.fitInto = toastContainer;
-							toastFail.open();*/
+							console.log("De notificatie kon niet verzonden worden.");
 						}
 					})
 				}
 			}
 
-			/*else {
-				toastIncomplete.fitInto = toastContainer;
-				toastIncomplete.open();
-			}*/	
-
 		}
 
 	});
 
-	form.addEventListener('change', function(event) {
-		// Validate the entire form to see if we should enable the `Submit` button.
-		console.log('form');
+	form.addEventListener('input', function(event) {
+		// Validate the entire form to see if the `Submit` button should be enabled.
 		submitBtn.disabled = !form.validate();
 	});
 
