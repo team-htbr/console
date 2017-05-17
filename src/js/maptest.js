@@ -16,6 +16,10 @@
 	let dateContainer;
 	let startDatePicker;
 	let endDatePicker;
+	let startDate;
+	let endDate;
+	let form;
+	let submitBtn;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -27,11 +31,11 @@
 
 			toastContainer = this.$.toastContainer;
 			toastSuccess = this.$.toastSuccess;
-			toastFail = this.$.toastFail;
-			toastIncomplete = this.$.toastIncomplete;
 			dateContainer = this.$$('.dateContainer');
 			startDatePicker = this.$.startDatePicker;
 			endDatePicker = this.$.endDatePicker;
+			form = this.$.locationForm;
+			submitBtn = this.$.locationBtn;
 
 			poly = this;
 			locations = [];
@@ -59,26 +63,30 @@
 			let streetNumber = this.$.streetNumber.value;
 			let city = this.$.city.value;
 			let isMobile = Polymer.dom(this.root).querySelector('.iron-selected').value;
-			let startDate = startDatePicker.value;
-			let endDate = endDatePicker.value;
 
 			addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
 		},
 		_on_tap_mobile: function() {
 			dateContainer.style.display = "flex";
+			startDate = startDatePicker.value || "";
+			endDate = endDatePicker.value || "";
+			if ((startDate == "") || (endDate == "")) {
+				submitBtn.disabled = true;
+			}
 		},
 		_on_tap_fixed: function() {
 			dateContainer.style.display = "none";
+			submitBtn.disabled = !form.validate();
 		}
 	});
 
 	let addLocation = function(name, street, streetNumber, city, isMobile, startDate, endDate) {
 
 		if (name && street && streetNumber && city) {
-			if (isMobile == true && (!startDate || !endDate)) {
+			/*if (isMobile == true && (!startDate || !endDate)) {
 				toastIncomplete.fitInto = toastContainer;
 				toastIncomplete.open();
-			}
+			}*/
 
 			let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
@@ -113,14 +121,8 @@
 					toastSuccess.fitInto = toastContainer;
 					toastSuccess.open();
 
-				} else {
-					toastFail.fitInto = toastContainer;
-					toastFail.open();
 				}
 			});
-		} else {
-			toastIncomplete.fitInto = toastContainer;
-			toastIncomplete.open();
 		}
 		
 	}
@@ -221,5 +223,24 @@
 		}
 
 	};
+
+	form.addEventListener('input', function(event) {
+		// Validate the entire form to see if the `Submit` button should be enabled.
+		submitBtn.disabled = !form.validate();
+	});
+
+	startDatePicker.addEventListener('value-changed', function(event) {
+		startDate = startDatePicker.value || "";
+		if ((startDate !== "") && (endDate !== "")) {
+			submitBtn.disabled = false;
+		}
+	});
+
+	endDatePicker.addEventListener('value-changed', function(event) {
+		endDate = endDatePicker.value || "";
+		if ((startDate !== "") && (endDate !== "")) {
+			submitBtn.disabled = false;
+		}
+	});
 
 })();
