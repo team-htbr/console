@@ -8,7 +8,6 @@
 	let bloodButtonsActive = [];
 	let notification;
 	let form;
-	let body;
 	let submitBtn;	
 	
 	Polymer({

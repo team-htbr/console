@@ -16,6 +16,8 @@
 	let dateContainer;
 	let startDatePicker;
 	let endDatePicker;
+	let form;
+	let submitBtn;
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -27,11 +29,11 @@
 
 			toastContainer = this.$.toastContainer;
 			toastSuccess = this.$.toastSuccess;
-			/*toastFail = this.$.toastFail;
-			toastIncomplete = this.$.toastIncomplete;*/
 			dateContainer = this.$$('.dateContainer');
 			startDatePicker = this.$.startDatePicker;
 			endDatePicker = this.$.endDatePicker;
+			form = this.$.locationForm;
+			submitBtn = this.$.locationBtn;
 
 			poly = this;
 			locations = [];
@@ -113,15 +115,9 @@
 					toastSuccess.fitInto = toastContainer;
 					toastSuccess.open();
 
-				} /*else {
-					toastFail.fitInto = toastContainer;
-					toastFail.open();
-				}*/
+				}
 			});
-		} /*else {
-			toastIncomplete.fitInto = toastContainer;
-			toastIncomplete.open();
-		}*/
+		}
 		
 	}
 
@@ -221,5 +217,10 @@
 		}
 
 	};
+	
+	form.addEventListener('input', function(event) {
+		// Validate the entire form to see if the `Submit` button should be enabled.
+		submitBtn.disabled = !form.validate();
+	});
 
 })();

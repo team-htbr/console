@@ -94,6 +94,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				background-color: var(--app-primary-color);
 			}
 
+			#locationBtn[disabled] {
+				background-color: #eaeaea;
+				color: #a8a8a8;
+			}
+
 			paper-radio-button:first-child {
 				padding-left: 0;
 			}
@@ -125,7 +130,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 		<paper-material class="add-location">
 			<div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
-			<form is="iron-form" method="get" action="/" id="basic">
+			<form is="iron-form" method="get" action="/" id="locationForm">
 				<paper-input auto-validate error-message="Gelieve naam van de locatie in te geven." name="location-name" label="Naam" id="name" required></paper-input>
 				<paper-input auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
 				<paper-input auto-validate error-message="Gelieve huisnummer van de locatie in te geven." name="location-number" label="Nummer" id="streetNumber" required></paper-input>
@@ -139,28 +144,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					<vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
 					<vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
 				</div>
-				<paper-button id="locationBtn" raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
+				<paper-button id="locationBtn" disabled raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
 				<div class="output"></div>
 			</form>
 		</paper-material>
 
 		<div id="toastContainer">
 			<paper-toast id="toastSuccess" class="fit-bottom" text="Locatie is toegevoegd."></paper-toast>
-			<!-- <paper-toast id="toastFail" class="fit-bottom" text="Adres bestaat niet."></paper-toast>
-			<paper-toast id="toastIncomplete" class="fit-bottom"
-				text="Gelieve alle velden in te vullen.">
-			</paper-toast> -->
 		</div>
 
 	</template>
-	<!--<script>
-		Polymer({
-		is: 'my-locations',
-		});
-	</script>-->
 	<script src="../bower_components/geofire/dist/geofire.min.js"></script>
 	<script src="../bower_components/firebase/firebase.js"></script>
-	<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script> -->
 	<script src="js/maptest.js"></script>
 
 </dom-module>
