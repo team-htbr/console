@@ -9,6 +9,7 @@
 	let infoWindow;
 	let poly;
 	let locations;
+	let locationsList;
 	let toastContainer;
 	let toastSuccess;
 	let toastFail;
@@ -20,6 +21,7 @@
 	let endDate;
 	let form;
 	let submitBtn;
+  
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -39,6 +41,7 @@
 
 			poly = this;
 			locations = [];
+			locationsList = [];
 			map = poly.$.map;
 			mapAPI = Polymer.dom(poly.root).querySelector('google-maps-api');
 
@@ -53,8 +56,11 @@
 			poly.latitude = 51.04060;
 			poly.longitude = 3.70976;
 			poly.zoom = 14;
+			poly.items = [];
 
 			listenForChanges();
+
+			console.log(locations);
 		},
 		submit: function() {
 
@@ -74,6 +80,43 @@
 				submitBtn.disabled = true;
 			}
 		},
+		clicked: function(e, detail, sender) {
+			console.log('marker clicked');
+		},
+		properties: {
+			activeItem: {
+				observer: '_activeItemChanged'
+			}
+        },
+		_onActiveItemChanged: function(e) {
+          	this.$.grid.expandedItems = [e.detail.value];
+        },
+        _activeItemChanged: function(item) {
+			this.$.grid.selectedItems = item ? [item] : [];
+			if(item != null) {
+				console.log(item.id);
+				console.log(poly.items.find(x => x.id == item.id));
+				console.log(map);
+				console.log(poly.$);
+			}
+        },
+		_removeLocation: function(e) {
+			let item = e.model.item;
+			if(item != null) {
+				console.log(item.id);
+				firebaseRef.ref('locations_test').child(item.id).remove();
+				firebaseRef.ref('locations_geo_test').child(item.id).remove();
+			}
+		},
+		_editLocation: function(e) {
+			let body = document.querySelector('body');
+			console.log(body);
+			poly.$.dialog.open();
+			let item = e.model.item;
+			if(item != null) {
+				console.log(item.id);
+			}
+		},
 		_on_tap_fixed: function() {
 			dateContainer.style.display = "none";
 			submitBtn.disabled = !form.validate();
@@ -83,10 +126,6 @@
 	let addLocation = function(name, street, streetNumber, city, isMobile, startDate, endDate) {
 
 		if (name && street && streetNumber && city) {
-			/*if (isMobile == true && (!startDate || !endDate)) {
-				toastIncomplete.fitInto = toastContainer;
-				toastIncomplete.open();
-			}*/
 
 			let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
@@ -124,7 +163,6 @@
 				}
 			});
 		}
-		
 	}
 
 	function removeLocation(location) {
@@ -142,15 +180,19 @@
 			let newLocation = initLocation(fetchedLocation.val());
 
 			renderMarker(newLocation.getMarker());
+			poly.push('items', newLocation);
+			poly.$.grid.clearCache();
 		});
 
 		locationsDb.on('child_removed', function(fetchedLocation) {
 			console.log('removed');
 
-			let removedMarker = locations[fetchedLocation.val().id];
+			let removedLocation = locations[fetchedLocation.val().id];
 
-			removeMarker(removedMarker.getMarker());
-			removeLocation(removedMarker);
+			poly.splice('items', indexOf(poly.items, removedLocation.id), 1);
+			poly.$.grid.clearCache();
+			removeMarker(removedLocation.getMarker());
+			removeLocation(removedLocation);
 		});
 
 		locationsDb.on('child_changed', function(fetchedLocation) {
@@ -158,6 +200,10 @@
 
 			let oldLocation = locations[fetchedLocation.val().id]
 			let updatedLocation = initLocation(fetchedLocation.val());
+
+			poly.splice('items', indexOf(poly.items, oldLocation.id), 1);
+			poly.push('items', updatedLocation);
+			poly.$.grid.clearCache();
 
 			removeMarker(oldLocation.getMarker());
 			renderMarker(updatedLocation.getMarker());
@@ -186,6 +232,13 @@
 
 	function removeMarker(marker) {
 		poly.$.map.removeChild(marker);
+	}
+
+	function indexOf(array, id) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i].id === id) return i;
+		}
+		return -1;
 	}
 
 	// Class for keeping track of places
@@ -217,6 +270,7 @@
 			this.marker.setAttribute('latitude', this.lat);
 			this.marker.setAttribute('longitude', this.lng);
 			this.marker.setAttribute('title', this.name);
+			this.marker.setAttribute('id', this.id);
 			this.marker.innerHTML = this.getInfoWindowContent();
 
 			return this.marker;
