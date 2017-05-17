@@ -92,7 +92,7 @@
 		_onActiveItemChanged: function(e) {
           	this.$.grid.expandedItems = [e.detail.value];
 			let unfinishedLocation = this.items;
-			if(unfinishedLocation != null && unfinishedLocation[0].id == '0' && e.detail.value != unfinishedLocation[0]) {
+			if(unfinishedLocation != null && unfinishedLocation[0].id == 'new' && e.detail.value != unfinishedLocation[0]) {
 				this.shift('items');
 			}
         },
@@ -100,12 +100,12 @@
 			// TODO
 			// disable create location button
 			// insert form html
-			let test = new Location('0', 'Nieuwe locatie');
+			//
+			let test = new Location('new', 'Nieuwe locatie');
 			this.unshift('items', test);
-			this.$.grid.querySelector('.details').innerHTML = form.parentNode.innerHTML;
 			this.$.grid.expandedItems = [test];
 			this.$.grid.selectedItems = test ? [test] : [];
-			;
+			this.$.grid.querySelectorAll('#new')[2].innerHTML = form.parentNode.innerHTML;
 		},
 		_removeLocation: function(e) {
 			let item = e.model.item;
