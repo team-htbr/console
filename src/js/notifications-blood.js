@@ -7,20 +7,25 @@
 
 	let bloodButtonsActive = [];
 	let notification;
+	let form;
+	let submitBtn;	
 	
 	Polymer({
 		is: 'my-notifications-blood',
+
+		ready: function() {
+			form = this.$.notificationForm;
+			submitBtn = this.$.submitBtn;
+		},
+
 		sendNotification: function(e) {
 
-			let form = this.$.notificationForm;
 			let bloodButtonsActive = [];
 			let bloodButtons = this.$.buttonsContainer.children;
 			let title = this.$.title.value;
 			let body = this.$.body.value;
-			let container = this.$.container;
+			let toastContainer = this.$.toastContainer;
 			let toastSuccess = this.$.toastSuccess;
-			let toastFail = this.$.toastFail;
-			let toastIncomplete = this.$.toastIncomplete;
 
 			for (let i = 0; i < bloodButtons.length; i++) {
 				if (bloodButtons[i].hasAttribute('active')) {
@@ -49,8 +54,7 @@
 						data : JSON.stringify(notification),
 						dataType : 'json',
 						success : function(data) {
-							console.log("Success!");
-							toastSuccess.fitInto = container;
+							toastSuccess.fitInto = toastContainer;
 							toastSuccess.open();
 							setTimeout(function() {
 								form.reset();
@@ -60,21 +64,19 @@
 							}, 1400);
 						},
 						error : function() {
-							console.log("Error");
-							toastFail.fitInto = container;
-							toastFail.open();
+							console.log("De notificatie kon niet verzonden worden.");
 						}
 					})
 				}
 			}
 
-			else {
-				toastIncomplete.fitInto = container;
-				toastIncomplete.open();
-			}	
-
 		}
 
 	});
 
+	form.addEventListener('input', function(event) {
+		// Validate the entire form to see if the `Submit` button should be enabled.
+		submitBtn.disabled = !form.validate();
+	});
+	
 })();

@@ -99,13 +99,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: var(--app-primary-color);
       }
 
-      #container {
+      #toastContainer {
         margin-top: 16px;
+      }
+
+      #submitBtn[disabled] {
+        background-color: #eaeaea;
+        color: #a8a8a8;
       }
 
     </style>
 
-    <paper-material id="paperMatNotification">
+    <paper-material id="paperMatNotification" class="no-margin">
       <div class="paper-mat-title"><p>Verstuur een notificatie op basis van bloedgroep.</p></div>
       <div id="buttonsContainer" class="app-grid">
         <paper-button class="item" toggles raised value="blood-Ap">A +</paper-button>
@@ -118,15 +123,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button class="item" toggles raised value="blood-On">O -</paper-button>
       </div>      
       <form is="iron-form" method="get" action="/" id="notificationForm">
-        <paper-input id="title" name="title" label="Titel" value="Bloeddonatie" required></paper-input>
-        <paper-textarea id="body" char-counter label="Bericht" required></paper-textarea>
+        <paper-input required auto-validate error-message="Gelieve titel van de notificatie in te geven." id="title" name="title" label="Titel" value="Bloeddonatie"></paper-input>
+        <paper-textarea required auto-validate error-message="Gelieve bericht van de notificatie in te geven." id="body" char-counter label="Bericht"></paper-textarea>
         <br>
-        <paper-button id="submitBtn" raised on-click="sendNotification" class="no-margin">Versturen</paper-button>
+        <paper-button id="submitBtn" raised on-click="sendNotification" disabled class="no-margin">Versturen</paper-button>
         <div class="output"></div>
       </form>
     </paper-material>
 
-    <div id=container>
+    <div id="toastContainer">
       <paper-toast id="toastSuccess" class="fit-bottom" text="Notificatie is verstuurd."></paper-toast>
       <paper-toast id="toastFail" class="fit-bottom" text="Notificatie kon niet vertuurd worden."></paper-toast>
       <paper-toast id="toastIncomplete" class="fit-bottom"

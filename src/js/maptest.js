@@ -10,6 +10,18 @@
 	let poly;
 	let locations;
 	let locationsList;
+	let toastContainer;
+	let toastSuccess;
+	let toastFail;
+	let toastIncomplete;
+	let dateContainer;
+	let startDatePicker;
+	let endDatePicker;
+	let startDate;
+	let endDate;
+	let form;
+	let submitBtn;
+  
 	let firebaseRef = firebase.initializeApp({
 		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
 		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
@@ -18,6 +30,14 @@
 	Polymer({
 		is: 'my-locations',
 		ready: function() {
+
+			toastContainer = this.$.toastContainer;
+			toastSuccess = this.$.toastSuccess;
+			dateContainer = this.$$('.dateContainer');
+			startDatePicker = this.$.startDatePicker;
+			endDatePicker = this.$.endDatePicker;
+			form = this.$.locationForm;
+			submitBtn = this.$.locationBtn;
 
 			poly = this;
 			locations = [];
@@ -50,8 +70,15 @@
 			let city = this.$.city.value;
 			let isMobile = Polymer.dom(this.root).querySelector('.iron-selected').value;
 
-			// TODO: check for valid input
-			addLocation(name, street, streetNumber, city, isMobile);
+			addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
+		},
+		_on_tap_mobile: function() {
+			dateContainer.style.display = "flex";
+			startDate = startDatePicker.value || "";
+			endDate = endDatePicker.value || "";
+			if ((startDate == "") || (endDate == "")) {
+				submitBtn.disabled = true;
+			}
 		},
 		clicked: function(e, detail, sender) {
 			console.log('marker clicked');
@@ -89,46 +116,53 @@
 			if(item != null) {
 				console.log(item.id);
 			}
+		},
+		_on_tap_fixed: function() {
+			dateContainer.style.display = "none";
+			submitBtn.disabled = !form.validate();
 		}
 	});
 
-	function addLocation(name, street, streetNumber, city, isMobile) {
+	let addLocation = function(name, street, streetNumber, city, isMobile, startDate, endDate) {
 
-		let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
+		if (name && street && streetNumber && city) {
 
-		// check if address is valid and get its coordinates if so
-		geocoder.geocode({'address': address}, function(results, status) {
-			if (status === 'OK') {
+			let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
-				let lat = results[0].geometry.location.lat();
-				let lng = results[0].geometry.location.lng();
+			// check if address is valid and get its coordinates if so
+			geocoder.geocode({'address': address}, function(results, status) {
+				if (status === 'OK') {
 
-				// center map
-				poly.latitude = lat;
-				poly.longitude = lng;
+					let lat = results[0].geometry.location.lat();
+					let lng = results[0].geometry.location.lng();
 
-				// add location to database
-				let itemId = firebaseRef.ref('loacations_test').push().getKey();
-				firebaseRef.ref('locations_test').child(itemId).set({
-					id: itemId,
-					name: name,
-					street: street,
-					streetNumber: streetNumber,
-					city: city,
-					isMobile: isMobile,
-					lat: lat,
-					lng: lng
-				});
+					// center map
+					poly.latitude = lat;
+					poly.longitude = lng;
 
-				// add geofire object to database
-				let coordinates =  [lat, lng];
-				let geoFire = new GeoFire(firebaseRef.ref('locations_geo_test/'));
-				geoFire.set(itemId, coordinates);
+					// add location to database
+					let itemId = firebaseRef.ref('loacations_test').push().getKey();
+					firebaseRef.ref('locations_test').child(itemId).set({
+						id: itemId,
+						name: name,
+						street: street,
+						streetNumber: streetNumber,
+						city: city,
+						isMobile: isMobile,
+						lat: lat,
+						lng: lng
+					});
 
-			} else {
-				alert('Geocode was not successful for the following reason: ' + status);
-			}
-		});
+					// add geofire object to database
+					let coordinates =  [lat, lng];
+					let geoFire = new GeoFire(firebaseRef.ref('locations_geo_test/'));
+					geoFire.set(itemId, coordinates);
+					toastSuccess.fitInto = toastContainer;
+					toastSuccess.open();
+
+				}
+			});
+		}
 	}
 
 	function removeLocation(location) {
@@ -211,7 +245,7 @@
 	// Renaming class to Location results in errors
 	class Location {
 
-		constructor(id, name, street, streetNumber, city, lat, lng, isMobile) {
+		constructor(id, name, street, streetNumber, city, lat, lng, isMobile, startDate, endDate) {
 			this.id = id;
 			this.name = name;
 			this.street = street;
@@ -220,6 +254,8 @@
 			this.lat = lat;
 			this.lng = lng;
 			this.isMobile = isMobile;
+			this.startDate = "not defined";
+			this.endDate = "not defined";
 			this.marker = document.createElement('google-map-marker');
 		}
 
@@ -241,5 +277,24 @@
 		}
 
 	};
+
+	form.addEventListener('input', function(event) {
+		// Validate the entire form to see if the `Submit` button should be enabled.
+		submitBtn.disabled = !form.validate();
+	});
+
+	startDatePicker.addEventListener('value-changed', function(event) {
+		startDate = startDatePicker.value || "";
+		if ((startDate !== "") && (endDate !== "")) {
+			submitBtn.disabled = false;
+		}
+	});
+
+	endDatePicker.addEventListener('value-changed', function(event) {
+		endDate = endDatePicker.value || "";
+		if ((startDate !== "") && (endDate !== "")) {
+			submitBtn.disabled = false;
+		}
+	});
 
 })();
