@@ -61,23 +61,33 @@
 				observer: '_activeItemChanged'
 			}
         },
+		_onActiveItemChanged: function(e) {
+          	this.$.grid.expandedItems = [e.detail.value];
+        },
         _activeItemChanged: function(item) {
 			this.$.grid.selectedItems = item ? [item] : [];
 			if(item != null) {
 				console.log(item.id);
 				console.log(poly.items.find(x => x.id == item.id));
 				console.log(map);
+				console.log(poly.$);
 			}
         },
 		_removeLocation: function(e) {
 			let item = e.model.item;
-			// this.items.splice(index, 1);
-
-			// this.$.grid.clearCache();
 			if(item != null) {
 				console.log(item.id);
 				firebaseRef.ref('locations_test').child(item.id).remove();
 				firebaseRef.ref('locations_geo_test').child(item.id).remove();
+			}
+		},
+		_editLocation: function(e) {
+			let body = document.querySelector('body');
+			console.log(body);
+			poly.$.dialog.open();
+			let item = e.model.item;
+			if(item != null) {
+				console.log(item.id);
 			}
 		}
 	});

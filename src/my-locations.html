@@ -14,6 +14,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
@@ -93,6 +95,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-left: 0;
       }
 
+	  .functions {
+		  text-align: right;
+	  }
+
+	  div#indicators {
+		  display: none;
+	  }
+
+	  vaadin-grid vaadin-grid-sorter {
+	  	  --vaadin-grid-sorter-arrow: {
+			  display: none !important;
+		  };
+      }
+
+	  paper-dialog {
+		  width: 60%;
+		  left: 20%;
+	  }
+
+	  .details {
+        padding: 10px;
+        margin: 10px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14);
+        font-size: 20px;
+      }
+
     </style>
 
 	<google-maps-api id="mapsAPI" api-key="AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio"></google-maps-api>
@@ -102,7 +133,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	</paper-material>
 
 	<paper-material>
-		<vaadin-grid id="grid" aria-label="Array Data Example" items="{{items}}" active-item="{{activeItem}}" multi-sort="true">
+		<vaadin-grid id="grid" on-active-item-changed="_onActiveItemChanged" items="{{items}}" active-item="{{activeItem}}" multi-sort="true">
+			<template class="row-details">
+				<div class="details">
+
+				</div>
+			</template>
 			<vaadin-grid-column>
 				<template class="header">
 					<vaadin-grid-sorter path="name">Locatie</vaadin-grid-sorter>
@@ -124,12 +160,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				<template>[[item.city]]</template>
 			</vaadin-grid-column>
 
-			<vaadin-grid-column>
+			<vaadin-grid-column class="functions-column">
 				<template class="header"></template>
-				<template>
-					<paper-icon-button src="../images/ic_delete_grey.png" on-tap="_removeLocation"></paper-icon-button>
-				</template>
-			</vaadin-grid-column>
+					<template>
+						<div class="functions">
+							<paper-icon-button class="edit" src="../images/ic_delete_grey.png" on-tap="_removeLocation"></paper-icon-button>
+							<paper-icon-button src="../images/ic_edit_grey.png" on-tap="_editLocation"></paper-icon-button>
+						</div>
+					</template>
+			</vaadin-grid-column>>
 		</vaadin-grid>
 	</paper-material>
 
