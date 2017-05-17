@@ -16,6 +16,8 @@
 	let dateContainer;
 	let startDatePicker;
 	let endDatePicker;
+	let startDate;
+	let endDate;
 	let form;
 	let submitBtn;
 	let firebaseRef = firebase.initializeApp({
@@ -61,13 +63,16 @@
 			let streetNumber = this.$.streetNumber.value;
 			let city = this.$.city.value;
 			let isMobile = Polymer.dom(this.root).querySelector('.iron-selected').value;
-			let startDate = startDatePicker.value;
-			let endDate = endDatePicker.value;
 
 			addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
 		},
 		_on_tap_mobile: function() {
 			dateContainer.style.display = "flex";
+			startDate = startDatePicker.value || "";
+			endDate = endDatePicker.value || "";
+			if ((startDate == "") || (endDate == "")) {
+				submitBtn.disabled = true;
+			}
 		},
 		_on_tap_fixed: function() {
 			dateContainer.style.display = "none";
@@ -217,10 +222,24 @@
 		}
 
 	};
-	
+
 	form.addEventListener('input', function(event) {
 		// Validate the entire form to see if the `Submit` button should be enabled.
 		submitBtn.disabled = !form.validate();
+	});
+
+	startDatePicker.addEventListener('value-changed', function(event) {
+		startDate = startDatePicker.value || "";
+		if ((startDate !== "") && (endDate !== "")) {
+			submitBtn.disabled = false;
+		}
+	});
+
+	endDatePicker.addEventListener('value-changed', function(event) {
+		endDate = endDatePicker.value || "";
+		if ((startDate !== "") && (endDate !== "")) {
+			submitBtn.disabled = false;
+		}
 	});
 
 })();
