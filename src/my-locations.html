@@ -28,30 +28,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 
-
 <dom-module id="my-locations">
 	<template>
 		<style include="shared-styles">
 			:host {
 				--app-primary-color: #ed1c24;
 				--app-secondary-color: #666666;
-				--light-background: #f5f5f5;
-				display: block;
-				padding: 20px;
 				--paper-input-container-focus-color: var(--app-primary-color);
 				--paper-input-container-invalid-color: var(--app-primary-color);
 				--paper-radio-button-checked-color: var(--app-primary-color);
 				--paper-radio-button-unchecked-color: var(--app-secondary-color);
 				--primary-color: var(--app-primary-color);
 				--light-primary-color: var(--light-background);
+				--light-background: #f5f5f5;
+				display: block;
+				padding: 20px;
 			}
 
 			.no-margin {
 				margin: 0;
 			}
 
+			.functions {
+				text-align: right;
+			}
+
 			.paper-map {
-				height: 420px;
+				height: 375px;
 			}
 
 			.paper-mat-title {
@@ -59,12 +62,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				border-radius: 1px 1px 0 0;
 				padding: 16px 0;
 				box-shadow: 0 -1px 0 rgba(0,0,0,0.12) inset;
-			}
-
-			paper-material {
-				background-color: #fff;
-				margin-top: 12px;
-				border-radius: 1px;
 			}
 
 			.paper-mat-title p {
@@ -77,11 +74,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				padding-bottom: 30px;
 			}
 
-			form {
-				width: 65%;
-				margin: 0 auto;
-				overflow: hidden;
-				padding-top: 16px;
+			.dateContainer {
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				margin-bottom: 16px;
+				display: none;
+			}
+
+			.details {
+				padding: 10px;
+				margin: 10px;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14);
+				font-size: 20px;
+			}
+
+			paper-dialog {
+				width: 60%;
+				left: 20%;
+			}
+
+			paper-material {
+				background-color: #fff;
+				margin-top: 12px;
+				border-radius: 1px;
 			}
 
 			paper-button {
@@ -90,6 +109,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 			paper-button:active {
 				background-color: var(--app-primary-color);
+			}
+
+			paper-radio-button:first-child {
+				padding-left: 0;
+			}
+
+			vaadin-date-picker {
+				width: 48%;
+			}
+
+			vaadin-grid vaadin-grid-sorter {
+				--vaadin-grid-sorter-arrow: {
+					display: none !important;
+				};
+			}
+
+			form {
+				width: 65%;
+				margin: 0 auto;
+				overflow: hidden;
+				padding-top: 16px;
 			}
 
 			#locationBtn {
@@ -105,55 +145,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				color: #a8a8a8;
 			}
 
-			paper-radio-button:first-child {
-				padding-left: 0;
-			}
-
 			#toastContainer {
 				margin-top: 16px;
 				height: 30px;
 			}
 
-			vaadin-date-picker {
-				width: 48%;
-			}
-
-			.dateContainer {
-				display: flex;
-				justify-content: space-between;
-				align-items: flex-start;
-				margin-bottom: 16px;
-				display: none;
-			}
-
-
-			.functions {
-				text-align: right;
-			}
-
 			div#indicators {
 				display: none;
-			}
-
-			vaadin-grid vaadin-grid-sorter {
-				--vaadin-grid-sorter-arrow: {
-					display: none !important;
-				};
-			}
-
-			paper-dialog {
-				width: 60%;
-				left: 20%;
-			}
-
-			.details {
-				padding: 10px;
-				margin: 10px;
-				display: flex;
-				justify-content: space-around;
-				align-items: center;
-				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14);
-				font-size: 20px;
 			}
 		</style>
 
@@ -169,7 +167,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 				<template class="row-details">
 					<div class="details">
-
+						<form is="iron-form" method="get" action="/" id="locationForm">
+				<paper-input auto-validate error-message="Gelieve naam van de locatie in te geven." name="location-name" label="Naam" id="name" required></paper-input>
+				<paper-input auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
+				<paper-input auto-validate error-message="Gelieve huisnummer van de locatie in te geven." name="location-number" label="Nummer" id="streetNumber" required></paper-input>
+				<paper-input auto-validate error-message="Gelieve stad/dorp van de locatie in te geven." name="location-city" label="Gemeente" id="city" required></paper-input>
+				<br>
+				<paper-radio-group class="item" selected="fixed">
+					<paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
+					<paper-radio-button name="mobile" on-tap="_on_tap_mobile" value="true">Mobiel</paper-radio-button>
+				</paper-radio-group>
+				<div class="dateContainer">
+					<vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
+					<vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
+				</div>
+				<paper-button id="locationBtn" disabled raised on-tap="_submit" class="no-margin">Voeg toe</paper-button>
+				<div class="output"></div>
+			</form>
 					</div>
 				</template>
 
@@ -195,19 +209,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				</vaadin-grid-column>
 
 				<vaadin-grid-column class="functions-column">
-					<template class="header"></template>
-						<template>
-							<div class="functions">
-								<paper-icon-button class="edit" src="../images/ic_delete_grey.png" on-tap="_removeLocation"></paper-icon-button>
-								<paper-icon-button src="../images/ic_edit_grey.png" on-tap="_editLocation"></paper-icon-button>
-							</div>
-						</template>
+					<template class="header"><paper-button id="locationBtn" raised on-tap="_createLocation">Nieuwe locatie</paper-button></template>
+					<template>
+						<div class="functions">
+							<paper-icon-button class="edit" src="../images/ic_delete_grey.png" on-tap="_removeLocation"></paper-icon-button>
+							<paper-icon-button src="../images/ic_edit_grey.png" on-tap="_editLocation"></paper-icon-button>
+						</div>
+					</template>
 				</vaadin-grid-column>
 			</vaadin-grid>
 		</paper-material>
 
 		<paper-material class="add-location">
-			<div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
 			<form is="iron-form" method="get" action="/" id="locationForm">
 				<paper-input auto-validate error-message="Gelieve naam van de locatie in te geven." name="location-name" label="Naam" id="name" required></paper-input>
 				<paper-input auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
@@ -222,7 +235,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					<vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
 					<vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
 				</div>
-				<paper-button id="locationBtn" disabled raised on-tap="submit" class="no-margin">Voeg toe</paper-button>
+				<paper-button id="locationBtn" disabled raised on-tap="_submit" class="no-margin">Voeg toe</paper-button>
 				<div class="output"></div>
 			</form>
 		</paper-material>

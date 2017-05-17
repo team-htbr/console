@@ -21,16 +21,16 @@
 	let endDate;
 	let form;
 	let submitBtn;
-  
-	let firebaseRef = firebase.initializeApp({
-		apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
-		databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
-	}).database();
+	let firebaseRef;
 
 	Polymer({
 		is: 'my-locations',
 		ready: function() {
 
+			firebaseRef = firebase.initializeApp({
+				apiKey: 'AIzaSyDHQfVnj8-EI6WHLkXNl1kJzLv4NRH8Bio',
+				databaseURL: 'https://bloeddonatie-bd78c.firebaseio.com'
+			}).database();
 			toastContainer = this.$.toastContainer;
 			toastSuccess = this.$.toastSuccess;
 			dateContainer = this.$$('.dateContainer');
@@ -59,11 +59,13 @@
 			poly.items = [];
 
 			listenForChanges();
-
-			console.log(locations);
 		},
-		submit: function() {
-
+		properties: {
+			activeItem: {
+				observer: '_activeItemChanged'
+			}
+        },
+		_submit: function() {
 			let name = this.$.name.value;
 			let street = this.$.street.value;
 			let streetNumber = this.$.streetNumber.value;
@@ -80,26 +82,31 @@
 				submitBtn.disabled = true;
 			}
 		},
-		clicked: function(e, detail, sender) {
-			console.log('marker clicked');
-		},
-		properties: {
-			activeItem: {
-				observer: '_activeItemChanged'
+		_activeItemChanged: function(item) {
+			this.$.grid.selectedItems = item ? [item] : [];
+			if(item != null) {
+				// console.log(item.id);
+				// console.log(poly.items.find(x => x.id == item.id));
 			}
         },
 		_onActiveItemChanged: function(e) {
           	this.$.grid.expandedItems = [e.detail.value];
-        },
-        _activeItemChanged: function(item) {
-			this.$.grid.selectedItems = item ? [item] : [];
-			if(item != null) {
-				console.log(item.id);
-				console.log(poly.items.find(x => x.id == item.id));
-				console.log(map);
-				console.log(poly.$);
+			let unfinishedLocation = this.items;
+			if(unfinishedLocation != null && unfinishedLocation[0].id == '0' && e.detail.value != unfinishedLocation[0]) {
+				this.shift('items');
 			}
         },
+		_createLocation: function() {
+			// TODO
+			// disable create location button
+			// insert form html
+			let test = new Location('0', 'Nieuwe locatie');
+			this.unshift('items', test);
+			this.$.grid.querySelector('.details').innerHTML = form.parentNode.innerHTML;
+			this.$.grid.expandedItems = [test];
+			this.$.grid.selectedItems = test ? [test] : [];
+			;
+		},
 		_removeLocation: function(e) {
 			let item = e.model.item;
 			if(item != null) {
@@ -159,7 +166,6 @@
 					geoFire.set(itemId, coordinates);
 					toastSuccess.fitInto = toastContainer;
 					toastSuccess.open();
-
 				}
 			});
 		}
@@ -180,7 +186,7 @@
 			let newLocation = initLocation(fetchedLocation.val());
 
 			renderMarker(newLocation.getMarker());
-			poly.push('items', newLocation);
+			poly.unshift('items', newLocation);
 			poly.$.grid.clearCache();
 		});
 
@@ -202,7 +208,7 @@
 			let updatedLocation = initLocation(fetchedLocation.val());
 
 			poly.splice('items', indexOf(poly.items, oldLocation.id), 1);
-			poly.push('items', updatedLocation);
+			poly.unshift('items', updatedLocation);
 			poly.$.grid.clearCache();
 
 			removeMarker(oldLocation.getMarker());
@@ -241,8 +247,28 @@
 		return -1;
 	}
 
+	form.addEventListener('input', function(event) {
+		// Validate the entire form to see if the `Submit` button should be enabled.
+		submitBtn.disabled = !form.validate();
+	});
+
+	startDatePicker.addEventListener('value-changed', function(event) {
+		startDate = startDatePicker.value || "";
+
+		if ((startDate !== "") && (endDate !== "")) {
+			submitBtn.disabled = false;
+		}
+	});
+
+	endDatePicker.addEventListener('value-changed', function(event) {
+		endDate = endDatePicker.value || "";
+
+		if ((startDate !== "") && (endDate !== "")) {
+			submitBtn.disabled = false;
+		}
+	});
+
 	// Class for keeping track of places
-	// Renaming class to Location results in errors
 	class Location {
 
 		constructor(id, name, street, streetNumber, city, lat, lng, isMobile, startDate, endDate) {
@@ -275,26 +301,6 @@
 
 			return this.marker;
 		}
-
 	};
-
-	form.addEventListener('input', function(event) {
-		// Validate the entire form to see if the `Submit` button should be enabled.
-		submitBtn.disabled = !form.validate();
-	});
-
-	startDatePicker.addEventListener('value-changed', function(event) {
-		startDate = startDatePicker.value || "";
-		if ((startDate !== "") && (endDate !== "")) {
-			submitBtn.disabled = false;
-		}
-	});
-
-	endDatePicker.addEventListener('value-changed', function(event) {
-		endDate = endDatePicker.value || "";
-		if ((startDate !== "") && (endDate !== "")) {
-			submitBtn.disabled = false;
-		}
-	});
 
 })();
