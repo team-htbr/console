@@ -78,5 +78,5 @@
 		// Validate the entire form to see if the `Submit` button should be enabled.
 		submitBtn.disabled = !form.validate();
 	});
-
+	
 })();
