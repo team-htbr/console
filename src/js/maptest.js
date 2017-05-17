@@ -76,6 +76,7 @@
 		},
 		_on_tap_fixed: function() {
 			dateContainer.style.display = "none";
+			submitBtn.disabled = !form.validate();
 		}
 	});
 
