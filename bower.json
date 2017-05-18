@@ -31,7 +31,8 @@
     "vaadin-grid": "vaadin/vaadin-grid#^2.0.2",
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
     "vaadin-date-picker": "^1.2.3",
-    "paper-menu": "^1.3.0"
+    "paper-menu": "^1.3.0",
+    "iron-icons": "^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -11,64 +11,75 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
 
 <dom-module id="my-home">
-  <template>
-    <style include="shared-styles">
-      :host {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-        padding: 10px;
-      }
+	<template>
+		<style include="shared-styles" is="custom-style">
+			:host {
+				--app-primary-color: #ed1c24;
+				--app-secondary-color: #666666;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-items: center;
+				align-content: center;
+				padding: 10px;
+			}
 
-      .square-box {
-        width: 250px;
-        height: 250px;
-        padding: 16px;
-        text-align: center;
-      }
+			.square-box {
+				width: 250px;
+				height: 250px;
+				padding: 16px;
+				text-align: center;
+			}
 
-      a {
-        text-decoration: none;
-      }
+			a {
+				text-decoration: none;
+			}
 
-      a:hover p {
-        color: #ed1c24;
-      }
+			a:hover p {
+				color: var(--app-primary-color);
+			}
 
-      iron-icon {
-        margin-top: 70px;
-        height: 64px;
-        width: 64px;
-      }
+			iron-icon {
+				margin-top: 70px;
+				height: 64px;
+				width: 64px;
+				--iron-icon-fill-color: var(--app-secondary-color);
+			}
 
-      p {
-        margin-top: 45px;
-      }
+			a:hover iron-icon {
+				fill: var(--app-primary-color);
+			}
 
-    </style>
+			p {
+				margin-top: 45px;
+			}
 
-    <a name="notifications-blood" href="/notifications-blood">
-      <div class="card square-box item">
-        <iron-icon src="../images/notification grey.png"></iron-icon>
-        <p>Notificatiebeheer</p>
-      </div>
-    </a>
-    <a name="locations" href="/locations">
-      <div class="card square-box item">
-        <iron-icon src="../images/location grey.png"></iron-icon>
-        <p>Locatiebeheer</p>
-      </div>
-    </a>
-    
-  </template>
+		</style>
 
-  <script>
-    Polymer({
-      is: 'my-home',
-    });
-  </script>
+		<a name="notifications-blood" href="/notifications-blood">
+			<div class="card square-box item">
+				<iron-icon icon="social:notifications-active"></iron-icon>
+				<!-- <iron-icon src="../images/notification_grey.svg"></iron-icon> -->
+				<p>Notificatiebeheer</p>
+			</div>
+		</a>
+		<a name="locations" href="/locations">
+			<div class="card square-box item">
+				<iron-icon icon="maps:place"></iron-icon>
+				<!-- <iron-icon src="../images/location_grey.svg"></iron-icon> -->
+				<p>Locatiebeheer</p>
+			</div>
+		</a>
+		
+	</template>
+
+	<script>
+		Polymer({
+			is: 'my-home',
+		});
+	</script>
 </dom-module>
