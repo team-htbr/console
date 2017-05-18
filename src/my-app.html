@@ -21,7 +21,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../bower_components/paper-menu/paper-submenu.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="my-icons.html">
 
@@ -33,8 +32,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		--app-secondary-color: #666666;
 		display: block;
 		color: var(--app-secondary-color);
-		--paper-menu-selected-item: {
-		  color: var(--app-primary-color);
+		--paper-menu-selected-item {
+			background-color: #eeeeee;
 		};
 	  }
 
@@ -42,6 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		color: var(--app-primary-color);
 		background-color: #f5f5f5;
 		padding: 0 20px;
+		margin-bottom: 35px;
 		box-shadow: 0 3px 4px 0 rgba(0,0,0,0.08), 0 3px 3px -2px rgba(0,0,0,0.08), 0 1px 8px 0 rgba(0,0,0,0.08);
 	  }
 
@@ -55,8 +55,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
 	  }
 
+	  .drawer-list {
+	  	background-color: var(--app-primary-color);
+	  }
+
 	  .drawer-list a {
 		display: block;
+		padding: 6px 20px;
 		text-decoration: none;
 		color: var(--app-secondary-color);
 		line-height: 40px;
@@ -67,16 +72,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		cursor: pointer;
 	  }
 
-	  .main-menu {
-		padding-top: 35px;
-	  }
-
-	  .menu-item a {
-		padding: 6px 20px;
-	  }
-
-	  .submenu-item a {
-		padding: 0 40px;
+	  .iron-selected {
+	  	background-color: #eeeeee;
 	  }
 
 	  .big {
@@ -84,10 +81,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		--iron-icon-width: 32px;
 		padding-right: 16px;
 		padding-bottom: 1px;
-	  }
-
-	  paper-item:iron-selected {
-		color: var(--app-primary-color);
 	  }
 
 	</style>
@@ -103,14 +96,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	  <!-- Drawer content -->
 	  <app-drawer id="drawer">
 		<app-toolbar class="menu-toolbar">Menu</app-toolbar>
-		<paper-menu selected="[[page]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
+		<iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="notifications-blood" href="/notifications-blood">
+          	<iron-icon class="big" src="../images/notification grey.png"></iron-icon>Notificatiebeheer
+          </a>
+          <a name="locations" href="/locations">
+          	<iron-icon class="big" src="../images/location grey.png"></iron-icon>Locatiebeheer
+          </a>
+        </iron-selector>
+		<!-- <paper-menu selected="[[page]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
 		  <paper-item class="menu-item">
 			<a name="notifications-blood" href="/notifications-blood"><iron-icon class="big" src="../images/notification grey.png"></iron-icon>Notificatiebeheer</a>
 		  </paper-item>
 		  <paper-item class="menu-item">
 			<a name="locations" href="/locations"><iron-icon class="big" src="../images/location grey.png"></iron-icon>Locatiebeheer</a>
 		  </paper-item>
-		</paper-menu>
+		</paper-menu> -->
 	  </app-drawer>
 
 	  <!-- Main content -->
