@@ -27,6 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/vaadin-grid/vaadin-grid-sorter.html ">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="my-location-form.html">
 
 <dom-module id="my-locations">
 	<template>
@@ -88,12 +89,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				display: flex;
 				justify-content: space-around;
 				align-items: center;
-				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14);;
-			}
-
-			paper-dialog {
-				width: 60%;
-				left: 20%;
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14);
+				font-size: 20px;
 			}
 
 			paper-material {
@@ -118,10 +115,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				width: 48%;
 			}
 
-			vaadin-grid {
-				height: 650px;
-			}
-
 			vaadin-grid vaadin-grid-sorter {
 				--vaadin-grid-sorter-arrow: {
 					display: none !important;
@@ -131,6 +124,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			form {
 				width: 65%;
 				margin: 0 auto;
+				overflow: hidden;
 				padding-top: 16px;
 			}
 
@@ -206,6 +200,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		</paper-material>
 
 		<paper-material class="add-location">
+			<div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
 			<form is="iron-form" method="get" action="/" id="locationForm">
 				<paper-input auto-validate error-message="Gelieve naam van de locatie in te geven." name="location-name" label="Naam" id="name" required></paper-input>
 				<paper-input auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
@@ -223,6 +218,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				<paper-button id="locationBtn" disabled raised on-tap="_submit" class="no-margin">Voeg toe</paper-button>
 				<div class="output"></div>
 			</form>
+		</paper-material>
+		<paper-material>
+			<my-location-form></my-location-form>
 		</paper-material>
 
 		<div id="toastContainer">

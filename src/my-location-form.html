@@ -1,0 +1,144 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-error.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+
+<dom-module is="my-location-form">
+	<template>
+
+		<style include="shared-styles">
+			:host {
+				display: block;
+			}
+
+			paper-button {
+				background-color: var(--light-background);
+			}
+
+			paper-button:active {
+				background-color: var(--app-primary-color);
+			}
+
+			paper-radio-button:first-child {
+				padding-left: 0;
+			}
+
+			vaadin-date-picker {
+				width: 48%;
+			}
+
+			form {
+				width: 65%;
+				margin: 0 auto;
+				overflow: hidden;
+				padding-top: 16px;
+			}
+
+			#locationBtn {
+				float: right;
+				margin-right: 3px;
+				margin-bottom: 3px;
+				color: #ffffff;
+				background-color: var(--app-primary-color);
+			}
+
+			#locationBtn[disabled] {
+				background-color: #eaeaea;
+				color: #a8a8a8;
+			}
+
+			.dateContainer {
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				margin-bottom: 16px;
+				display: none;
+			}
+
+		</style>
+
+		<form is="iron-form" method="get" action="/" id="locationForm">
+			<paper-input auto-validate error-message="Gelieve naam van de locatie in te geven." name="location-name" label="Naam" id="name" required></paper-input>
+			<paper-input auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
+			<paper-input auto-validate error-message="Gelieve huisnummer van de locatie in te geven." name="location-number" label="Nummer" id="streetNumber" required></paper-input>
+			<paper-input auto-validate error-message="Gelieve stad/dorp van de locatie in te geven." name="location-city" label="Gemeente" id="city" required></paper-input>
+			<br>
+			<paper-radio-group class="item" selected="fixed">
+				<paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
+				<paper-radio-button name="mobile" on-tap="_on_tap_mobile" value="true">Mobiel</paper-radio-button>
+			</paper-radio-group>
+			<div class="dateContainer">
+				<vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
+				<vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
+			</div>
+			<paper-button id="locationBtn" disabled raised on-tap="_submit" class="no-margin">Voeg toe</paper-button>
+			<div class="output"></div>
+		</form>
+	</template>
+
+	<script>
+		(function() {
+
+			'use strict';
+
+			let dateContainer;
+			let startDatePicker;
+			let endDatePicker;
+			let startDate;
+			let endDate;
+			let form;
+			let submitBtn;
+
+			Polymer({
+				is: 'my-location-form',
+				ready: function() {
+					dateContainer = this.$$('.dateContainer');
+					startDatePicker = this.$.startDatePicker;
+					endDatePicker = this.$.endDatePicker;
+					form = this.$.locationForm;
+					submitBtn = this.$.locationBtn;
+				},
+				_on_tap_mobile: function() {
+					dateContainer.style.display = "flex";
+					startDate = startDatePicker.value || "";
+					endDate = endDatePicker.value || "";
+					if ((startDate == "") || (endDate == "")) {
+						submitBtn.disabled = true;
+					}
+				},
+				_on_tap_fixed: function() {
+					dateContainer.style.display = "none";
+					submitBtn.disabled = !form.validate();
+				}
+			});
+
+			form.addEventListener('input', function(event) {
+				// Validate the entire form to see if the `Submit` button should be enabled.
+				submitBtn.disabled = !form.validate();
+			});
+
+			startDatePicker.addEventListener('value-changed', function(event) {
+				startDate = startDatePicker.value || "";
+
+				if ((startDate !== "") && (endDate !== "")) {
+					submitBtn.disabled = false;
+				}
+			});
+
+			endDatePicker.addEventListener('value-changed', function(event) {
+				endDate = endDatePicker.value || "";
+
+				if ((startDate !== "") && (endDate !== "")) {
+					submitBtn.disabled = false;
+				}
+			});
+
+        }());
+	</script>
+</dom-module>
+
+

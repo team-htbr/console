@@ -86,7 +86,7 @@
 			this.$.grid.selectedItems = item ? [item] : [];
 			if(item != null) {
 				// console.log(item.id);
-				// console.log(poly.items.find(x => x.id == item.id));
+				console.log(poly.items.find(x => x.id == item.id));
 			}
         },
 		_onActiveItemChanged: function(e) {
@@ -116,13 +116,7 @@
 			}
 		},
 		_editLocation: function(e) {
-			let body = document.querySelector('body');
-			console.log(body);
-			poly.$.dialog.open();
-			let item = e.model.item;
-			if(item != null) {
-				console.log(item.id);
-			}
+			console.log(e.model.item);
 		},
 		_on_tap_fixed: function() {
 			dateContainer.style.display = "none";
