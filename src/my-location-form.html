@@ -110,6 +110,7 @@
 
 					startDatePicker.addEventListener('value-changed', function(event) {
 						startDate = startDatePicker.value || "";
+						endDate = endDatePicker.value || "";
 
 						if ((startDate !== "") && (endDate !== "")) {
 							submitBtn.disabled = false;
@@ -117,6 +118,7 @@
 					});
 
 					endDatePicker.addEventListener('value-changed', function(event) {
+						startDate = startDatePicker.value || "";
 						endDate = endDatePicker.value || "";
 
 						if ((startDate !== "") && (endDate !== "")) {
