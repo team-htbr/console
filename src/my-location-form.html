@@ -102,6 +102,28 @@
 					form = this.$.locationForm;
 					submitBtn = this.$.locationBtn;
 				},
+				attached: function() {
+					form.addEventListener('input', function(event) {
+						// Validate the entire form to see if the `Submit` button should be enabled.
+						submitBtn.disabled = !form.validate();
+					});
+
+					startDatePicker.addEventListener('value-changed', function(event) {
+						startDate = startDatePicker.value || "";
+
+						if ((startDate !== "") && (endDate !== "")) {
+							submitBtn.disabled = false;
+						}
+					});
+
+					endDatePicker.addEventListener('value-changed', function(event) {
+						endDate = endDatePicker.value || "";
+
+						if ((startDate !== "") && (endDate !== "")) {
+							submitBtn.disabled = false;
+						}
+					});
+				},
 				_on_tap_mobile: function() {
 					dateContainer.style.display = "flex";
 					startDate = startDatePicker.value || "";
@@ -116,26 +138,7 @@
 				}
 			});
 
-			form.addEventListener('input', function(event) {
-				// Validate the entire form to see if the `Submit` button should be enabled.
-				submitBtn.disabled = !form.validate();
-			});
 
-			startDatePicker.addEventListener('value-changed', function(event) {
-				startDate = startDatePicker.value || "";
-
-				if ((startDate !== "") && (endDate !== "")) {
-					submitBtn.disabled = false;
-				}
-			});
-
-			endDatePicker.addEventListener('value-changed', function(event) {
-				endDate = endDatePicker.value || "";
-
-				if ((startDate !== "") && (endDate !== "")) {
-					submitBtn.disabled = false;
-				}
-			});
 
         }());
 	</script>
