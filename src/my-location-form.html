@@ -52,22 +52,37 @@
 			}
 
 			.dateContainer {
-				display: flex;
 				justify-content: space-between;
 				align-items: flex-start;
 				margin-bottom: 16px;
 				display: none;
 			}
 
+			.streetNumberContainer {
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+			}
+
+			paper-input.street {
+				width: 73%;
+			}
+
+			paper-input.number {
+				width: 23%;
+			}
+
 		</style>
 
 		<form is="iron-form" method="get" action="/" id="locationForm">
 			<paper-input auto-validate error-message="Gelieve naam van de locatie in te geven." name="location-name" label="Naam" id="name" required></paper-input>
-			<paper-input auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
-			<paper-input auto-validate error-message="Gelieve huisnummer van de locatie in te geven." name="location-number" label="Nummer" id="streetNumber" required></paper-input>
+			<div class="streetNumberContainer">
+				<paper-input class="item street" auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
+				<paper-input class="item number" auto-validate error-message="Gelieve huisnummer van de locatie in te geven." name="location-number" label="Nummer" id="streetNumber" required></paper-input>
+			</div>
 			<paper-input auto-validate error-message="Gelieve stad/dorp van de locatie in te geven." name="location-city" label="Gemeente" id="city" required></paper-input>
 			<br>
-			<paper-radio-group class="item" selected="fixed">
+			<paper-radio-group selected="fixed">
 				<paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
 				<paper-radio-button name="mobile" on-tap="_on_tap_mobile" value="true">Mobiel</paper-radio-button>
 			</paper-radio-group>
