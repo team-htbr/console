@@ -14,14 +14,9 @@
 	let toastSuccess;
 	let toastFail;
 	let toastIncomplete;
-	let dateContainer;
-	let startDatePicker;
-	let endDatePicker;
-	let startDate;
-	let endDate;
-	let form;
 	let submitBtn;
 	let firebaseRef;
+	let editLocation;
 
 	Polymer({
 		is: 'my-locations',
@@ -33,18 +28,13 @@
 			}).database();
 			toastContainer = this.$.toastContainer;
 			toastSuccess = this.$.toastSuccess;
-			dateContainer = this.$$('.dateContainer');
-			startDatePicker = this.$.startDatePicker;
-			endDatePicker = this.$.endDatePicker;
-			form = this.$.locationForm;
-			submitBtn = this.$.locationBtn;
-
 			poly = this;
 			locations = [];
 			locationsList = [];
 			map = poly.$.map;
 			mapAPI = Polymer.dom(poly.root).querySelector('google-maps-api');
 
+			this.addEventListener('eventFromChild', this._submit);
 			mapAPI.addEventListener('api-load', function(e) {
 				geocoder = new mapAPI.api.Geocoder();
 				infoWindow = new mapAPI.api.InfoWindow();
@@ -59,34 +49,74 @@
 			poly.items = [];
 
 			listenForChanges();
+			console.log(locations);
 		},
 		properties: {
 			activeItem: {
 				observer: '_activeItemChanged'
 			}
         },
-		_submit: function() {
-			let name = this.$.name.value;
-			let street = this.$.street.value;
-			let streetNumber = this.$.streetNumber.value;
-			let city = this.$.city.value;
-			let isMobile = Polymer.dom(this.root).querySelector('.iron-selected').value;
-
-			addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
+		_createLocation: function() {
+			let test = new Location('new', 'Nieuwe locatie');
+			this.unshift('items', test);
+			this.$.grid.expandedItems = [test];
+			this.$.grid.selectedItems = test ? [test] : [];
+			this.$.grid.querySelectorAll('#' + test.id)[2].innerHTML = '<my-location-form id="form' + test.id + '"></my-location-form>';
+			editLocation = test;
 		},
-		_on_tap_mobile: function() {
-			dateContainer.style.display = "flex";
-			startDate = startDatePicker.value || "";
-			endDate = endDatePicker.value || "";
-			if ((startDate == "") || (endDate == "")) {
-				submitBtn.disabled = true;
+		_removeLocation: function(e) {
+			let item = e.model.item;
+			if(item != null) {
+				console.log(item.id);
+				if(item.id = 'new') {
+					this.shift('items');
+				} else {
+					firebaseRef.ref('locations_test').child(item.id).remove();
+					firebaseRef.ref('locations_geo_test').child(item.id).remove();
+				}
+			}
+		},
+		_editLocation: function(e) {
+			let unfinishedLocation = this.items;
+			if(unfinishedLocation != null && unfinishedLocation[0].id == 'new' && e.model.item != unfinishedLocation[0]) {
+				this.shift('items');
+			}
+			this.$.grid.selectedItems = e.model.item ? [e.model.item] : [];
+			this.$.grid.expandedItems = [e.model.item];
+			editLocation = e.model.item;
+			this.$.grid.querySelector('#' + e.model.item.id).innerHTML = '<my-location-form id="form' + e.model.item.id + '"></my-location-form>';
+			let form = this.$.grid.querySelector('#form' + editLocation.id);
+			form.$.name.value = editLocation.name;
+			form.$.street.value = editLocation.street;
+			form.$.streetNumber.value = editLocation.streetNumber;
+			form.$.city.value = editLocation.city;
+			console.log(editLocation.startDate);
+			form.$.startDatePicker.value = editLocation.startDate;
+			form.$.endDatePicker.value = editLocation.endDate;
+		},
+		_submit: function(event) {
+			if(editLocation != null) {
+				let form = this.$.grid.querySelector('#form' + editLocation.id);
+				let name = form.$.name.value;
+				let street = form.$.street.value;
+				let streetNumber = form.$.streetNumber.value;
+				let city = form.$.city.value;
+				let isMobile = form.root.querySelector('.iron-selected').value;
+				let startDate = form.$.startDatePicker.value;
+				let endDate = form.$.endDatePicker.value;
+				addLocation(name, street, streetNumber, city, isMobile, startDate, endDate);
+				this.$.grid.selectedItems = [];
+				this.$.grid.expandedItems = [];
+				if (editLocation.id == 'new') {
+					this.shift('items');
+				}
 			}
 		},
 		_activeItemChanged: function(item) {
 			this.$.grid.selectedItems = item ? [item] : [];
 			if(item != null) {
 				// console.log(item.id);
-				console.log(poly.items.find(x => x.id == item.id));
+				// console.log(poly.items.find(x => x.id == item.id));
 			}
         },
 		_onActiveItemChanged: function(e) {
@@ -95,39 +125,11 @@
 			if(unfinishedLocation != null && unfinishedLocation[0].id == 'new' && e.detail.value != unfinishedLocation[0]) {
 				this.shift('items');
 			}
-        },
-		_createLocation: function() {
-			// TODO
-			// disable create location button
-			// insert form html
-			//
-			let test = new Location('new', 'Nieuwe locatie');
-			this.unshift('items', test);
-			this.$.grid.expandedItems = [test];
-			this.$.grid.selectedItems = test ? [test] : [];
-			this.$.grid.querySelectorAll('#new')[2].innerHTML = form.parentNode.innerHTML;
-		},
-		_removeLocation: function(e) {
-			let item = e.model.item;
-			if(item != null) {
-				console.log(item.id);
-				firebaseRef.ref('locations_test').child(item.id).remove();
-				firebaseRef.ref('locations_geo_test').child(item.id).remove();
-			}
-		},
-		_editLocation: function(e) {
-			console.log(e.model.item);
-		},
-		_on_tap_fixed: function() {
-			dateContainer.style.display = "none";
-			submitBtn.disabled = !form.validate();
-		}
+        }
 	});
 
 	let addLocation = function(name, street, streetNumber, city, isMobile, startDate, endDate) {
-
 		if (name && street && streetNumber && city) {
-
 			let address = streetNumber + ' ' + street + ', ' + city + ', ' + 'BE';
 
 			// check if address is valid and get its coordinates if so
@@ -141,9 +143,20 @@
 					poly.latitude = lat;
 					poly.longitude = lng;
 
+					let itemId;
+					let exist;
 					// add location to database
-					let itemId = firebaseRef.ref('loacations_test').push().getKey();
-					firebaseRef.ref('locations_test').child(itemId).set({
+					firebaseRef.ref('locations').child(editLocation.id).once('value', function(snapshot) {
+    					exist = (snapshot.val() !== null);
+					});
+					if (exist === true) {
+						console.log('update location');
+						itemId = editLocation.id;
+					} else {
+						console.log('new location');
+						itemId = firebaseRef.ref('loacations').push().getKey();
+					}
+					firebaseRef.ref('locations').child(itemId).update({
 						id: itemId,
 						name: name,
 						street: street,
@@ -151,13 +164,11 @@
 						city: city,
 						isMobile: isMobile,
 						lat: lat,
-						lng: lng
+						lng: lng,
+						startDate: startDate,
+						endDate: endDate
 					});
 
-					// add geofire object to database
-					let coordinates =  [lat, lng];
-					let geoFire = new GeoFire(firebaseRef.ref('locations_geo_test/'));
-					geoFire.set(itemId, coordinates);
 					toastSuccess.fitInto = toastContainer;
 					toastSuccess.open();
 				}
@@ -166,13 +177,12 @@
 	}
 
 	function removeLocation(location) {
-		// TODO: delete index of location as well
 		delete locations[location.id];
 	};
 
 	function listenForChanges() {
 
-		let locationsDb = firebaseRef.ref('locations_test');
+		let locationsDb = firebaseRef.ref('locations');
 
 		locationsDb.on('child_added', function(fetchedLocation) {
 			console.log('added');
@@ -180,7 +190,7 @@
 			let newLocation = initLocation(fetchedLocation.val());
 
 			renderMarker(newLocation.getMarker());
-			poly.unshift('items', newLocation);
+			poly.push('items', newLocation);
 			poly.$.grid.clearCache();
 		});
 
@@ -215,9 +225,9 @@
 	}
 
 	function initLocation(fetchedLocation) {
-
 		let newLocation = new Location(fetchedLocation.id, fetchedLocation.name, fetchedLocation.street,
-		 fetchedLocation.streetNumber, fetchedLocation.city, fetchedLocation.lat, fetchedLocation.lng, fetchedLocation.isMobile);
+		 fetchedLocation.streetNumber, fetchedLocation.city, fetchedLocation.lat, fetchedLocation.lng, fetchedLocation.isMobile,
+		 fetchedLocation.startDate, fetchedLocation.endDate);
 
 		locations[fetchedLocation.id] = newLocation;
 
@@ -241,27 +251,6 @@
 		return -1;
 	}
 
-	form.addEventListener('input', function(event) {
-		// Validate the entire form to see if the `Submit` button should be enabled.
-		submitBtn.disabled = !form.validate();
-	});
-
-	startDatePicker.addEventListener('value-changed', function(event) {
-		startDate = startDatePicker.value || "";
-
-		if ((startDate !== "") && (endDate !== "")) {
-			submitBtn.disabled = false;
-		}
-	});
-
-	endDatePicker.addEventListener('value-changed', function(event) {
-		endDate = endDatePicker.value || "";
-
-		if ((startDate !== "") && (endDate !== "")) {
-			submitBtn.disabled = false;
-		}
-	});
-
 	// Class for keeping track of places
 	class Location {
 
@@ -274,8 +263,8 @@
 			this.lat = lat;
 			this.lng = lng;
 			this.isMobile = isMobile;
-			this.startDate = "not defined";
-			this.endDate = "not defined";
+			this.startDate = startDate;
+			this.endDate = endDate;
 			this.marker = document.createElement('google-map-marker');
 		}
 
@@ -285,8 +274,6 @@
 		}
 
 		getMarker() {
-			// this.marker.setAttribute('click-events', true);
-			// this.marker.setAttribute('google-map-marker-click');
 			this.marker.setAttribute('latitude', this.lat);
 			this.marker.setAttribute('longitude', this.lng);
 			this.marker.setAttribute('title', this.name);

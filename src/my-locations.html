@@ -47,7 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			}
 
 			.no-margin {
-				margin: 0;
+				margin-top: 0;
 			}
 
 			.functions {
@@ -71,32 +71,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				overflow: hidden;
 			}
 
-			.add-location {
-				padding-bottom: 30px;
-			}
-
-			.dateContainer {
-				display: flex;
-				justify-content: space-between;
-				align-items: flex-start;
-				margin-bottom: 16px;
-				display: none;
-			}
-
 			.details {
 				padding: 10px;
-				margin: 10px;
-				display: flex;
+				margin: 10px;;
 				justify-content: space-around;
 				align-items: center;
-				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14);
-				font-size: 20px;
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14);;
+				height: 400px;
 			}
 
 			paper-material {
 				background-color: #fff;
+				margin: 0 auto;
 				margin-top: 12px;
 				border-radius: 1px;
+				max-width: 900px;
 			}
 
 			paper-button {
@@ -107,25 +96,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				background-color: var(--app-primary-color);
 			}
 
-			paper-radio-button:first-child {
-				padding-left: 0;
-			}
-
-			vaadin-date-picker {
-				width: 48%;
+			#grid {
+				height: 500px;
 			}
 
 			vaadin-grid vaadin-grid-sorter {
 				--vaadin-grid-sorter-arrow: {
 					display: none !important;
 				};
-			}
-
-			form {
-				width: 65%;
-				margin: 0 auto;
-				overflow: hidden;
-				padding-top: 16px;
 			}
 
 			#locationBtn {
@@ -197,30 +175,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 					</template>
 				</vaadin-grid-column>
 			</vaadin-grid>
-		</paper-material>
-
-		<paper-material class="add-location">
-			<div class="paper-mat-title"><p>Voeg een donorcentrum toe.</p></div>
-			<form is="iron-form" method="get" action="/" id="locationForm">
-				<paper-input auto-validate error-message="Gelieve naam van de locatie in te geven." name="location-name" label="Naam" id="name" required></paper-input>
-				<paper-input auto-validate error-message="Gelieve straatnaam van de locatie in te geven." name="location-street" label="Straat" id="street" required></paper-input>
-				<paper-input auto-validate error-message="Gelieve huisnummer van de locatie in te geven." name="location-number" label="Nummer" id="streetNumber" required></paper-input>
-				<paper-input auto-validate error-message="Gelieve stad/dorp van de locatie in te geven." name="location-city" label="Gemeente" id="city" required></paper-input>
-				<br>
-				<paper-radio-group class="item" selected="fixed">
-					<paper-radio-button name="fixed" on-tap="_on_tap_fixed" value="false">Vast</paper-radio-button>
-					<paper-radio-button name="mobile" on-tap="_on_tap_mobile" value="true">Mobiel</paper-radio-button>
-				</paper-radio-group>
-				<div class="dateContainer">
-					<vaadin-date-picker class="item" id="startDatePicker" label="Begindatum"></vaadin-date-picker>
-					<vaadin-date-picker class="item" id="endDatePicker" label="Einddatum"></vaadin-date-picker>
-				</div>
-				<paper-button id="locationBtn" disabled raised on-tap="_submit" class="no-margin">Voeg toe</paper-button>
-				<div class="output"></div>
-			</form>
-		</paper-material>
-		<paper-material>
-			<my-location-form></my-location-form>
 		</paper-material>
 
 		<div id="toastContainer">
