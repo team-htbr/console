@@ -67,7 +67,6 @@
 		_removeLocation: function(e) {
 			let item = e.model.item;
 			if(item != null) {
-				console.log(item.id);
 				if(item.id = 'new') {
 					this.shift('items');
 				} else {
@@ -90,7 +89,6 @@
 			form.$.street.value = editLocation.street;
 			form.$.streetNumber.value = editLocation.streetNumber;
 			form.$.city.value = editLocation.city;
-			console.log(editLocation.startDate);
 			form.$.startDatePicker.value = editLocation.startDate;
 			form.$.endDatePicker.value = editLocation.endDate;
 		},
@@ -269,8 +267,15 @@
 		}
 
 		getInfoWindowContent() {
+			let dates = '';
+
+			if(this.isMobile == 'true') {
+				dates = '<p>' + this.startDate + ' - ' + this.endDate + '</p>';
+			}
+
 			return '<h3>' + this.name + '</h3>'
-				+ '<p>' + this.street + ' ' + this.streetNumber + ', ' + this.city + '</p>';
+				+ '<p>' + this.street + ' ' + this.streetNumber + ', ' + this.city + '</p>'
+				+ dates;
 		}
 
 		getMarker() {
