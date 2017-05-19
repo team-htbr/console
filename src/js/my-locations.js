@@ -93,7 +93,7 @@
 			form.$.endDatePicker.value = editLocation.endDate;
 		},
 		_submit: function(event) {
-			if(editLocation != null) {
+			if(editLocation !== null) {
 				let form = this.$.grid.querySelector('#form' + editLocation.id);
 				let name = form.$.name.value;
 				let street = form.$.street.value;
@@ -120,7 +120,7 @@
 		_onActiveItemChanged: function(e) {
           	this.$.grid.expandedItems = [e.detail.value];
 			let unfinishedLocation = this.items;
-			if(unfinishedLocation != null && unfinishedLocation[0].id == 'new' && e.detail.value != unfinishedLocation[0]) {
+			if(unfinishedLocation !== null && unfinishedLocation[0].id == 'new' && e.detail.value != unfinishedLocation[0]) {
 				this.shift('items');
 			}
         }
@@ -172,7 +172,7 @@
 				}
 			});
 		}
-	}
+	};
 
 	function removeLocation(location) {
 		delete locations[location.id];
@@ -206,7 +206,7 @@
 		locationsDb.on('child_changed', function(fetchedLocation) {
 			console.log('changed');
 
-			let oldLocation = locations[fetchedLocation.val().id]
+			let oldLocation = locations[fetchedLocation.val().id];
 			let updatedLocation = initLocation(fetchedLocation.val());
 
 			poly.splice('items', indexOf(poly.items, oldLocation.id), 1);
