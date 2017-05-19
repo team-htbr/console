@@ -45,7 +45,7 @@
 
 			poly.latitude = 51.04060;
 			poly.longitude = 3.70976;
-			poly.zoom = 14;
+			poly.zoom = 9;
 			poly.items = [];
 
 			listenForChanges();

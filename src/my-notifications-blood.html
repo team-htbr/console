@@ -41,7 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .no-margin {
-        margin: 0;
+        margin-top: 0;
       }
 
       paper-material {
@@ -49,6 +49,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-top: 12px;
         border-radius: 1px;
         padding-bottom: 30px;
+		margin: 0 auto;
+		max-width: 900px;
       }
 
       .app-grid {
@@ -121,7 +123,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button class="item" toggles raised value="blood-Bn">B -</paper-button>
         <paper-button class="item" toggles raised value="blood-ABn">AB -</paper-button>
         <paper-button class="item" toggles raised value="blood-On">O -</paper-button>
-      </div>      
+      </div>
       <form is="iron-form" method="get" action="/" id="notificationForm">
         <paper-input required auto-validate error-message="Gelieve titel van de notificatie in te geven." id="title" name="title" label="Titel" value="Bloeddonatie"></paper-input>
         <paper-textarea required auto-validate error-message="Gelieve bericht van de notificatie in te geven." id="body" char-counter label="Bericht"></paper-textarea>
