@@ -61,17 +61,19 @@
 			this.unshift('items', test);
 			this.$.grid.expandedItems = [test];
 			this.$.grid.selectedItems = test ? [test] : [];
-			this.$.grid.querySelectorAll('#' + test.id)[2].innerHTML = '<my-location-form id="form' + test.id + '"></my-location-form>';
+			let length = this.$.grid.querySelectorAll('#' + test.id).length;
+			this.$.grid.querySelectorAll('#' + test.id)[length - 1].innerHTML = '<my-location-form id="form' + test.id + '"></my-location-form>';
 			editLocation = test;
 		},
 		_removeLocation: function(e) {
 			let item = e.model.item;
+			console.log(item);
 			if(item != null) {
-				if(item.id = 'new') {
+				if(item.id == 'new') {
 					this.shift('items');
 				} else {
-					firebaseRef.ref('locations_test').child(item.id).remove();
-					firebaseRef.ref('locations_geo_test').child(item.id).remove();
+					console
+					firebaseRef.ref('locations').child(item.id).remove();
 				}
 			}
 		},
@@ -120,8 +122,10 @@
 		_onActiveItemChanged: function(e) {
           	this.$.grid.expandedItems = [e.detail.value];
 			let unfinishedLocation = this.items;
-			if(unfinishedLocation !== null && unfinishedLocation[0].id == 'new' && e.detail.value != unfinishedLocation[0]) {
-				this.shift('items');
+			if(unfinishedLocation != null) {
+				if(unfinishedLocation[0].id == 'new' && e.detail.value != unfinishedLocation[0]) {
+					this.shift('items');
+				}
 			}
         }
 	});
