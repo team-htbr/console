@@ -156,7 +156,7 @@
 						itemId = editLocation.id;
 					} else {
 						console.log('new location');
-						itemId = firebaseRef.ref('loacations').push().getKey();
+						itemId = firebaseRef.ref('locations').push().getKey();
 					}
 					firebaseRef.ref('locations').child(itemId).update({
 						id: itemId,
