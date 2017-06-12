@@ -49,7 +49,6 @@
 			poly.items = [];
 
 			listenForChanges();
-			console.log(locations);
 		},
 		properties: {
 			activeItem: {
@@ -67,12 +66,10 @@
 		},
 		_removeLocation: function(e) {
 			let item = e.model.item;
-			console.log(item);
 			if(item != null) {
 				if(item.id == 'new') {
 					this.shift('items');
 				} else {
-					console
 					firebaseRef.ref('locations').child(item.id).remove();
 				}
 			}
